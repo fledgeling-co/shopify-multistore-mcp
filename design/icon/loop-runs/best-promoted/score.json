@@ -1,0 +1,57 @@
+{
+  "candidate": "icon.svg",
+  "reference": "icon-engineC-9fb7f0-masked.png",
+  "tier": "full (lpips)",
+  "metric_version": 2,
+  "label": "round 5: material + darker turned faces (scallop bottoms, door feet)",
+  "sizes": {
+    "1024": {
+      "lum_delta": 0.064,
+      "ssim": 0.8093,
+      "edge_f1": 0.2007,
+      "mask_iou": 0.9998,
+      "self_contrast": 0.4597,
+      "ref_self_contrast": 0.4553,
+      "lpips": 0.3115,
+      "composite": 0.635
+    },
+    "256": {
+      "lum_delta": 0.0626,
+      "ssim": 0.7194,
+      "edge_f1": 0.4443,
+      "mask_iou": 0.9992,
+      "self_contrast": 0.4475,
+      "ref_self_contrast": 0.4445,
+      "lpips": 0.2111,
+      "composite": 0.6928
+    },
+    "128": {
+      "lum_delta": 0.061,
+      "ssim": 0.7198,
+      "edge_f1": 0.6852,
+      "mask_iou": 0.9986,
+      "self_contrast": 0.4415,
+      "ref_self_contrast": 0.4355,
+      "composite": 0.7238
+    },
+    "32": {
+      "lum_delta": 0.0546,
+      "ssim": 0.8187,
+      "edge_f1": 1.0,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3819,
+      "ref_self_contrast": 0.3908,
+      "composite": 0.9219
+    },
+    "16": {
+      "lum_delta": 0.0513,
+      "ssim": 0.8579,
+      "edge_f1": 1.0,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3705,
+      "ref_self_contrast": 0.3517,
+      "composite": 0.9337
+    }
+  },
+  "render_hash": "bf1d1e11f85729f5"
+}

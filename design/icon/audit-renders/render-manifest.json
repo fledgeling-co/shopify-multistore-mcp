@@ -1,0 +1,47 @@
+{
+  "takes": {
+    "engineB-arrow-b9b0db": {
+      "source": "icon-engineB-arrow-b9b0db.svg",
+      "kind": "svg",
+      "source_sha256": "301e3ef3f7f45feae3d89af2df9545d2548b3063757f48c5f82528e2f050bb4c",
+      "source_mtime": 1793386529.0497334,
+      "rendered_at": 1793386964.3253849
+    },
+    "engineC-1c0b17-2-masked": {
+      "source": "icon-engineC-1c0b17-2-masked.png",
+      "kind": "png",
+      "source_sha256": "7ea5a3cad84686e9791d864365a37a52d6dfff8bf26ef015d3832964e8296607",
+      "source_mtime": 1793386597.5319276,
+      "rendered_at": 1793386964.487801
+    },
+    "engineC-9fb7f0-masked": {
+      "source": "icon-engineC-9fb7f0-masked.png",
+      "kind": "png",
+      "source_sha256": "2519a3174f44852d0b181d79a988d01e5c1d11b1de53f67c14e19e76e510d763",
+      "source_mtime": 1793386596.9141877,
+      "rendered_at": 1793386964.651388
+    },
+    "master": {
+      "source": "icon.svg",
+      "kind": "svg",
+      "source_sha256": "6cda6c48b8379e1bc7b029bbe2fc21cbb9cf77d82ac9e9c5e172e3f135dace54",
+      "source_mtime": 1793386781.3282044,
+      "rendered_at": 1793386964.8743522
+    }
+  },
+  "sizes": [
+    1024,
+    256,
+    128,
+    96,
+    64,
+    32
+  ],
+  "display": {
+    "256": 128,
+    "128": 64,
+    "96": 48,
+    "64": 32,
+    "32": 16
+  }
+}

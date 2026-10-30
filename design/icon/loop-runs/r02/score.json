@@ -1,0 +1,57 @@
+{
+  "candidate": "icon.svg",
+  "reference": "icon-engineC-9fb7f0-masked.png",
+  "tier": "full (lpips)",
+  "metric_version": 2,
+  "label": "round 2: material (panels, porcelain bodies, door glow, halo)",
+  "sizes": {
+    "1024": {
+      "lum_delta": 0.0637,
+      "ssim": 0.8061,
+      "edge_f1": 0.199,
+      "mask_iou": 0.9998,
+      "self_contrast": 0.4348,
+      "ref_self_contrast": 0.4553,
+      "lpips": 0.3098,
+      "composite": 0.6347
+    },
+    "256": {
+      "lum_delta": 0.0624,
+      "ssim": 0.7164,
+      "edge_f1": 0.4408,
+      "mask_iou": 0.9992,
+      "self_contrast": 0.4249,
+      "ref_self_contrast": 0.4445,
+      "lpips": 0.2071,
+      "composite": 0.6927
+    },
+    "128": {
+      "lum_delta": 0.0608,
+      "ssim": 0.7167,
+      "edge_f1": 0.7058,
+      "mask_iou": 0.9986,
+      "self_contrast": 0.4145,
+      "ref_self_contrast": 0.4355,
+      "composite": 0.728
+    },
+    "32": {
+      "lum_delta": 0.055,
+      "ssim": 0.8058,
+      "edge_f1": 0.9967,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3525,
+      "ref_self_contrast": 0.3908,
+      "composite": 0.9173
+    },
+    "16": {
+      "lum_delta": 0.0506,
+      "ssim": 0.844,
+      "edge_f1": 1.0,
+      "mask_iou": 1.0,
+      "self_contrast": 0.347,
+      "ref_self_contrast": 0.3517,
+      "composite": 0.9306
+    }
+  },
+  "render_hash": "af29e1ca12ef9d50"
+}

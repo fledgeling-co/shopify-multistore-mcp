@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shopify-multi-mcp icon — contact sheet &amp; audit</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 40px; background: #0b1418; color: #d7e3e7; font: 14px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; }
+  h1 { font-size: 22px; font-weight: 650; margin: 0 0 4px; }
+  h2 { font-size: 15px; font-weight: 650; margin: 32px 0 10px; }
+  .sub { color: #7fa0aa; margin-bottom: 32px; max-width: 900px; }
+  .sheet { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 860px; }
+  th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid #1c2d33; vertical-align: middle; }
+  th { color: #7fa0aa; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .take { font-weight: 650; max-width: 190px; overflow-wrap: anywhere; }
+  .take small { display: block; font-weight: 400; color: #7fa0aa; }
+  .renders { display: flex; align-items: center; gap: 18px; }
+  .renders figure { margin: 0; text-align: center; }
+  .renders img { display: block; background: #08252e; border-radius: 8px; }
+  .renders img.zoom { image-rendering: pixelated; border: 1px solid #1c2d33; }
+  .renders figcaption { color: #7fa0aa; font-size: 11px; margin-top: 4px; }
+  .score { font-variant-numeric: tabular-nums; font-weight: 650; white-space: nowrap; }
+  .ship { color: #ffd98f; }
+  .fail { color: #e0826a; }
+  .verdict { min-width: 320px; max-width: 460px; color: #a9bec5; }
+  .rec { margin-top: 28px; padding: 18px 20px; border: 1px solid #2a4a54; border-radius: 12px; background: #0e1c22; max-width: 900px; }
+  .rec strong { color: #ffd98f; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .rubric { margin-top: 28px; color: #7fa0aa; font-size: 12px; max-width: 900px; }
+</style>
+</head>
+<body>
+<h1>shopify-multi-mcp icon — contact sheet &amp; audit</h1>
+<div class="sub">Direction "Shopfront Row" (Tahoe porcelain register, jade gel) · one shared spec, three engines · every take audited on real renders at 1024 / 128 / 64 / 48 / 32 / 16. The master went through five fidelity rounds against the Engine C raster; the log is in <code>loop-runs/LOG.md</code>.</div>
+
+<div class="sheet"><table>
+  <caption class="visually-hidden">Icon variation takes with renders, rubric scores and verdicts</caption>
+  <tr><th scope="col">Take</th><th scope="col">Hero at 1024, then renders at 128 / 64 / 48 / 32 / 16 css px (2&times; retina sources), plus the 16px squint magnified</th><th scope="col">Rubric</th><th scope="col">Verdict</th></tr>
+
+  <tr>
+    <td class="take ship">A · icon.svg<small>hand-authored layered SVG, fidelity round r05 — SHIPS</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/master-1024.png" width="160" height="160" alt="Master hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/master-256.png" width="128" height="128" alt="Master at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/master-128.png" width="64" height="64" alt="Master at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/master-96.png" width="48" height="48" alt="Master at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/master-64.png" width="32" height="32" alt="Master at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/master-32.png" width="16" height="16" alt="Master at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/master-32.png" width="96" height="96" alt="Master 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score ship">11 / 12</td>
+    <td class="verdict">Passes checks 1–4: shares the set squircle as a clip, optically centred at ~73% width, the filled silhouette reads as a row of shops, and the awning band plus three doors survive at 16px. Layered bg / mid / fg / highlight; grayscale and blue tint keep shape and value (row below). Fails #7: the lit centre of the gel awning is 1.95:1 against the porcelain ground (doors are 4.2:1 against the bodies). Material came from the Engine C raster over five measured rounds; Engine B's pillowed awning panels were salvaged in round 2.</td>
+  </tr>
+
+  <tr>
+    <td class="take">C1 · icon-engineC-9fb7f0.png<small>GPT Image raster, corpus-referenced (Home, News, Reminders) — material reference</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineC-9fb7f0-masked-1024.png" width="160" height="160" alt="C1 hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineC-9fb7f0-masked-256.png" width="128" height="128" alt="C1 at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineC-9fb7f0-masked-128.png" width="64" height="64" alt="C1 at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineC-9fb7f0-masked-96.png" width="48" height="48" alt="C1 at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineC-9fb7f0-masked-64.png" width="32" height="32" alt="C1 at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineC-9fb7f0-masked-32.png" width="16" height="16" alt="C1 at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineC-9fb7f0-masked-32.png" width="96" height="96" alt="C1 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score">10 / 12</td>
+    <td class="verdict">Won the material read: pillowed gel awnings, emissive door light, porcelain bodies with rim light, a jade glow at the foot. Not shippable as the master: a flat raster fails #10 by construction, and its near-white bodies sit at about 1.2:1 against the ground (#7). It also drops the shared rail, giving each shop its own cap, which removes the one-assistant idea.</td>
+  </tr>
+
+  <tr>
+    <td class="take">C2 · icon-engineC-1c0b17-2.png<small>GPT Image raster, second take</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineC-1c0b17-2-masked-1024.png" width="160" height="160" alt="C2 hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineC-1c0b17-2-masked-256.png" width="128" height="128" alt="C2 at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineC-1c0b17-2-masked-128.png" width="64" height="64" alt="C2 at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineC-1c0b17-2-masked-96.png" width="48" height="48" alt="C2 at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineC-1c0b17-2-masked-64.png" width="32" height="32" alt="C2 at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineC-1c0b17-2-masked-32.png" width="16" height="16" alt="C2 at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineC-1c0b17-2-masked-32.png" width="96" height="96" alt="C2 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score">10 / 12</td>
+    <td class="verdict">Same composition as C1 with a cooler teal cast and flatter gel; lost to C1 on material. Same #7 and #10 failures as C1.</td>
+  </tr>
+
+  <tr>
+    <td class="take fail">B · icon-engineB-arrow-b9b0db.svg<small>Arrow 2 vector take</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-arrow-b9b0db-1024.png" width="160" height="160" alt="B hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-arrow-b9b0db-256.png" width="128" height="128" alt="B at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-arrow-b9b0db-128.png" width="64" height="64" alt="B at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-arrow-b9b0db-96.png" width="48" height="48" alt="B at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-arrow-b9b0db-64.png" width="32" height="32" alt="B at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-arrow-b9b0db-32.png" width="16" height="16" alt="B at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-arrow-b9b0db-32.png" width="96" height="96" alt="B 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">8 / 12</td>
+    <td class="verdict">Hard-fails #1 and #2: Arrow returned a wide rectangular canvas on a baked grey ground, so it neither fills nor respects the squircle. Strong shape ideas inside it: each scallop a domed pillow panel, a thick lit rail, door knobs. The pillowed panels were salvaged into the master.</td>
+  </tr>
+</table></div>
+
+<h2>Variant and silhouette checks on the master</h2>
+<div class="renders">
+  <figure><img src="audit-renders/master-256.png" width="128" height="128" alt="Master default"><figcaption>default</figcaption></figure>
+  <figure><img src="variant-renders/master-gray-256.png" width="128" height="128" alt="Master in grayscale"><figcaption>grayscale</figcaption></figure>
+  <figure><img src="variant-renders/master-tinted-256.png" width="128" height="128" alt="Master under a blue mono tint"><figcaption>mono tint</figcaption></figure>
+  <figure><img src="variant-renders/master-silhouette-256.png" width="128" height="128" alt="Master as a filled black silhouette"><figcaption>silhouette</figcaption></figure>
+</div>
+
+<div class="rec"><strong>Recommendation: ship A (icon.svg).</strong> It is the only take that is a layered vector on the shared squircle, passes checks 1–4 on the real renders, and keeps the single rail that says "one assistant, several stores". Its material was measured against C1 at five sizes; the loop accepted the structure round and an out-of-family judge (gpt-5.6-sol, asked in both orders) preferred the material round over it. This is a decorative icon (README, social card, favicon), so the material is baked into the file rather than left to Icon Composer. Known liabilities to revisit: the lit awning centre is 1.95:1 against the porcelain ground (#7); bodies are mint-tinted to hold value at 16px, so they read greener than C1's porcelain; the panel that promoted r05 had one decisive judge, because the OpenAI and Cursor lanes could not run; no dark-mode variant is authored.</div>
+
+<div class="rubric">Rubric: the 12-point icon audit from icon-directions.md (mask discipline, grid, silhouette, 16px identity, single light model, palette discipline, figure-ground, depth coherence, era coherence, variant robustness, personality, no text) — checks 1–4 non-negotiable, delivery bar ≥10/12. Raster takes audited on their squircle-masked 1024 versions. Renders produced by <code>audit_sheet.py render</code> (1024 / 256 / 128 / 96 / 64 / 32 sources); verified by its <code>check</code> subcommand.</div>
+</body>
+</html>

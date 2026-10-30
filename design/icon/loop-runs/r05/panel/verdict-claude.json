@@ -1,0 +1,73 @@
+{
+  "runs": {
+    "bundle": {
+      "verdict": {
+        "overall": "A",
+        "material": "A",
+        "silhouette": "A",
+        "smallsize": "tie",
+        "rationale": {
+          "overall": "A is closer to the reference's glossy, jelly-like storefronts: its awnings are split into shaded panels, its doors have a top highlight, and its ground glow is green, while B's awnings read as flat gradient sheets.",
+          "material": "A shades each awning scallop as its own panel with a highlight and adds a radial sheen to each door, which comes closer to the reference's translucent, lit-from-within volume than B's single radial gradient per awning.",
+          "silhouette": "The two outlines are nearly identical, but A shows panel divisions in the awnings like the scalloped segments in the reference, while B shows scallops only along the bottom edge.",
+          "smallsize": "At 32px and 16px the two strips are almost the same: A's panel lines give a faint stripe and B's awnings are a slightly cleaner mass, so neither reads clearly better."
+        }
+      },
+      "resolved": {
+        "overall": "candidate",
+        "material": "candidate",
+        "silhouette": "candidate",
+        "smallsize": "tie"
+      },
+      "meta": {
+        "exit": 0,
+        "harness": "claude -p (opus)"
+      },
+      "order": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    "bundle-swapped": {
+      "verdict": {
+        "overall": "B",
+        "material": "B",
+        "silhouette": "tie",
+        "smallsize": "tie",
+        "rationale": {
+          "overall": "B comes closer to the reference's glossy, panelled awnings and soft green ground glow, while A's awnings read as flat bands with a single radial gradient.",
+          "material": "B shades each awning panel separately with a curved highlight, which echoes the reference's volumetric glossy segments, and its door gradients and green shadow add depth that A's darker, flatter top bar and grey shadow lack.",
+          "silhouette": "The two outlines are nearly identical (three shops, a continuous top rail, scalloped awnings and arched doors), and both differ from the reference's separate rounded roofs in the same way.",
+          "smallsize": "At 128, 32 and 16px the two strips are practically indistinguishable, with the same awning band and three door marks and equal legibility."
+        }
+      },
+      "resolved": {
+        "overall": "candidate",
+        "material": "candidate",
+        "silhouette": "tie",
+        "smallsize": "tie"
+      },
+      "meta": {
+        "exit": 0,
+        "harness": "claude -p (opus)"
+      },
+      "order": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    }
+  },
+  "resolved": {
+    "overall": "candidate",
+    "material": "candidate",
+    "silhouette": "tie",
+    "smallsize": "tie"
+  },
+  "passes_ran": 2,
+  "passes_asked": 2,
+  "swap_flipped": [
+    "silhouette"
+  ],
+  "swap_consistent": false,
+  "status": "ok"
+}

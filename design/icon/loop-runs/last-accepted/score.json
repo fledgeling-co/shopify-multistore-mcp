@@ -1,0 +1,57 @@
+{
+  "candidate": "icon.svg",
+  "reference": "icon-engineC-9fb7f0-masked.png",
+  "tier": "full (lpips)",
+  "metric_version": 2,
+  "label": "round 1: coarse structure, object scale 1.12",
+  "sizes": {
+    "1024": {
+      "lum_delta": 0.0626,
+      "ssim": 0.8191,
+      "edge_f1": 0.2093,
+      "mask_iou": 0.9998,
+      "self_contrast": 0.4782,
+      "ref_self_contrast": 0.4553,
+      "lpips": 0.311,
+      "composite": 0.6407
+    },
+    "256": {
+      "lum_delta": 0.061,
+      "ssim": 0.7341,
+      "edge_f1": 0.4267,
+      "mask_iou": 0.9992,
+      "self_contrast": 0.4656,
+      "ref_self_contrast": 0.4445,
+      "lpips": 0.2085,
+      "composite": 0.6953
+    },
+    "128": {
+      "lum_delta": 0.0599,
+      "ssim": 0.7271,
+      "edge_f1": 0.67,
+      "mask_iou": 0.9986,
+      "self_contrast": 0.4531,
+      "ref_self_contrast": 0.4355,
+      "composite": 0.7245
+    },
+    "32": {
+      "lum_delta": 0.0533,
+      "ssim": 0.8109,
+      "edge_f1": 0.9902,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3907,
+      "ref_self_contrast": 0.3908,
+      "composite": 0.9173
+    },
+    "16": {
+      "lum_delta": 0.05,
+      "ssim": 0.8389,
+      "edge_f1": 1.0,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3612,
+      "ref_self_contrast": 0.3517,
+      "composite": 0.9297
+    }
+  },
+  "render_hash": "1a1ee8aa76b194c8"
+}

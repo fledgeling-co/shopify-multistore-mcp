@@ -1,0 +1,57 @@
+{
+  "candidate": "icon.svg",
+  "reference": "icon-engineC-9fb7f0-masked.png",
+  "tier": "full (lpips)",
+  "metric_version": 2,
+  "label": "round 4: material with restrained door light",
+  "sizes": {
+    "1024": {
+      "lum_delta": 0.0627,
+      "ssim": 0.8099,
+      "edge_f1": 0.1995,
+      "mask_iou": 0.9998,
+      "self_contrast": 0.4359,
+      "ref_self_contrast": 0.4553,
+      "lpips": 0.3101,
+      "composite": 0.6366
+    },
+    "256": {
+      "lum_delta": 0.0614,
+      "ssim": 0.7197,
+      "edge_f1": 0.442,
+      "mask_iou": 0.9992,
+      "self_contrast": 0.426,
+      "ref_self_contrast": 0.4445,
+      "lpips": 0.2057,
+      "composite": 0.6952
+    },
+    "128": {
+      "lum_delta": 0.0598,
+      "ssim": 0.7195,
+      "edge_f1": 0.686,
+      "mask_iou": 0.9986,
+      "self_contrast": 0.4154,
+      "ref_self_contrast": 0.4355,
+      "composite": 0.7256
+    },
+    "32": {
+      "lum_delta": 0.0541,
+      "ssim": 0.8126,
+      "edge_f1": 1.0,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3594,
+      "ref_self_contrast": 0.3908,
+      "composite": 0.9207
+    },
+    "16": {
+      "lum_delta": 0.0504,
+      "ssim": 0.8498,
+      "edge_f1": 1.0,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3481,
+      "ref_self_contrast": 0.3517,
+      "composite": 0.9322
+    }
+  },
+  "render_hash": "4a52f43991582208"
+}

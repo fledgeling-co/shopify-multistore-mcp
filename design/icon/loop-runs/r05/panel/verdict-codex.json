@@ -1,0 +1,30 @@
+{
+ "family": "openai (substituted lane)",
+ "harness": "codex exec gpt-5.6-sol medium, images attached; substitutes the panel's openai and cursor judges, which could not run (no OPENAI_API_KEY in env; cursor-agent refused grok-4.6 on the free plan)",
+ "runs": {
+  "bundle": {
+   "order": {
+    "A": "candidate",
+    "B": "baseline"
+   },
+   "raw": "{\"overall\":\"A\",\"material\":\"A\",\"silhouette\":\"B\",\"smallsize\":\"B\",\"rationale\":{\"overall\":\"A\",\"material\":\"A better captures the reference\u2019s translucent glass, internal highlights, and dimensional shading.\",\"silhouette\":\"B has the cleaner, more immediately readable storefront outline.\",\"smallsize\":\"B preserves stronger contrast and clearer structural separation at 32px and 16px.\"}}"
+  },
+  "bundle-swapped": {
+   "order": {
+    "A": "baseline",
+    "B": "candidate"
+   },
+   "raw": "{\"overall\":\"B\",\"material\":\"B\",\"silhouette\":\"tie\",\"smallsize\":\"B\",\"rationale\":{\"overall\":\"B more closely preserves the reference\u2019s dimensional, luminous storefront read.\",\"material\":\"B\",\"material\":\"B\u2019s richer gradients, highlights, translucency, and grounding shadow better match the reference\u2019s volumetric material.\",\"silhouette\":\"Both takes use essentially the same storefront silhouette and proportions.\",\"smallsize\":\"B retains stronger depth and canopy definition at reduced sizes.\"}}"
+  }
+ },
+ "resolved": {
+  "overall": "candidate",
+  "material": "candidate",
+  "silhouette": "tie (swap flip)",
+  "smallsize": "tie (swap flip)"
+ },
+ "swap_consistent_on": [
+  "overall",
+  "material"
+ ]
+}

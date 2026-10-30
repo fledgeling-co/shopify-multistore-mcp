@@ -1,0 +1,1 @@
+🫥{"overall":"A","material":"A","silhouette":"B","smallsize":"B","rationale":{"overall":"A","material":"A better captures the reference’s translucent glass, internal highlights, and dimensional shading.","silhouette":"B has the cleaner, more immediately readable storefront outline.","smallsize":"B preserves stronger contrast and clearer structural separation at 32px and 16px."}}
