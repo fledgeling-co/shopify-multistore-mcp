@@ -1,6 +1,6 @@
 <p align="center"><img src="design/icon/export/icon-512.png" alt="" width="128" height="128" /></p>
 
-<h1 align="center">shopify-multi-mcp</h1>
+<h1 align="center">StoreRow</h1>
 
 <p align="center"><strong>Every client store in one AI chat. Each answer says which store it came from.</strong></p>
 
@@ -8,7 +8,7 @@
 
 ![A row of five small shopfronts under one shared rail](design/marketing/assets/banner-shopfront-row.jpg)
 
-shopify-multi-mcp lets one AI assistant work on several Shopify stores at the same time. You connect each store once, through Shopify's own approval page, and from then on you can ask your assistant about any of them, or all of them at once. Every answer starts with the name of the store it came from, so a number never lands on the wrong client.
+StoreRow lets one AI assistant work on several Shopify stores at the same time. You connect each store once, through Shopify's own approval page, and from then on you can ask your assistant about any of them, or all of them at once. Every answer starts with the name of the store it came from, so a number never lands on the wrong client.
 
 It is built for people who look after more than one store: agencies and freelancers with client stores, and owners who run a few stores of their own.
 
@@ -16,7 +16,7 @@ It is built for people who look after more than one store: agencies and freelanc
 
 Shopify's own AI connector for Claude, ChatGPT and the other chat apps holds one store at a time. A Shopify staff member put it this way on the Shopify developer forum in October 2026: the connector "supports one store at a time, even when the stores are in the same organization. Switching stores starts a new authorization."
 
-If you look after several stores, that means approving access again every time you move between them, and never having two stores in the same conversation. shopify-multi-mcp keeps every store you connect available together.
+If you look after several stores, that means approving access again every time you move between them, and never having two stores in the same conversation. StoreRow keeps every store you connect available together.
 
 Shopify's admin still switches between stores without any trouble. The limit is only in the AI connector.
 
@@ -46,7 +46,7 @@ The store names above are examples. You choose your own short name for each stor
 
 This section covers what the tool touches and what it leaves alone.
 
-- **It never sees your Shopify password or keys.** Each store signs in on Shopify's own approval page, the same kind of page you see when you install any Shopify app. The sign-in is held by Shopify's own command-line tool on your computer, and shopify-multi-mcp never reads, copies or stores it.
+- **It never sees your Shopify password or keys.** Each store signs in on Shopify's own approval page, the same kind of page you see when you install any Shopify app. The sign-in is held by Shopify's own command-line tool on your computer, and StoreRow never reads, copies or stores it.
 - **Questions cannot change anything.** Looking things up and changing things are separate. Changes go through one change tool, one store at a time, with the store named.
 - **You can make a store read-only.** A read-only store refuses every change, whatever your assistant asks for. Use this for client stores where nobody has agreed to AI edits.
 - **Your assistant decides when to make a change.** It is good practice to tell it to check with you first, and to keep read-only on for any store you do not want changed.
@@ -57,7 +57,7 @@ This section covers what the tool touches and what it leaves alone.
 ## What you need before you start
 
 - **A Mac, Windows or Linux computer.** It runs on your own computer, not in the cloud.
-- **Node.js 22.12 or newer.** This is a free program that shopify-multi-mcp runs on. To check whether you have it, open Terminal (Mac) or Command Prompt (Windows) and type `node --version`. If the number is lower than 22.12, or you see "command not found", download the LTS version from [nodejs.org](https://nodejs.org) and install it like any other app.
+- **Node.js 22.12 or newer.** This is a free program that StoreRow runs on. To check whether you have it, open Terminal (Mac) or Command Prompt (Windows) and type `node --version`. If the number is lower than 22.12, or you see "command not found", download the LTS version from [nodejs.org](https://nodejs.org) and install it like any other app.
 - **An AI app that can use MCP servers.** Claude Desktop, Claude Code, Cursor, VS Code or Codex. claude.ai in a web browser cannot run it, because it lives on your computer.
 - **A Shopify account that can approve app access on each store.** If you work on client stores through a collaborator account, check with the store owner that your account can approve apps.
 - **A web browser on the same computer**, for the approval step.
@@ -78,7 +78,7 @@ Pick your app below, do what it says, then fully quit and reopen the app.
   "mcpServers": {
     "shopify": {
       "command": "npx",
-      "args": ["-y", "github:fledgeling-co/shopify-multi-mcp"]
+      "args": ["-y", "storerow@latest"]
     }
   }
 }
@@ -100,7 +100,7 @@ Open the Command Palette, run **MCP: Open User Configuration**, and paste:
     "shopify": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "github:fledgeling-co/shopify-multi-mcp"]
+      "args": ["-y", "storerow@latest"]
     }
   }
 }
@@ -111,7 +111,7 @@ Open the Command Palette, run **MCP: Open User Configuration**, and paste:
 Run this once in a terminal:
 
 ```bash
-claude mcp add shopify -- npx -y github:fledgeling-co/shopify-multi-mcp
+claude mcp add shopify -- npx -y storerow@latest
 ```
 
 **Codex**
@@ -121,10 +121,10 @@ Add this to the file `~/.codex/config.toml`:
 ```toml
 [mcp_servers.shopify]
 command = "npx"
-args = ["-y", "github:fledgeling-co/shopify-multi-mcp"]
+args = ["-y", "storerow@latest"]
 ```
 
-The first time your app starts it, shopify-multi-mcp downloads Shopify's tools. That took about 30 seconds on our test machine. If your assistant says it is still installing, wait a minute and ask again.
+The first time your app starts it, StoreRow downloads Shopify's tools. That took about 30 seconds on our test machine. If your assistant says it is still installing, wait a minute and ask again.
 
 ### Step 2: connect each store
 
@@ -151,8 +151,8 @@ If you are not sure which stores are connected, ask "Which stores are connected?
 - **Add another store** at any time with the same "connect" request.
 - **Sign in again** when a store's sign-in expires. Your assistant will tell you which store needs it and what to say.
 - **Ask about one store** by naming it ("at harbour"), or **all of them** by saying so ("in each store").
-- **Remove a store** by running `npx -y github:fledgeling-co/shopify-multi-mcp remove <name>` in a terminal. This forgets the store here. To fully revoke access, uninstall the app in that store's Shopify admin.
-- **Check everything is healthy** by running `npx -y github:fledgeling-co/shopify-multi-mcp doctor` in a terminal. It reports whether Shopify's tools are installed and checked, and which stores are signed in.
+- **Remove a store** by running `npx -y storerow@latest remove <name>` in a terminal. This forgets the store here. To fully revoke access, uninstall the app in that store's Shopify admin.
+- **Check everything is healthy** by running `npx -y storerow@latest doctor` in a terminal. It reports whether Shopify's tools are installed and checked, and which stores are signed in.
 
 ## If something goes wrong
 
@@ -167,7 +167,7 @@ If you are not sure which stores are connected, ask "Which stores are connected?
 | "… is read-only, so mutations are refused" | That store is read-only on purpose. Reconnect it without "read-only" if you want changes allowed. |
 | `node: command not found`, or a version error | Install or update Node.js from [nodejs.org](https://nodejs.org), then restart the AI app. |
 
-If none of these help, please [open an issue](https://github.com/fledgeling-co/shopify-multi-mcp/issues) with what you asked and what you saw (remove any customer details first).
+If none of these help, please [open an issue](https://github.com/fledgeling-co/storerow/issues) with what you asked and what you saw (remove any customer details first).
 
 ## Questions
 
@@ -187,11 +187,11 @@ Not today. It runs on your computer, so it works with desktop and terminal apps 
 Several tools already connect AI to more than one store, including Matrixify, ShopMCP and an open-source project called shopify-multi-store, and some of them do more, such as bulk imports or a hosted setup for a whole team. This one is free, keeps no keys of its own because it signs in through Shopify's own tool, and always runs Shopify's newest tools.
 
 **Where is my data kept?**
-The list of stores you connect is kept in a small settings file on your computer (`~/.config/shopify-multi-mcp/stores.json`). Store sign-ins are kept by Shopify's own command-line tool on your computer. Nothing is sent to fledgeling.
+The list of stores you connect is kept in a small settings file on your computer (`~/.config/storerow/stores.json`). Store sign-ins are kept by Shopify's own command-line tool on your computer. Nothing is sent to fledgeling.
 
 ## Status
 
-This is an early release, version 0.1.0. It has been tested end to end against Shopify's own tools, but we have not yet signed in to a real store with it ourselves, so the first store you connect is part of the testing. If anything breaks, please [open an issue](https://github.com/fledgeling-co/shopify-multi-mcp/issues).
+This is an early release, version 0.2.0. Until 0.2.0 it was called shopify-multi-mcp, and links to the old name redirect here. It has been tested end to end against Shopify's own tools, but we have not yet signed in to a real store with it ourselves, so the first store you connect is part of the testing. If anything breaks, please [open an issue](https://github.com/fledgeling-co/storerow/issues).
 
 ## For developers
 

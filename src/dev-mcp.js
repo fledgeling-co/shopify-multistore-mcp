@@ -7,7 +7,7 @@ export const DEV_MCP_PACKAGE = '@shopify/dev-mcp';
 // store, so one child serves every store. It always runs the newest verified release and is
 // swapped between calls when a new one is promoted.
 export class DevMcp {
-  constructor({ toolchain, log = () => {}, clientInfo = { name: 'shopify-multi-mcp', version: '0' } }) {
+  constructor({ toolchain, log = () => {}, clientInfo = { name: 'storerow', version: '0' } }) {
     this.toolchain = toolchain;
     this.log = log;
     this.clientInfo = clientInfo;

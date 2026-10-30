@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -26,16 +27,26 @@ export function readOnlyScopes(scopes) {
   return [...new Set(scopes.map((s) => s.replace(/^write_/, 'read_')))];
 }
 
+// Settings are read as STOREROW_<NAME>. Until 0.2.0 the project was called
+// shopify-multi-mcp, so the SHOPIFY_MULTI_MCP_<NAME> spelling still works.
+export function setting(name, env = process.env) {
+  return env[`STOREROW_${name}`] ?? env[`SHOPIFY_MULTI_MCP_${name}`];
+}
+
 export function configDir(env = process.env) {
-  if (env.SHOPIFY_MULTI_MCP_HOME) return env.SHOPIFY_MULTI_MCP_HOME;
+  const override = setting('HOME', env);
+  if (override) return override;
   const base = env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config');
-  return path.join(base, 'shopify-multi-mcp');
+  const current = path.join(base, 'storerow');
+  const legacy = path.join(base, 'shopify-multi-mcp');
+  return !existsSync(current) && existsSync(legacy) ? legacy : current;
 }
 
 export function cacheDir(env = process.env) {
-  if (env.SHOPIFY_MULTI_MCP_CACHE) return env.SHOPIFY_MULTI_MCP_CACHE;
+  const override = setting('CACHE', env);
+  if (override) return override;
   const base = env.XDG_CACHE_HOME || path.join(os.homedir(), '.cache');
-  return path.join(base, 'shopify-multi-mcp');
+  return path.join(base, 'storerow');
 }
 
 // "acme", "acme.myshopify.com", "https://acme.myshopify.com/admin" all become
@@ -105,7 +116,7 @@ export class Config {
   }
 
   updateCheckMs() {
-    const minutes = Number(process.env.SHOPIFY_MULTI_MCP_UPDATE_MINUTES ?? this.data.updateCheckMinutes ?? 15);
+    const minutes = Number(setting('UPDATE_MINUTES') ?? this.data.updateCheckMinutes ?? 15);
     return Math.max(0, minutes) * 60_000;
   }
 

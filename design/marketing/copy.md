@@ -1,4 +1,4 @@
-# shopify-multi-mcp site copy
+# StoreRow site copy
 
 ## nav
 
@@ -58,7 +58,7 @@ Questions can't change anything. Changes go through one change tool, one store a
 
 ### What it touches, and what it doesn't.
 
-**No keys in your files.** Each store signs in through Shopify's own approval page, using Shopify's CLI. shopify-multi-mcp never reads, copies or stores a token; the session stays with the CLI.
+**No keys in your files.** Each store signs in through Shopify's own approval page, using Shopify's CLI. StoreRow never reads, copies or stores a token; the session stays with the CLI.
 
 **Shopify's newest tools, checked first.** Each time it starts, it looks up the newest Shopify CLI and Dev MCP on npm and installs them privately. It only switches over once three checks pass: npm's integrity check, a registry signature check and a quick start-up test. If a release fails, the last good version keeps working.
 
@@ -102,7 +102,7 @@ Several tools already connect AI to more than one store: Matrixify, ShopMCP and 
 
 ## status
 
-Early release, version 0.1.0. It's tested end to end against Shopify's CLI and Dev MCP, but we haven't yet signed in to a real store with it ourselves. Report anything that breaks on GitHub.
+Early release, version 0.2.0. It's tested end to end against Shopify's CLI and Dev MCP, but we haven't yet signed in to a real store with it ourselves. Report anything that breaks on GitHub.
 
 ## final
 
@@ -114,6 +114,6 @@ Button: Connect your stores
 
 ## footer
 
-shopify-multi-mcp · MIT licence · GitHub · The review behind it
+StoreRow · MIT licence · GitHub · The review behind it
 
 Not affiliated with or endorsed by Shopify. Shopify is a trademark of Shopify Inc.

@@ -2,6 +2,7 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { CLI_PACKAGE, CliError } from './shopify-cli.js';
 import { DEV_MCP_PACKAGE } from './dev-mcp.js';
+import { setting } from './config.js';
 import {
   CURATED_QUERIES, OWN_TOOL_NAMES, ToolError, assertNotMutation, buildTools, connectArgs,
   errorResult, resolveStore, storeResult, textResult,
@@ -40,7 +41,7 @@ function cliFailure(err, store) {
 }
 
 export class MultiStoreServer {
-  constructor({ config, toolchain, cli, devMcp, version, log = () => {}, hiddenTools = (process.env.SHOPIFY_MULTI_MCP_HIDE_TOOLS || '').split(',') }) {
+  constructor({ config, toolchain, cli, devMcp, version, log = () => {}, hiddenTools = (setting('HIDE_TOOLS') || '').split(',') }) {
     this.config = config;
     this.toolchain = toolchain;
     this.cli = cli;
@@ -50,7 +51,7 @@ export class MultiStoreServer {
     this.pendingAuth = new Map();
     this.devToolNames = new Map(); // exposed name -> Dev MCP name
     this.server = new Server(
-      { name: 'shopify-multi-mcp', title: 'Shopify (multiple stores)', version },
+      { name: 'storerow', title: 'StoreRow: several Shopify stores', version },
       { capabilities: { tools: { listChanged: true } }, instructions: buildInstructions(config.stores()) },
     );
     this.server.setRequestHandler(ListToolsRequestSchema, () => this.listTools());

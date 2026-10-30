@@ -1,7 +1,7 @@
 import { DEFAULT_SCOPES, normalizeDomain, normalizeName, readOnlyScopes } from './config.js';
 
 // Curated reads use fields checked against the Admin API 2026-10 schema bundled in
-// @shopify/dev-mcp 1.18.0; `shopify-multi-mcp doctor` re-checks them against the schema in
+// @shopify/dev-mcp 1.18.0; `storerow doctor` re-checks them against the schema in
 // whatever Dev MCP release is newest.
 export const CURATED_QUERIES = {
   get_shop: `query Shop {

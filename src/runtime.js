@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { Config, cacheDir, parseStoreSpec } from './config.js';
+import { Config, cacheDir, parseStoreSpec, setting } from './config.js';
 import { DevMcp } from './dev-mcp.js';
 import { ShopifyCli } from './shopify-cli.js';
 import { Toolchain } from './toolchain.js';
@@ -8,7 +8,7 @@ import { Toolchain } from './toolchain.js';
 export const VERSION = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
 
 export function log(message) {
-  process.stderr.write(`[shopify-multi-mcp] ${message}\n`);
+  process.stderr.write(`[storerow] ${message}\n`);
 }
 
 // Stores can come from the config file, repeated --store name=domain flags, or
@@ -37,7 +37,7 @@ export function parseArgs(argv, env = process.env) {
 
 export async function createRuntime({ stores = [], readOnly = [] } = {}) {
   const config = await new Config({ cliStores: stores, cliReadOnly: readOnly }).load();
-  const sessionPinned = process.env.SHOPIFY_MULTI_MCP_UPDATES === 'session';
+  const sessionPinned = setting('UPDATES') === 'session';
   const toolchain = new Toolchain({
     dir: path.join(cacheDir(), 'packages'),
     pins: { ...config.pins(), ...envPins() },
@@ -46,7 +46,7 @@ export async function createRuntime({ stores = [], readOnly = [] } = {}) {
     log,
   });
   const cli = new ShopifyCli({ toolchain, log });
-  const devMcp = new DevMcp({ toolchain, log, clientInfo: { name: 'shopify-multi-mcp', version: VERSION } });
+  const devMcp = new DevMcp({ toolchain, log, clientInfo: { name: 'storerow', version: VERSION } });
   return { config, toolchain, cli, devMcp };
 }
 

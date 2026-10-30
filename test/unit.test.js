@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
-import { Config, DEFAULT_SCOPES, normalizeDomain, parseStoreSpec, readOnlyScopes } from '../src/config.js';
+import { Config, configDir, DEFAULT_SCOPES, normalizeDomain, parseStoreSpec, readOnlyScopes, setting } from '../src/config.js';
 import { CliError, parseJson, Queue, ShopifyCli } from '../src/shopify-cli.js';
 import { assertNotMutation, buildTools, connectArgs, resolveStore } from '../src/tools.js';
 import { parseArgs } from '../src/runtime.js';
@@ -31,6 +31,18 @@ test('parseStoreSpec and parseArgs read stores from flags and env', () => {
   assert.deepEqual(connect.positional, ['connect', 'au', 'acme-au']);
   assert.equal(connect.flags.label, 'AU retail');
   assert.deepEqual(connect.flags['read-only'], [true]);
+});
+
+test('settings and the config folder still honour the pre-0.2.0 name', async () => {
+  assert.equal(setting('UPDATES', { STOREROW_UPDATES: 'session', SHOPIFY_MULTI_MCP_UPDATES: 'off' }), 'session');
+  assert.equal(setting('UPDATES', { SHOPIFY_MULTI_MCP_UPDATES: 'session' }), 'session');
+  const base = await fs.mkdtemp(path.join(os.tmpdir(), 'storerow-cfg-'));
+  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'storerow'));
+  await fs.mkdir(path.join(base, 'shopify-multi-mcp'));
+  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopify-multi-mcp'));
+  await fs.mkdir(path.join(base, 'storerow'));
+  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'storerow'));
+  await fs.rm(base, { recursive: true });
 });
 
 test('readOnlyScopes turns write scopes into read scopes', () => {

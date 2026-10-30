@@ -5,24 +5,24 @@ import { CLI_PACKAGE } from '../src/shopify-cli.js';
 import { MultiStoreServer } from '../src/server.js';
 import { VERSION, createRuntime, log, parseArgs } from '../src/runtime.js';
 
-const HELP = `shopify-multi-mcp ${VERSION}
-One MCP server for many Shopify stores, always on the newest Shopify CLI and Dev MCP.
+const HELP = `storerow ${VERSION}
+StoreRow: several Shopify stores in one AI assistant, always on the newest Shopify CLI and Dev MCP.
 
 Usage:
-  shopify-multi-mcp                         Start the MCP server on stdio (what your MCP client runs)
-  shopify-multi-mcp connect <name> <domain> Sign in to a store and add it, e.g. connect acme acme.myshopify.com
+  storerow                                  Start the MCP server on stdio (what your MCP client runs)
+  storerow connect <name> <domain>          Sign in to a store and add it, e.g. connect acme acme.myshopify.com
         [--label "AU retail"] [--read-only] [--scopes read_products,write_products]
-  shopify-multi-mcp list                    Show stores and their sign-in status
-  shopify-multi-mcp remove <name>           Forget a store (Shopify access stays until you uninstall it in admin)
-  shopify-multi-mcp doctor                  Install the newest Shopify packages and check everything works
+  storerow list                             Show stores and their sign-in status
+  storerow remove <name>                    Forget a store (Shopify access stays until you uninstall it in admin)
+  storerow doctor                           Install the newest Shopify packages and check everything works
 
 Server flags (also usable in your MCP client config):
   --store name=domain       Add a store for this run (repeatable); or SHOPIFY_STORES="a=a.myshopify.com,b=b.myshopify.com"
   --read-only name          Refuse mutations for that store (repeatable)
 
 Environment:
-  SHOPIFY_MULTI_MCP_UPDATE_MINUTES  How often to look for new Shopify releases while running (default 15)
-  SHOPIFY_MULTI_MCP_UPDATES=session Resolve versions once per server start instead
+  STOREROW_UPDATE_MINUTES           How often to look for new Shopify releases while running (default 15)
+  STOREROW_UPDATES=session          Resolve versions once per server start instead
   SHOPIFY_CLI_VERSION / SHOPIFY_DEV_MCP_VERSION  Pin an exact version instead of the newest`;
 
 async function main() {
@@ -74,7 +74,7 @@ async function main() {
     const stores = Object.values(runtime.config.stores());
     const sessions = await runtime.cli.sessions().catch((err) => { console.error(`Could not read Shopify CLI sessions: ${err.message}`); return []; });
     const byDomain = new Map(sessions.map((s) => [String(s.store).toLowerCase(), s]));
-    if (!stores.length) console.log('No stores yet. Add one with: shopify-multi-mcp connect <name> <domain>');
+    if (!stores.length) console.log('No stores yet. Add one with: storerow connect <name> <domain>');
     for (const s of stores) {
       const session = byDomain.get(s.domain);
       console.log(`${s.name.padEnd(16)} ${s.domain.padEnd(32)} ${session ? 'signed in' : 'not signed in'}${s.readOnly ? ', read-only' : ''}${s.label ? `  ${s.label}` : ''}`);
@@ -142,7 +142,7 @@ async function doctor({ cli, devMcp, toolchain, config }) {
     const configured = Object.values(config.stores());
     const signed = new Set(sessions.map((s) => String(s.store).toLowerCase()));
     const missing = configured.filter((s) => !signed.has(s.domain)).map((s) => s.name);
-    if (missing.length) throw new Error(`not signed in: ${missing.join(', ')} (run: shopify-multi-mcp connect <name> <domain>)`);
+    if (missing.length) throw new Error(`not signed in: ${missing.join(', ')} (run: storerow connect <name> <domain>)`);
     return `${configured.length} configured, ${sessions.length} signed in with Shopify CLI`;
   });
   await devMcp.close();

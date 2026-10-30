@@ -1,4 +1,4 @@
-# shopify-multi-mcp — technical guide
+# StoreRow — technical guide
 
 One MCP server for many Shopify stores. Each store keeps its own Shopify sign-in, every store tool takes a `store` argument naming the store it acts on, and the Shopify code doing the work is always the newest verified release of Shopify's own CLI and Dev MCP.
 
@@ -11,7 +11,7 @@ You need Node.js 22.12 or newer (Shopify CLI 5 requires it), a browser on the ma
 **1. Add the server to your MCP client.** For Claude Code:
 
 ```bash
-claude mcp add shopify -- npx -y github:fledgeling-co/shopify-multi-mcp
+claude mcp add shopify -- npx -y storerow@latest
 ```
 
 For Claude Desktop, Cursor and other clients that take an `mcpServers` block:
@@ -19,7 +19,7 @@ For Claude Desktop, Cursor and other clients that take an `mcpServers` block:
 ```json
 {
   "mcpServers": {
-    "shopify": { "command": "npx", "args": ["-y", "github:fledgeling-co/shopify-multi-mcp"] }
+    "shopify": { "command": "npx", "args": ["-y", "storerow@latest"] }
   }
 }
 ```
@@ -29,7 +29,7 @@ For VS Code (run **MCP: Open User Configuration**), which uses a `servers` block
 ```json
 {
   "servers": {
-    "shopify": { "type": "stdio", "command": "npx", "args": ["-y", "github:fledgeling-co/shopify-multi-mcp"] }
+    "shopify": { "type": "stdio", "command": "npx", "args": ["-y", "storerow@latest"] }
   }
 }
 ```
@@ -39,13 +39,13 @@ For Codex (`~/.codex/config.toml`):
 ```toml
 [mcp_servers.shopify]
 command = "npx"
-args = ["-y", "github:fledgeling-co/shopify-multi-mcp"]
+args = ["-y", "storerow@latest"]
 ```
 
 **2. Connect each store.** Ask the model, for example "connect acme-au.myshopify.com as au", and it calls `connect_store`. Or run it in a terminal:
 
 ```bash
-npx -y github:fledgeling-co/shopify-multi-mcp connect au acme-au.myshopify.com --label "AU retail"
+npx -y storerow@latest connect au acme-au.myshopify.com --label "AU retail"
 ```
 
 A browser window opens on Shopify's approval page for that store. Approve it, then repeat for the next store. Add `--read-only` to request read scopes only and refuse mutations on that store.
@@ -53,10 +53,10 @@ A browser window opens on Shopify's approval page for that store. Approve it, th
 **3. Check everything.** This installs the newest Shopify CLI and Dev MCP, checks both, validates the built-in queries against the newest Admin schema and reports which stores are signed in:
 
 ```bash
-npx -y github:fledgeling-co/shopify-multi-mcp doctor
+npx -y storerow@latest doctor
 ```
 
-The first run downloads Shopify CLI and Dev MCP into `~/.cache/shopify-multi-mcp`; it took 31 seconds on the machine this was built on. Later starts reuse the verified copies.
+The first run downloads Shopify CLI and Dev MCP into `~/.cache/storerow`; it took 31 seconds on the machine this was built on. Later starts reuse the verified copies.
 
 ## How a model works with it
 
@@ -86,17 +86,19 @@ Settings that change this, as environment variables in your MCP client config:
 
 | Variable | Effect |
 | --- | --- |
-| `SHOPIFY_MULTI_MCP_UPDATE_MINUTES` | Minutes between update checks while running. Default `15`. |
-| `SHOPIFY_MULTI_MCP_UPDATES=session` | Resolve versions once per server start and keep them for the session. |
+| `STOREROW_UPDATE_MINUTES` | Minutes between update checks while running. Default `15`. |
+| `STOREROW_UPDATES=session` | Resolve versions once per server start and keep them for the session. |
 | `SHOPIFY_CLI_VERSION`, `SHOPIFY_DEV_MCP_VERSION` | Pin an exact version instead of the newest. |
-| `SHOPIFY_MULTI_MCP_HIDE_TOOLS` | Comma-separated Dev MCP tools to leave out, for example `feedback`. |
+| `STOREROW_HIDE_TOOLS` | Comma-separated Dev MCP tools to leave out, for example `feedback`. |
 | `OPT_OUT_INSTRUMENTATION=true` | Shopify's own telemetry opt-out for Dev MCP, passed through unchanged. |
 
-`npx -y github:fledgeling-co/shopify-multi-mcp` installs this server from the repository's default branch. To hold it at a release, use `github:fledgeling-co/shopify-multi-mcp#v0.1.0`.
+`npx -y storerow@latest` asks npm for the newest release each time your app starts it. To hold it at a release, use `storerow@0.2.0`.
+
+Until 0.2.0 the project was called shopify-multi-mcp. The old `SHOPIFY_MULTI_MCP_*` variables still work, and an existing `~/.config/shopify-multi-mcp` folder is used when `~/.config/storerow` does not exist.
 
 ## Configuration
 
-Connected stores are saved in `~/.config/shopify-multi-mcp/stores.json` (or under `$XDG_CONFIG_HOME`, or `$SHOPIFY_MULTI_MCP_HOME`):
+Connected stores are saved in `~/.config/storerow/stores.json` (or under `$XDG_CONFIG_HOME`, or `$STOREROW_HOME`):
 
 ```json
 {
@@ -131,7 +133,7 @@ Version 0.1.0. Tested on macOS with Node 22.23.1 against Shopify CLI 5.0.0 and D
 ```bash
 npm install
 npm test
-node bin/shopify-multi-mcp.js --help
+node bin/storerow.js --help
 ```
 
 ## License

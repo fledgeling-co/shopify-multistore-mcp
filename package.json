@@ -1,17 +1,40 @@
 {
-  "name": "shopify-multi-mcp",
-  "version": "0.1.0",
-  "description": "One MCP server for many Shopify stores, always running the newest official Shopify CLI and Dev MCP.",
+  "name": "storerow",
+  "version": "0.2.0",
+  "description": "Several Shopify stores in one AI assistant. Every answer names its store. Signs in through Shopify's own CLI and always runs Shopify's newest CLI and Dev MCP.",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "shopify",
+    "shopify-cli",
+    "multi-store",
+    "claude",
+    "cursor",
+    "codex",
+    "agency"
+  ],
+  "homepage": "https://fledgeling-co.github.io/storerow/",
+  "bugs": {
+    "url": "https://github.com/fledgeling-co/storerow/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fledgeling-co/storerow.git"
+  },
+  "license": "MIT",
   "type": "module",
   "bin": {
-    "shopify-multi-mcp": "bin/shopify-multi-mcp.js"
+    "storerow": "bin/storerow.js"
   },
   "files": [
     "bin",
-    "src"
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "start": "node bin/shopify-multi-mcp.js",
+    "start": "node bin/storerow.js",
     "test": "node --test test/*.test.js"
   },
   "engines": {
@@ -19,16 +42,5 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2"
-  },
-  "keywords": [
-    "mcp",
-    "shopify",
-    "model-context-protocol",
-    "multi-store"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fledgeling-co/shopify-multi-mcp.git"
-  },
-  "license": "MIT"
+  }
 }

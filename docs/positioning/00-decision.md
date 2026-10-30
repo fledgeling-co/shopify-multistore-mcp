@@ -36,7 +36,7 @@
 1. Run test 1 on two stores you control. *(reversible)*
 2. Rewrite the README for non-technical readers around Territory A, keeping the technical guide separate. *(reversible)*
 3. Build the marketing page with the hero above and one action, "Connect your stores", which opens the three set-up steps. *(reversible)*
-4. Decide the name before announcing anywhere: it sits beside "Shopify Multi-Store MCP".
+4. Decide the name before announcing anywhere: it sits beside "Shopify Multi-Store MCP". *Done 31 October 2026: renamed StoreRow (npm `storerow`), with no "Shopify" in the name. A Codex reviewer picked it and a Fable reviewer preferred "rollcall", which is crowded by a live software trademark and blocked on npm by `roll-call`.*
 5. Post in the community.shopify.dev multi-store thread only after test 1 passes.
 
 ## Guardrails
