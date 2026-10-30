@@ -12,7 +12,7 @@
 
 | Panel | Archetype | Members | Completed | Cost band | Reconciled |
 |---|---|---|---|---|---|
-| `dr_553d007f4355afba` customer ground truth | competitive | 6 | 3 with reports, 2 failed, 1 unfinished at decision time | $1.65–$6.20 | 31 Oct 2026 |
+| `dr_553d007f4355afba` customer ground truth | competitive | 6 | 4 with reports (Claude late), 2 failed | $1.65–$6.20 | 31 Oct 2026 |
 
 **Reserved:** $6.20 at band-top · **Reported actual:** $3.84 committed in Dossier's 24h ledger after Gemini's reservation was released. Dossier's per-member estimates are Grok $1.20 and Perplexity $2.00; the ledger does not itemise the other $0.64. Budget ledgers reserve high and reconcile lower; only the provider invoices are the invoice.
 
@@ -22,7 +22,7 @@
 |---|---|---|
 | Gemini Deep Research | Refused with HTTP 429: the Google billing account hit its monthly spending cap | $0, reservation released |
 | Antigravity CLI | Returned a 295-byte report; the plan had warned its web search looked broken | $0 |
-| Claude Code CLI | Still running past its band when the decision was drafted; merged without it | $0 (subscription quota) |
+| Claude Code CLI | Finished 17 minutes after the draft (1,010 seconds of waiting); read in full and folded in afterwards. It agrees with A, adds the CLI-connector caveat and the collaborator-account question, and reports three bugs in Dossier's own local loop | $0 (subscription quota) |
 
 The Codex member's report is 303 KB because the run absorbed the text of a writing skill and a 39,000-token unrelated section; its research content is about 9,000 tokens and was read in full. The contamination is preserved in `research/` rather than cleaned.
 

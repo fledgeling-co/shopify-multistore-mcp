@@ -5,3 +5,4 @@ node_modules/
 # Fidelity-loop renders stay local (training data for the icon skill); LOG.md and scores are tracked
 design/icon/loop-runs/**/*.png
 design/icon/loop-runs/**/bundle*/
+design/marketing/assets/banner-shopfront-row-ea51e0.png

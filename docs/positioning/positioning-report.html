@@ -51,12 +51,17 @@
   p { max-width: var(--measure); color: var(--ink-2); margin: 0 0 1rem; }
   .lede { color: var(--ink); font-size: 1.2rem; }
   .meta { font: 400 14px/1.6 var(--mono); color: var(--ink-2); }
-  .scroll-x { position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .scroll-x { position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    background: linear-gradient(to right, var(--bg) 30%, transparent) 0 0 / 40px 100% no-repeat local, linear-gradient(to left, var(--bg) 30%, transparent) 100% 0 / 40px 100% no-repeat local,
+      radial-gradient(farthest-side at 0 50%, rgb(20 33 28 / .14), transparent) 0 0 / 14px 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, rgb(20 33 28 / .14), transparent) 100% 0 / 14px 100% no-repeat scroll; }
+  .scroll-x:focus-visible { outline: 2px solid var(--jade-deep); outline-offset: 2px; border-radius: 2px; }
+  .scroll-x + p, .scroll-x + figure { margin-top: 1.25rem; }
   table { border-collapse: collapse; width: 100%; min-width: 44rem; font-size: .94rem; }
   caption { text-align: left; color: var(--ink-2); font-size: .9rem; padding-bottom: .5rem; }
   th, td { text-align: left; padding: .65rem .75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
   th { font-weight: 650; color: var(--ink); font-size: .85rem; }
-  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.num { font-family: var(--mono); }
   tr.pick td:first-child { font-weight: 700; }
   tr.pick { background: color-mix(in oklab, var(--mint) 55%, transparent); }
   .id { font-family: var(--mono); font-size: .85rem; white-space: nowrap; }
@@ -66,6 +71,7 @@
   }
   .label--conditional { color: var(--warn); }
   .vetoed { color: var(--veto); }
+  .vetoed td:first-child { white-space: nowrap; }
   .vetoed td:first-child::after { content: " · eliminated"; font-size: .82em; }
   .yes { color: var(--ok); } .no { color: var(--veto); } .weak { color: var(--warn); }
   figure { margin: 1rem 0 0; }
@@ -98,13 +104,13 @@
     <p><span class="label label--conditional">Conditionally recommended</span></p>
     <h1>Every client store in one AI chat. Each answer says which store it came from.</h1>
     <p class="lede">Position shopify-multi-mcp as the client-store switchboard for Shopify partners who already use an AI assistant. Shopify's own connector holds one store at a time, and the people who look after several stores have said so in public.</p>
-    <p class="meta">33 candidates generated, 3 shortlisted, compared against the position shopify-multi-mcp holds today. 1 research panel, 6 members (3 returned reports), 9 claims on 40 independent domains.</p>
+    <p class="meta">33 candidates generated, 3 shortlisted, compared against the position shopify-multi-mcp holds today. 1 research panel, 6 members (4 returned reports), 9 claims on 40 independent domains.</p>
   </section>
 
   <section class="reveal">
     <h2>The shortlist</h2>
     <p>Each territory differs on all four axes; the status quo is a row, not a footnote.</p>
-    <div class="scroll-x">
+    <div class="scroll-x" tabindex="0" role="region" aria-label="The shortlist (table)">
       <table>
         <thead><tr>
           <th scope="col">Territory</th><th scope="col">Word</th><th scope="col">Enemy</th><th scope="col">Category</th>
@@ -122,6 +128,7 @@
 
   <section class="reveal">
     <h2>Feel the copy</h2>
+    <p>Each card is the first screen a visitor would meet. The buttons are part of the preview and do nothing here.</p>
     <div class="previews">
       <article class="hero-preview recommended">
         <p class="tag">A · recommended</p>
@@ -149,7 +156,7 @@
 
     <h3>Vetoes, evaluated first and not compensable</h3>
     <p>A territory that fails a veto is eliminated rather than penalised.</p>
-    <div class="scroll-x">
+    <div class="scroll-x" tabindex="0" role="region" aria-label="Vetoes, evaluated first and not compensable (table)">
       <table>
         <thead><tr><th scope="col">Territory</th><th scope="col">Deliverable</th><th scope="col">Credible</th><th scope="col">Install path open</th><th scope="col">Constraints</th></tr></thead>
         <tbody>
@@ -162,7 +169,7 @@
 
     <h3>Consequences, in the units they come in</h3>
     <p>A free MIT tool has no price, margin or sales cycle, so the consequences are the ones that decide adoption. Every cell names its source or is marked as an estimate.</p>
-    <div class="scroll-x">
+    <div class="scroll-x" tabindex="0" role="region" aria-label="Consequences, in the units they come in (table)">
       <table>
         <thead><tr>
           <th scope="col">Territory</th><th scope="col">Voiced pain</th><th scope="col">Reachable through</th>
@@ -181,7 +188,7 @@
 
     <h3>Rank stability, not a rank</h3>
     <p>Each territory was scored 0–3 per criterion from the evidence above (pain, reach, install path, room left), and the weights were swept across 137 combinations: no criterion above 60%, pain and reach each at least 10%.</p>
-    <div class="scroll-x">
+    <div class="scroll-x" tabindex="0" role="region" aria-label="Rank stability, not a rank (table)">
       <table>
         <thead><tr><th scope="col">Territory</th><th scope="col" class="num">Ranks first in</th><th scope="col"><span class="visually-hidden">Share</span></th></tr></thead>
         <tbody>
@@ -213,7 +220,7 @@
   <section class="reveal">
     <h2>What this rests on</h2>
     <p>Support is counted in independent registrable domains, never in how many research backends agreed. <strong>Judged</strong> means the page was read and found to support the claim.</p>
-    <div class="scroll-x">
+    <div class="scroll-x" tabindex="0" role="region" aria-label="What this rests on (table)">
       <table>
         <thead><tr><th scope="col">id</th><th scope="col">Claim</th><th scope="col">Confidence</th><th scope="col" class="num">Domains</th><th scope="col">Verified</th><th scope="col">Bound to</th></tr></thead>
         <tbody>
@@ -223,7 +230,9 @@
           <tr><td class="id">C-004</td><td>Partners are a reachable population; the AI-user intersection is uncounted</td><td>medium</td><td class="num">2</td><td>no</td><td>A beachhead</td></tr>
           <tr><td class="id">C-005</td><td>Owners of several stores compare with analytics, sync apps and spreadsheets</td><td>medium</td><td class="num">3</td><td>no</td><td>B, all moves</td></tr>
           <tr><td class="id">C-006</td><td>Buyers distrust screenshots; access needs the seller</td><td>low</td><td class="num">2</td><td>no</td><td>J, all moves</td></tr>
+          <tr><td class="id">C-007</td><td>Several Shopify CLI commands at once on one login logged a developer out; one at a time was stable</td><td>low</td><td class="num">1</td><td>cited page checked</td><td>product: one command at a time</td></tr>
           <tr><td class="id">C-008</td><td>Shopify points multi-store AI work to its own CLI</td><td>medium</td><td class="num">2</td><td>judged (forum)</td><td>A value proof, unique attributes</td></tr>
+          <tr><td class="id">C-009</td><td>Whether multi-store AI access is still an unmet gap (contested)</td><td>medium</td><td class="num">2</td><td>no</td><td>guardrail: never "the only" or "the first"</td></tr>
         </tbody>
       </table>
     </div>
@@ -234,14 +243,14 @@
   <section class="reveal">
     <h2>Before you bet on this</h2>
     <p>Each test carries its pass line, written before it runs.</p>
-    <div class="scroll-x">
+    <div class="scroll-x" tabindex="0" role="region" aria-label="Before you bet on this (table)">
       <table>
-        <thead><tr><th scope="col">Assumption</th><th scope="col">Test</th><th scope="col" class="num">Sample</th><th scope="col">Pass line</th><th scope="col">Cost</th><th scope="col">Reversible?</th></tr></thead>
+        <thead><tr><th scope="col">Assumption</th><th scope="col">Test</th><th scope="col">Sample</th><th scope="col">Pass line</th><th scope="col">Cost</th><th scope="col">Reversible?</th></tr></thead>
         <tbody>
-          <tr><td>Sign-in works on real stores</td><td>connect two stores, run three calls on each</td><td class="num">2 stores</td><td>6 of 6 calls return labelled data</td><td>15 minutes</td><td>yes</td></tr>
-          <tr><td>Partners will install it beside the CLI</td><td>interviews with install offer</td><td class="num">8 partners</td><td>5 of 8 would; 3 connected within 7 days</td><td>two weeks</td><td>yes</td></tr>
-          <tr><td>Labels stop wrong-store mistakes</td><td>same 3 questions through this and 2 alternatives</td><td class="num">3 questions</td><td>0 wrong-store answers; setup under 10 minutes</td><td>an afternoon</td><td>yes</td></tr>
-          <tr><td>Shopify keeps the one-store rule</td><td>weekly read of the help page</td><td class="num">weekly</td><td>sentence still present</td><td>minutes</td><td>yes</td></tr>
+          <tr><td>Sign-in works on real stores</td><td>connect two stores, run three calls on each</td><td>2 stores</td><td>6 of 6 calls return labelled data</td><td>15 minutes</td><td>yes</td></tr>
+          <tr><td>Partners will install it beside the CLI</td><td>interviews with install offer</td><td>8 partners</td><td>5 of 8 would; 3 connected within 7 days</td><td>two weeks</td><td>yes</td></tr>
+          <tr><td>Labels stop wrong-store mistakes</td><td>same 3 questions through this and 2 alternatives</td><td>3 questions</td><td>0 wrong-store answers; setup under 10 minutes</td><td>an afternoon</td><td>yes</td></tr>
+          <tr><td>Shopify keeps the one-store rule</td><td>weekly read of the help page</td><td>weekly</td><td>sentence still present</td><td>minutes</td><td>yes</td></tr>
         </tbody>
       </table>
     </div>

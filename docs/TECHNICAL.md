@@ -1,8 +1,8 @@
-# shopify-multi-mcp
+# shopify-multi-mcp — technical guide
 
 One MCP server for many Shopify stores. Each store keeps its own Shopify sign-in, every store tool takes a `store` argument naming the store it acts on, and the Shopify code doing the work is always the newest verified release of Shopify's own CLI and Dev MCP.
 
-It exists because Shopify's hosted MCP (the "Shopify" connector in Claude, `https://setup.shopify.com/mcp`) holds one store per sign-in and accepts only OAuth clients Shopify recognises (it rejected this project's own client registration), so a third-party server cannot run several copies of it. Shopify CLI 5 can hold one session per store, and its `store execute` command runs Admin GraphQL against whichever store you name. This server drives that for every store you connect, and passes Shopify's Dev MCP through for documentation and validation. [docs/REVIEW.md](docs/REVIEW.md) has the full review of Shopify's MCP servers and connectors behind that choice.
+It exists because Shopify's hosted MCP (the "Shopify" connector in Claude, `https://setup.shopify.com/mcp`) holds one store per sign-in and accepts only OAuth clients Shopify recognises (it rejected this project's own client registration), so a third-party server cannot run several copies of it. Shopify CLI 5 can hold one session per store, and its `store execute` command runs Admin GraphQL against whichever store you name. This server drives that for every store you connect, and passes Shopify's Dev MCP through for documentation and validation. [REVIEW.md](REVIEW.md) has the full review of Shopify's MCP servers and connectors behind that choice.
 
 ## Set up
 
@@ -14,12 +14,22 @@ You need Node.js 22.12 or newer (Shopify CLI 5 requires it), a browser on the ma
 claude mcp add shopify -- npx -y github:fledgeling-co/shopify-multi-mcp
 ```
 
-For Claude Desktop, Cursor, VS Code and other clients that take JSON:
+For Claude Desktop, Cursor and other clients that take an `mcpServers` block:
 
 ```json
 {
   "mcpServers": {
     "shopify": { "command": "npx", "args": ["-y", "github:fledgeling-co/shopify-multi-mcp"] }
+  }
+}
+```
+
+For VS Code (run **MCP: Open User Configuration**), which uses a `servers` block:
+
+```json
+{
+  "servers": {
+    "shopify": { "type": "stdio", "command": "npx", "args": ["-y", "github:fledgeling-co/shopify-multi-mcp"] }
   }
 }
 ```

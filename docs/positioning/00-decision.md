@@ -13,6 +13,7 @@
 - **The merchant audience leaves the hero.** Owners of several stores (Territory B) still get a paragraph and an FAQ answer, but the first screen speaks to people who look after other people's stores.
 - **"Free multi-store MCP" is not yours to claim.** alex-brecher/shopify-multi-store already is one, with more features and a near-identical name; Matrixify, ShopMCP and Datadrew sell the access [C-003]. The difference left is narrow: Shopify's own sign-in, no stored keys, always on Shopify's newest tools [T-003] [T-004] [T-010].
 - **The enemy can disappear.** If Shopify ships a store picker, the hero's contrast goes with it, and the message falls back to the no-keys proof.
+- **Coding agents already have a per-store path.** Shopify's CLI connector gives Claude Code, Codex and Cursor a separate login per store; for those users the gain is labelled answers, one question across stores and read-only stores, while for chat apps with no shell (Claude Desktop) this is the bridge itself [C-008].
 
 ## The shortlist
 
@@ -34,7 +35,7 @@
 
 1. Run test 1 on two stores you control. *(reversible)*
 2. Rewrite the README for non-technical readers around Territory A, keeping the technical guide separate. *(reversible)*
-3. Build the marketing page with the hero above and "Set it up" as the one action. *(reversible)*
+3. Build the marketing page with the hero above and one action, "Connect your stores", which opens the three set-up steps. *(reversible)*
 4. Decide the name before announcing anywhere: it sits beside "Shopify Multi-Store MCP".
 5. Post in the community.shopify.dev multi-store thread only after test 1 passes.
 
@@ -47,4 +48,4 @@
 
 ## What this could not establish
 
-The number of partners with several live client stores who use an AI assistant; the Claude Code research member had not finished when this was written.
+The number of partners with several live client stores who use an AI assistant, and whether an agency's collaborator account can approve app access on a client store at all (the Claude Code member raised this; it decides whether partners can sign in without the store owner, and test 1 should include a collaborator account).
