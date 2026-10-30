@@ -1,0 +1,46 @@
+{
+  "project": "shopify-multi-mcp",
+  "updated": "2026-10-31T04:19:03+11:00",
+  "verdict": {
+    "token": "blocked",
+    "number": "3 of 4",
+    "unit": "tasks finished",
+    "headline": "Built, tested and public; signing in to a real store waits on a store account.",
+    "run_label": "first release, v0.1.0",
+    "head_sha": "216506f"
+  },
+  "tasks": [
+    { "id": "SMM-1", "title": "Review Shopify's MCP servers and connectors", "origin": "planned", "stage": "code written", "outcome": "done", "version": "216506f", "note": "docs/REVIEW.md" },
+    { "id": "SMM-2", "title": "Multi-store server on the newest Shopify CLI and Dev MCP", "origin": "planned", "stage": "code written", "outcome": "done", "version": "216506f", "note": "29 tests pass" },
+    { "id": "SMM-3", "title": "Public repo with one-line npx setup", "origin": "planned", "stage": "code written", "outcome": "done", "version": "216506f", "note": "tagged v0.1.0" },
+    { "id": "SMM-4", "title": "Sign in to a real store and run the store tools", "origin": "planned", "stage": "not started", "outcome": "stuck", "blocked_by": "a Shopify store to sign in to", "waiting_hours": 0 }
+  ],
+  "gates": [
+    { "name": "Unit and protocol tests", "command": "npm test", "exit_code": 0, "counts": "29/29", "state": "done", "kind": "tests" },
+    { "name": "Newest Shopify packages install and start", "command": "shopify-multi-mcp doctor", "exit_code": 0, "counts": "2/2", "state": "done", "kind": "build" },
+    { "name": "Registry signatures verified for both packages", "command": "npm audit signatures (inside doctor)", "exit_code": 0, "counts": "2/2", "state": "done", "kind": "security" },
+    { "name": "Built-in queries valid against the newest Admin schema", "command": "doctor, Shopify validate tool", "exit_code": 0, "counts": "3/3", "state": "done", "kind": "types" },
+    { "name": "Full session through npx from GitHub", "command": "MCP client over stdio via npx github:fledgeling-co/shopify-multi-mcp", "exit_code": 0, "counts": "7/7", "state": "done", "kind": "tests" },
+    { "name": "Sign-in and calls against a real store", "command": "shopify-multi-mcp connect", "counts": "0/0", "state": "unmeasured", "kind": "sign-off" }
+  ],
+  "not_checked": [
+    { "axis": "Signing in to a real store", "why_not": "Needs a Shopify store account; none was available." },
+    { "axis": "Windows and Linux", "why_not": "Only run on macOS so far." }
+  ],
+  "not_done": [
+    { "action": "Publish to npm", "reason": "Not asked for; the GitHub install works.", "what_would_unblock": "Your go-ahead to publish the shopify-multi-mcp name.", "size": "minutes" }
+  ],
+  "roadmap": [
+    { "round": "Round 1", "goal": "Sign in to a real store and run each store tool", "tasks": ["SMM-4"], "tier": "S", "status": "blocked", "waits_on": "a store account from you", "estimate_min": [3, 25], "median_min": 8 }
+  ],
+  "estimate_remaining": { "serial_min": [3, 25], "parallel_min": [3, 25], "median_min": 8, "lanes": 1, "basis": "measured rates (reckon 1,842-agent benchmark)", "tasks_remaining": 1 },
+  "artifacts": [
+    { "path": "docs/REVIEW.md", "kind": "md", "contains": "The review of Shopify's MCP servers and connectors, with evidence.", "open_first": true },
+    { "path": "README.md", "kind": "md", "contains": "Setup for each MCP client, tools, and how it stays current." }
+  ],
+  "needs_you": [
+    { "ask": "Connect one of your stores", "kind": "credential", "waiting_since": "2026-10-31T04:19:03+11:00", "one_line": "Run connect once; it is the only path not yet run against Shopify." },
+    { "ask": "Publish to npm, or keep GitHub-only?", "kind": "decision", "waiting_since": "2026-10-31T04:19:03+11:00", "one_line": "npm would allow npx -y shopify-multi-mcp@latest." }
+  ],
+  "git": { "branch": "main", "commits_ahead": 0, "worktree_clean": true, "pushed": true }
+}
