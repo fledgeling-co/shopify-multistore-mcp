@@ -456,14 +456,14 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
 <script type="application/json" id="report-data">
 {
  "project": "shopify-multi-mcp",
- "updated": "2026-10-31T04:19:03+11:00",
+ "updated": "2026-10-31T09:40:00+11:00",
  "verdict": {
   "token": "blocked",
-  "number": "3 of 4",
+  "number": "8 of 9",
   "unit": "tasks finished",
-  "headline": "Built, tested and public; signing in to a real store waits on a store account.",
-  "run_label": "first release, v0.1.0",
-  "head_sha": "216506f"
+  "headline": "README, site and icon are live in the repo; real-store sign-in still waits on a store.",
+  "run_label": "README, marketing site and design review",
+  "head_sha": "8fb9be1"
  },
  "tasks": [
   {
@@ -501,6 +501,51 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "outcome": "stuck",
    "blocked_by": "a Shopify store to sign in to",
    "waiting_hours": 0
+  },
+  {
+   "id": "SMM-5",
+   "title": "Decide who it is for and how to say it",
+   "origin": "planned",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "f291811",
+   "note": "docs/positioning"
+  },
+  {
+   "id": "SMM-6",
+   "title": "App icon: a row of shopfronts",
+   "origin": "planned",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "3d67623",
+   "note": "design/icon"
+  },
+  {
+   "id": "SMM-7",
+   "title": "README for people who aren't developers",
+   "origin": "planned",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "8fb9be1",
+   "note": "old README kept as docs/TECHNICAL.md"
+  },
+  {
+   "id": "SMM-8",
+   "title": "One-page marketing site",
+   "origin": "planned",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "8fb9be1",
+   "note": "design/marketing/index.html"
+  },
+  {
+   "id": "SMM-9",
+   "title": "Design review of the site and the positioning report",
+   "origin": "planned",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "8fb9be1",
+   "note": "13 problems found, 13 fixed"
   }
  ],
  "gates": [
@@ -550,6 +595,46 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "counts": "0/0",
    "state": "unmeasured",
    "kind": "sign-off"
+  },
+  {
+   "name": "Every review stage done or ruled out, on all 3 surfaces",
+   "command": "design-review worklist.py check",
+   "exit_code": 0,
+   "counts": "24/24",
+   "state": "done",
+   "kind": "design"
+  },
+  {
+   "name": "Text contrast on the site",
+   "command": "Obscura probe sweep at 1280",
+   "exit_code": 0,
+   "counts": "117/117",
+   "state": "done",
+   "kind": "design"
+  },
+  {
+   "name": "Text contrast on the positioning report",
+   "command": "Obscura probe sweep at 1280",
+   "exit_code": 0,
+   "counts": "202/202",
+   "state": "done",
+   "kind": "design"
+  },
+  {
+   "name": "No sideways scrolling, 320 to 1440 wide",
+   "command": "Playwright Chromium at 6 widths",
+   "exit_code": 0,
+   "counts": "6/6",
+   "state": "done",
+   "kind": "design"
+  },
+  {
+   "name": "Set-up panels: Copy button clear of the text",
+   "command": "Playwright text-range overlap, 4 panels at 6 widths",
+   "exit_code": 0,
+   "counts": "24/24",
+   "state": "done",
+   "kind": "design"
   }
  ],
  "not_checked": [
@@ -560,6 +645,18 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
   {
    "axis": "Windows and Linux",
    "why_not": "Only run on macOS so far."
+  },
+  {
+   "axis": "Screen-reader reading of the live demo",
+   "why_not": "Needs a person with a screen reader."
+  },
+  {
+   "axis": "Copy button in Safari and Firefox",
+   "why_not": "Only Chromium was driven."
+  },
+  {
+   "axis": "Whether a non-developer can finish step 1 alone",
+   "why_not": "Only a real reader trying it can say."
   }
  ],
  "not_done": [
@@ -568,6 +665,18 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "reason": "Not asked for; the GitHub install works.",
    "what_would_unblock": "Your go-ahead to publish the shopify-multi-mcp name.",
    "size": "minutes"
+  },
+  {
+   "action": "Host the marketing site",
+   "reason": "Publishing a public page needs your say-so.",
+   "what_would_unblock": "Your go-ahead for GitHub Pages.",
+   "size": "minutes"
+  },
+  {
+   "action": "Announce anywhere",
+   "reason": "The name sits beside alex-brecher/shopify-multi-store, and sign-in is unproven.",
+   "what_would_unblock": "A name decision and one real-store sign-in.",
+   "size": "an hour"
   }
  ],
  "roadmap": [
@@ -585,33 +694,66 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
     25
    ],
    "median_min": 8
+  },
+  {
+   "round": "Round 2",
+   "goal": "Host the site and publish to npm",
+   "tasks": [],
+   "tier": "S",
+   "status": "blocked",
+   "waits_on": "your go-ahead on both",
+   "estimate_min": [
+    3,
+    25
+   ],
+   "median_min": 8
   }
  ],
  "estimate_remaining": {
   "serial_min": [
-   3,
-   25
+   6,
+   50
   ],
   "parallel_min": [
    3,
-   25
+   45
   ],
-  "median_min": 8,
-  "lanes": 1,
+  "median_min": 9,
+  "lanes": 2,
   "basis": "measured rates (reckon 1,842-agent benchmark)",
-  "tasks_remaining": 1
+  "tasks_remaining": 2
  },
  "artifacts": [
   {
-   "path": "docs/REVIEW.md",
+   "path": "README.md",
    "kind": "md",
-   "contains": "The review of Shopify's MCP servers and connectors, with evidence.",
+   "contains": "What it does and how to set it up, for non-developers.",
    "open_first": true
   },
   {
-   "path": "README.md",
+   "path": "design/marketing/index.html",
+   "kind": "html",
+   "contains": "The one-page marketing site."
+  },
+  {
+   "path": "design/marketing/design-review.md",
    "kind": "md",
-   "contains": "Setup for each MCP client, tools, and how it stays current."
+   "contains": "The 13 problems the review found and how each was fixed."
+  },
+  {
+   "path": "docs/positioning/positioning-report.html",
+   "kind": "html",
+   "contains": "Who it is for, the shortlist, and the evidence."
+  },
+  {
+   "path": "docs/REVIEW.md",
+   "kind": "md",
+   "contains": "The review of Shopify's MCP servers and connectors."
+  },
+  {
+   "path": "docs/TECHNICAL.md",
+   "kind": "md",
+   "contains": "The developer guide: configuration, flags, tests."
   }
  ],
  "needs_you": [
@@ -626,6 +768,24 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "kind": "decision",
    "waiting_since": "2026-10-31T04:19:03+11:00",
    "one_line": "npm would allow npx -y shopify-multi-mcp@latest."
+  },
+  {
+   "ask": "Keep the name, or rename before announcing?",
+   "kind": "decision",
+   "waiting_since": "2026-10-31T09:40:00+11:00",
+   "one_line": "alex-brecher/shopify-multi-store is MIT, does more, and has a near-identical name."
+  },
+  {
+   "ask": "Host the site on GitHub Pages?",
+   "kind": "decision",
+   "waiting_since": "2026-10-31T09:40:00+11:00",
+   "one_line": "The page is built and reviewed; publishing makes it public."
+  },
+  {
+   "ask": "Gemini API spending cap reached",
+   "kind": "credential",
+   "waiting_since": "2026-10-31T09:40:00+11:00",
+   "one_line": "One research member failed on it; raise the cap to use Gemini lanes again."
   }
  ],
  "git": {
@@ -633,7 +793,113 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
   "commits_ahead": 0,
   "worktree_clean": true,
   "pushed": true
- }
+ },
+ "findings": [
+  {
+   "id": "DR-1",
+   "score": 80,
+   "severity": "high",
+   "file_line": "design/marketing/index.html:188",
+   "claim": "on phones the Copy button covered the set-up instructions",
+   "state": "done"
+  },
+  {
+   "id": "DR-2",
+   "score": 60,
+   "severity": "medium",
+   "file_line": "design/marketing/index.html:185",
+   "claim": "set-up tabs wrapped onto three rows on phones",
+   "state": "done"
+  },
+  {
+   "id": "DR-3",
+   "score": 55,
+   "severity": "medium",
+   "file_line": "design/marketing/index.html:187",
+   "claim": "set-up commands were cut off at the panel edge on phones",
+   "state": "done"
+  },
+  {
+   "id": "DR-4",
+   "score": 50,
+   "severity": "medium",
+   "file_line": "design/marketing/index.html:195",
+   "claim": "the Questions section sat off the page's left edge line",
+   "state": "done"
+  },
+  {
+   "id": "DR-5",
+   "score": 58,
+   "severity": "medium",
+   "file_line": "docs/positioning/positioning-report.html:233",
+   "claim": "claims table listed 7 of the 9 claims the page counts",
+   "state": "done"
+  },
+  {
+   "id": "DR-6",
+   "score": 52,
+   "severity": "medium",
+   "file_line": "docs/positioning/positioning-report.html:54",
+   "claim": "wide tables could not be scrolled by keyboard",
+   "state": "done"
+  },
+  {
+   "id": "DR-7",
+   "score": 30,
+   "severity": "low",
+   "file_line": "design/marketing/index.html:161",
+   "claim": "sample sales table scrolled sideways on small phones",
+   "state": "done"
+  },
+  {
+   "id": "DR-8",
+   "score": 25,
+   "severity": "low",
+   "file_line": "design/marketing/index.html:125",
+   "claim": "demo store labels broke inside the web address",
+   "state": "done"
+  },
+  {
+   "id": "DR-9",
+   "score": 28,
+   "severity": "low",
+   "file_line": "design/marketing/index.html:307",
+   "claim": "sample output panels were unnamed for screen readers",
+   "state": "done"
+  },
+  {
+   "id": "DR-10",
+   "score": 20,
+   "severity": "low",
+   "file_line": "design/marketing/index.html:213",
+   "claim": "footer links were under 24px tall",
+   "state": "done"
+  },
+  {
+   "id": "DR-11",
+   "score": 15,
+   "severity": "low",
+   "file_line": "docs/positioning/positioning-report.html:58",
+   "claim": "text after a table sat on the table's last line",
+   "state": "done"
+  },
+  {
+   "id": "DR-12",
+   "score": 12,
+   "severity": "low",
+   "file_line": "docs/positioning/positioning-report.html:74",
+   "claim": "table headers mixed two typefaces; a label wrapped badly",
+   "state": "done"
+  },
+  {
+   "id": "DR-13",
+   "score": 18,
+   "severity": "low",
+   "file_line": "docs/positioning/positioning-report.html:130",
+   "claim": "preview buttons looked clickable and did nothing",
+   "state": "done"
+  }
+ ]
 }
 </script>
 
