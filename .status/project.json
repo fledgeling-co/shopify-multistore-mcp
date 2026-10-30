@@ -1,13 +1,13 @@
 {
-  "project": "shopify-multi-mcp",
-  "updated": "2026-10-31T09:40:00+11:00",
+  "project": "storerow",
+  "updated": "2026-10-31T07:20:00+11:00",
   "verdict": {
     "token": "blocked",
-    "number": "8 of 9",
+    "number": "10 of 12",
     "unit": "tasks finished",
-    "headline": "README, site and icon are live in the repo; real-store sign-in still waits on a store.",
-    "run_label": "README, marketing site and design review",
-    "head_sha": "8fb9be1"
+    "headline": "Renamed StoreRow and the site is live; npm publish waits on your token approval.",
+    "run_label": "rename, site live, v0.2.0",
+    "head_sha": "1f4db67"
   },
   "tasks": [
     {
@@ -35,7 +35,7 @@
       "stage": "code written",
       "outcome": "done",
       "version": "216506f",
-      "note": "tagged v0.1.0"
+      "note": "now fledgeling-co/storerow"
     },
     {
       "id": "SMM-4",
@@ -90,6 +90,33 @@
       "outcome": "done",
       "version": "8fb9be1",
       "note": "13 problems found, 13 fixed"
+    },
+    {
+      "id": "SMM-10",
+      "title": "Rename to StoreRow, away from the competitor's name",
+      "origin": "planned",
+      "stage": "code written",
+      "outcome": "done",
+      "version": "d6baaf0",
+      "note": "old settings still work"
+    },
+    {
+      "id": "SMM-11",
+      "title": "Put the site on GitHub Pages",
+      "origin": "planned",
+      "stage": "code written",
+      "outcome": "done",
+      "version": "d6baaf0",
+      "note": "fledgeling-co.github.io/storerow"
+    },
+    {
+      "id": "SMM-12",
+      "title": "Publish storerow 0.2.0 to npm",
+      "origin": "planned",
+      "stage": "code written",
+      "outcome": "stuck",
+      "blocked_by": "npm token approval in Warden",
+      "waiting_hours": 0
     }
   ],
   "gates": [
@@ -97,7 +124,7 @@
       "name": "Unit and protocol tests",
       "command": "npm test",
       "exit_code": 0,
-      "counts": "29/29",
+      "counts": "30/30",
       "state": "done",
       "kind": "tests"
     },
@@ -126,7 +153,7 @@
       "kind": "types"
     },
     {
-      "name": "Full session through npx from GitHub",
+      "name": "Full session through npx from GitHub (on 0.1.0)",
       "command": "MCP client over stdio via npx github:fledgeling-co/shopify-multi-mcp",
       "exit_code": 0,
       "counts": "7/7",
@@ -179,6 +206,29 @@
       "counts": "24/24",
       "state": "done",
       "kind": "design"
+    },
+    {
+      "name": "doctor on 0.2.0, installed from GitHub",
+      "command": "npx -y github:fledgeling-co/storerow doctor",
+      "exit_code": 0,
+      "counts": "4/4",
+      "state": "done",
+      "kind": "build"
+    },
+    {
+      "name": "Live site loads with no errors or broken files",
+      "command": "Playwright on the Pages URL at 1280 and 390",
+      "exit_code": 0,
+      "counts": "2/2",
+      "state": "done",
+      "kind": "design"
+    },
+    {
+      "name": "Package installs from npm",
+      "command": "npx -y storerow@latest",
+      "counts": "0/0",
+      "state": "unmeasured",
+      "kind": "build"
     }
   ],
   "not_checked": [
@@ -205,34 +255,28 @@
   ],
   "not_done": [
     {
-      "action": "Publish to npm",
-      "reason": "Not asked for; the GitHub install works.",
-      "what_would_unblock": "Your go-ahead to publish the shopify-multi-mcp name.",
-      "size": "minutes"
-    },
-    {
-      "action": "Host the marketing site",
-      "reason": "Publishing a public page needs your say-so.",
-      "what_would_unblock": "Your go-ahead for GitHub Pages.",
+      "action": "Publish storerow to npm",
+      "reason": "The Warden request for the npm token timed out twice.",
+      "what_would_unblock": "Approve it in Warden, or run npm publish yourself.",
       "size": "minutes"
     },
     {
       "action": "Announce anywhere",
-      "reason": "The name sits beside alex-brecher/shopify-multi-store, and sign-in is unproven.",
-      "what_would_unblock": "A name decision and one real-store sign-in.",
+      "reason": "Signing in to a real store is still unproven.",
+      "what_would_unblock": "One real-store sign-in.",
       "size": "an hour"
     }
   ],
   "roadmap": [
     {
       "round": "Round 1",
-      "goal": "Sign in to a real store and run each store tool",
+      "goal": "Publish storerow 0.2.0 to npm",
       "tasks": [
-        "SMM-4"
+        "SMM-12"
       ],
       "tier": "S",
       "status": "blocked",
-      "waits_on": "a store account from you",
+      "waits_on": "your npm token approval",
       "estimate_min": [
         3,
         25
@@ -241,11 +285,13 @@
     },
     {
       "round": "Round 2",
-      "goal": "Host the site and publish to npm",
-      "tasks": [],
+      "goal": "Sign in to a real store and run each store tool",
+      "tasks": [
+        "SMM-4"
+      ],
       "tier": "S",
       "status": "blocked",
-      "waits_on": "your go-ahead on both",
+      "waits_on": "a store account from you",
       "estimate_min": [
         3,
         25
@@ -275,6 +321,11 @@
       "open_first": true
     },
     {
+      "path": "https://fledgeling-co.github.io/storerow/",
+      "kind": "html",
+      "contains": "The live site."
+    },
+    {
       "path": "design/marketing/index.html",
       "kind": "html",
       "contains": "The one-page marketing site."
@@ -298,32 +349,25 @@
       "path": "docs/TECHNICAL.md",
       "kind": "md",
       "contains": "The developer guide: configuration, flags, tests."
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "kind": "yml",
+      "contains": "Deploys the site on every change to it."
     }
   ],
   "needs_you": [
+    {
+      "ask": "Approve the npm token in Warden",
+      "kind": "credential",
+      "waiting_since": "2026-10-31T07:20:00+11:00",
+      "one_line": "The site and README already say npx -y storerow@latest, which fails until it is published."
+    },
     {
       "ask": "Connect one of your stores",
       "kind": "credential",
       "waiting_since": "2026-10-31T04:19:03+11:00",
       "one_line": "Run connect once; it is the only path not yet run against Shopify."
-    },
-    {
-      "ask": "Publish to npm, or keep GitHub-only?",
-      "kind": "decision",
-      "waiting_since": "2026-10-31T04:19:03+11:00",
-      "one_line": "npm would allow npx -y shopify-multi-mcp@latest."
-    },
-    {
-      "ask": "Keep the name, or rename before announcing?",
-      "kind": "decision",
-      "waiting_since": "2026-10-31T09:40:00+11:00",
-      "one_line": "alex-brecher/shopify-multi-store is MIT, does more, and has a near-identical name."
-    },
-    {
-      "ask": "Host the site on GitHub Pages?",
-      "kind": "decision",
-      "waiting_since": "2026-10-31T09:40:00+11:00",
-      "one_line": "The page is built and reviewed; publishing makes it public."
     },
     {
       "ask": "Gemini API spending cap reached",
