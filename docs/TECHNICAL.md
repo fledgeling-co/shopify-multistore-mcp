@@ -126,7 +126,7 @@ The default scopes are read and write for products, inventory, orders, draft ord
 
 ## Status
 
-Version 0.1.0. Tested on macOS with Node 22.23.1 against Shopify CLI 5.0.0 and Dev MCP 1.18.0: 29 unit and protocol tests, `doctor` (install, signature check, smoke tests, built-in queries valid against the newest Admin schema), and an end-to-end stdio session covering tool listing, the Dev MCP hand-off, store selection errors, read-only refusal and Shopify CLI's real "no stored app authentication" error. The browser approval in `connect_store` and calls against a real store have not been run yet, because that needs a store account; the first person to connect one is testing that path.
+Version 0.2.0, the first under the StoreRow name. Tested on macOS with Node 22.23.1 against Shopify CLI 5.0.0 and Dev MCP 1.18.0: 30 unit and protocol tests, and `doctor` installed from GitHub (install, signature check, smoke tests, built-in queries valid against the newest Admin schema). On 0.1.0, before the rename, an end-to-end stdio session also covered tool listing, the Dev MCP hand-off, store selection errors, read-only refusal and Shopify CLI's real "no stored app authentication" error. The browser approval in `connect_store` and calls against a real store have not been run yet, because that needs a store account; the first person to connect one is testing that path.
 
 ## Development
 
