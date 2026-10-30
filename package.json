@@ -1,0 +1,34 @@
+{
+  "name": "shopify-multi-mcp",
+  "version": "0.1.0",
+  "description": "One MCP server for many Shopify stores, always running the newest official Shopify CLI and Dev MCP.",
+  "type": "module",
+  "bin": {
+    "shopify-multi-mcp": "bin/shopify-multi-mcp.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "scripts": {
+    "start": "node bin/shopify-multi-mcp.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2"
+  },
+  "keywords": [
+    "mcp",
+    "shopify",
+    "model-context-protocol",
+    "multi-store"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fledgeling-co/shopify-multi-mcp.git"
+  },
+  "license": "MIT"
+}

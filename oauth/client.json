@@ -1,9 +1,0 @@
-{
-  "client_id": "https://fledgeling-co.github.io/shopify-multi-mcp/oauth/client.json",
-  "client_name": "Shopify Multi-Store MCP",
-  "client_uri": "https://github.com/fledgeling-co/shopify-multi-mcp",
-  "redirect_uris": ["http://localhost/callback", "http://127.0.0.1/callback"],
-  "grant_types": ["authorization_code", "refresh_token"],
-  "response_types": ["code"],
-  "token_endpoint_auth_method": "none"
-}
