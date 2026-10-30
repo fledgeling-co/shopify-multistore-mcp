@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>shopify-multi-mcp positioning decision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+<style>
+  /* Tokens from docs/positioning/DESIGN.md. */
+  :root {
+    --bg: #F6F6F3; --surface: #FFFFFF; --ink: #14211C; --ink-2: #4E5A55;
+    --line: #E1E4E0; --jade: #1CB884; --jade-deep: #0A6F5C; --mint: #DDF3E9;
+    --ok: #0A6F5C; --warn: #9A5B12; --veto: #A33224;
+    --measure: 66ch;
+    --display: "Archivo", "Helvetica Neue", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111614; --surface: #18201D; --ink: #ECF2EF; --ink-2: #A5B2AC;
+      --line: #27312D; --jade: #2FD39A; --jade-deep: #58E0B0; --mint: #1D3A31;
+      --ok: #58E0B0; --warn: #D9A05B; --veto: #E0705F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #111614; --surface: #18201D; --ink: #ECF2EF; --ink-2: #A5B2AC;
+    --line: #27312D; --jade: #2FD39A; --jade-deep: #58E0B0; --mint: #1D3A31;
+    --ok: #58E0B0; --warn: #D9A05B; --veto: #E0705F;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 400 17px/1.6 var(--display); font-variation-settings: "wdth" 100;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--mint); color: var(--ink); }
+  a { color: var(--jade-deep); text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--jade-deep); outline-offset: 2px; border-radius: 2px; }
+  main { max-width: 74rem; margin: 0 auto; padding: clamp(1.25rem, 4vw, 4rem); }
+  section { margin-block: clamp(3rem, 8vw, 5.5rem); }
+  .kicker { font: 500 13px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 1rem; }
+  h1 {
+    font-size: clamp(2.2rem, 5.4vw, 3.75rem); line-height: 1.04; margin: 0 0 .45em;
+    font-weight: 750; font-variation-settings: "wdth" 116; letter-spacing: -.02em; max-width: 22ch;
+  }
+  h2 { font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.15; margin: 0 0 1rem; font-weight: 700; font-variation-settings: "wdth" 112; letter-spacing: -.01em; }
+  h3 { font-size: 1.15rem; margin: 2.25rem 0 .5rem; font-weight: 700; }
+  p { max-width: var(--measure); color: var(--ink-2); margin: 0 0 1rem; }
+  .lede { color: var(--ink); font-size: 1.2rem; }
+  .meta { font: 400 14px/1.6 var(--mono); color: var(--ink-2); }
+  .scroll-x { position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; min-width: 44rem; font-size: .94rem; }
+  caption { text-align: left; color: var(--ink-2); font-size: .9rem; padding-bottom: .5rem; }
+  th, td { text-align: left; padding: .65rem .75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 650; color: var(--ink); font-size: .85rem; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); }
+  tr.pick td:first-child { font-weight: 700; }
+  tr.pick { background: color-mix(in oklab, var(--mint) 55%, transparent); }
+  .id { font-family: var(--mono); font-size: .85rem; white-space: nowrap; }
+  .label {
+    display: inline-block; padding: .3em .8em; border-radius: 999px;
+    font: 500 13px/1.2 var(--mono); letter-spacing: .02em; border: 1px solid currentColor;
+  }
+  .label--conditional { color: var(--warn); }
+  .vetoed { color: var(--veto); }
+  .vetoed td:first-child::after { content: " · eliminated"; font-size: .82em; }
+  .yes { color: var(--ok); } .no { color: var(--veto); } .weak { color: var(--warn); }
+  figure { margin: 1rem 0 0; }
+  figcaption { color: var(--ink-2); font-size: .9rem; margin-top: .5rem; max-width: var(--measure); }
+  .previews { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); }
+  .hero-preview {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    box-shadow: 0 1px 2px rgb(20 33 28 / .06), 0 8px 24px rgb(20 33 28 / .06);
+  }
+  .hero-preview .tag { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 1rem; }
+  .hero-preview h3 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.1; margin: 0 0 .5em; color: var(--ink); font-weight: 750; font-variation-settings: "wdth" 116; letter-spacing: -.02em; }
+  .hero-preview p { font-size: 1rem; }
+  .hero-preview .cta { display: inline-block; margin-top: .5rem; padding: .6rem 1rem; border-radius: 10px; background: var(--jade-deep); color: #fff; font-weight: 650; font-size: .95rem; }
+  .hero-preview.recommended { border-color: var(--jade); box-shadow: 0 0 0 2px var(--jade), 0 8px 24px rgb(20 33 28 / .08); }
+  .bar { display: block; height: 10px; background: var(--line); border-radius: 999px; overflow: hidden; min-width: 10rem; }
+  .bar > i { display: block; height: 100%; background: var(--jade); width: calc(var(--pct) * 1%); }
+  ul.plain { padding-left: 1.1rem; max-width: var(--measure); color: var(--ink-2); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; }
+    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <section>
+    <p class="kicker">shopify-multi-mcp · positioning decision · 31 October 2026</p>
+    <p><span class="label label--conditional">Conditionally recommended</span></p>
+    <h1>Every client store in one AI chat. Each answer says which store it came from.</h1>
+    <p class="lede">Position shopify-multi-mcp as the client-store switchboard for Shopify partners who already use an AI assistant. Shopify's own connector holds one store at a time, and the people who look after several stores have said so in public.</p>
+    <p class="meta">33 candidates generated, 3 shortlisted, compared against the position shopify-multi-mcp holds today. 1 research panel, 6 members (3 returned reports), 9 claims on 40 independent domains.</p>
+  </section>
+
+  <section class="reveal">
+    <h2>The shortlist</h2>
+    <p>Each territory differs on all four axes; the status quo is a row, not a footnote.</p>
+    <div class="scroll-x">
+      <table>
+        <thead><tr>
+          <th scope="col">Territory</th><th scope="col">Word</th><th scope="col">Enemy</th><th scope="col">Category</th>
+          <th scope="col">Beachhead</th><th scope="col" class="num">Claimable today</th><th scope="col">Strongest objection</th>
+        </tr></thead>
+        <tbody>
+          <tr class="pick"><td>A · Client-store switchboard</td><td>switchboard</td><td>Shopify's one-store-at-a-time AI connector</td><td>store switchboard for your AI assistant</td><td>partners using AI across client stores</td><td class="num">7/7</td><td>Shopify may ship a store picker</td></tr>
+          <tr><td>B · Side by side</td><td>side-by-side</td><td>the export-and-paste spreadsheet</td><td>cross-store answers for your own stores</td><td>owners of 2–6 stores</td><td class="num">5/5</td><td>Plus analytics and sync apps already answer much of it</td></tr>
+          <tr><td>J · Look before you buy</td><td>read-only</td><td>seller-supplied screenshots</td><td>read-only diligence for store buyers</td><td>portfolio buyers and brokers</td><td class="num">5/5</td><td>sellers will not approve an unofficial tool</td></tr>
+          <tr><td><em>Status quo</em></td><td colspan="5">"One MCP server for many Shopify stores": names no reader and no enemy</td><td>describes the mechanism, not a job</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>Feel the copy</h2>
+    <div class="previews">
+      <article class="hero-preview recommended">
+        <p class="tag">A · recommended</p>
+        <h3>Every client store in one AI chat.</h3>
+        <p>Ask once and each store answers, labelled with its name. Shopify's own approval page signs each store in, so no app keys sit in your files.</p>
+        <span class="cta">Set it up</span>
+      </article>
+      <article class="hero-preview">
+        <p class="tag">B</p>
+        <h3>Ask all your stores one question.</h3>
+        <p>Your AI checks each of your Shopify stores and lines the answers up, each one labelled.</p>
+        <span class="cta">Set it up</span>
+      </article>
+      <article class="hero-preview">
+        <p class="tag">J</p>
+        <h3>Look inside the stores you might buy.</h3>
+        <p>Connect a candidate store read-only with the seller's approval, and ask it what you would otherwise ask for in screenshots.</p>
+        <span class="cta">Set it up</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>How the choice was narrowed</h2>
+
+    <h3>Vetoes, evaluated first and not compensable</h3>
+    <p>A territory that fails a veto is eliminated rather than penalised.</p>
+    <div class="scroll-x">
+      <table>
+        <thead><tr><th scope="col">Territory</th><th scope="col">Deliverable</th><th scope="col">Credible</th><th scope="col">Install path open</th><th scope="col">Constraints</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td class="yes">yes, every move shipped</td><td class="yes">yes, the enemy is Shopify's own sentence [C-001]</td><td class="yes">yes, the partner approves each store</td><td class="yes">none</td></tr>
+          <tr><td>B</td><td class="yes">yes</td><td class="weak">weak, no merchant blames the AI limit [C-005]</td><td class="yes">yes, the owner approves</td><td class="yes">none</td></tr>
+          <tr class="vetoed"><td>J</td><td class="yes">yes, read-only shipped</td><td class="weak">weak, no buyer workflow found [C-006]</td><td class="no">no, the seller must approve and no flow for that exists</td><td class="no">needs undesigned work</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Consequences, in the units they come in</h3>
+    <p>A free MIT tool has no price, margin or sales cycle, so the consequences are the ones that decide adoption. Every cell names its source or is marked as an estimate.</p>
+    <div class="scroll-x">
+      <table>
+        <thead><tr>
+          <th scope="col">Territory</th><th scope="col">Voiced pain</th><th scope="col">Reachable through</th>
+          <th scope="col">Competitors on the same line</th><th scope="col">Setup per store</th><th scope="col">Evidence tier</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>A</td><td>2 public threads, one with Shopify staff confirming [C-002]</td><td>one forum thread, the Partner Directory, one issue tracker [C-004]</td><td>several: Matrixify, ShopMCP, Datadrew, alex-brecher [C-003]</td><td>one browser approval [T-003]</td><td>medium</td></tr>
+          <tr><td>B</td><td>catalog matching, not AI access [C-005]</td><td>no list of multi-store owners found [C-005]</td><td>analytics and sync apps [C-005]</td><td>one browser approval [T-003]</td><td>medium</td></tr>
+          <tr><td>J</td><td>screenshot distrust from diligence vendors [C-006]</td><td>two marketplaces [C-006]</td><td>none on this line</td><td>blocked on the seller</td><td>low</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Dominance</h3>
+    <p>Neither A nor B dominates the other: A is ahead on voiced pain and reach, B on room left by competitors. Both go to the stability check.</p>
+
+    <h3>Rank stability, not a rank</h3>
+    <p>Each territory was scored 0–3 per criterion from the evidence above (pain, reach, install path, room left), and the weights were swept across 137 combinations: no criterion above 60%, pain and reach each at least 10%.</p>
+    <div class="scroll-x">
+      <table>
+        <thead><tr><th scope="col">Territory</th><th scope="col" class="num">Ranks first in</th><th scope="col"><span class="visually-hidden">Share</span></th></tr></thead>
+        <tbody>
+          <tr class="pick"><td>A</td><td class="num">97.4% of weightings</td><td><span class="bar" style="--pct:97.4"><i></i></span></td></tr>
+          <tr><td>B</td><td class="num">2.6% of weightings</td><td><span class="bar" style="--pct:2.6"><i></i></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>B wins only when "room left by competitors" carries more than 40% of the weight and pain and reach sit at their floors. With J left in before its veto, A still leads at 86.5% of weightings.</p>
+
+    <h3>If the assumption is wrong</h3>
+    <p>The assumption with the most at stake is that Shopify keeps the one-store rule. If it ships a store picker, A loses its enemy but keeps its proof: Shopify's own sign-in, no stored keys, always the newest Shopify tools.</p>
+    <figure>
+      <svg viewBox="0 0 640 170" width="100%" style="max-width:640px;display:block" role="img" aria-labelledby="regret-t">
+        <title id="regret-t">What each territory keeps if Shopify adds multi-store connections</title>
+        <g font-family="IBM Plex Mono, monospace" font-size="13" fill="currentColor">
+          <text x="0" y="28">A</text><rect x="40" y="14" width="560" height="20" rx="10" style="fill:var(--line)"/><rect x="40" y="14" width="330" height="20" rx="10" style="fill:var(--jade)"/>
+          <text x="380" y="29" font-size="12">keeps the no-keys proof</text>
+          <text x="0" y="78">B</text><rect x="40" y="64" width="560" height="20" rx="10" style="fill:var(--line)"/><rect x="40" y="64" width="250" height="20" rx="10" style="fill:var(--jade)"/>
+          <text x="300" y="79" font-size="12">enemy unaffected, but weak</text>
+          <text x="0" y="128">J</text><rect x="40" y="114" width="560" height="20" rx="10" style="fill:var(--line)"/><rect x="40" y="114" width="80" height="20" rx="10" style="fill:var(--veto)"/>
+          <text x="130" y="129" font-size="12">already eliminated</text>
+        </g>
+      </svg>
+      <figcaption>Bar length is a qualitative estimate of the message that survives, not a measurement.</figcaption>
+    </figure>
+  </section>
+
+  <section class="reveal">
+    <h2>What this rests on</h2>
+    <p>Support is counted in independent registrable domains, never in how many research backends agreed. <strong>Judged</strong> means the page was read and found to support the claim.</p>
+    <div class="scroll-x">
+      <table>
+        <thead><tr><th scope="col">id</th><th scope="col">Claim</th><th scope="col">Confidence</th><th scope="col" class="num">Domains</th><th scope="col">Verified</th><th scope="col">Bound to</th></tr></thead>
+        <tbody>
+          <tr><td class="id">C-001</td><td>Shopify's AI connectors hold one store at a time; switching starts a new authorization</td><td>high</td><td class="num">3</td><td>judged</td><td>A hero, enemy</td></tr>
+          <tr><td class="id">C-002</td><td>Practitioners across several stores voice the limit in their own words</td><td>medium</td><td class="num">2</td><td>judged (forum)</td><td>A beachhead, one-liner</td></tr>
+          <tr><td class="id">C-003</td><td>Multi-store AI access is already offered by others</td><td>high</td><td class="num">4</td><td>judged (GitHub)</td><td>A category</td></tr>
+          <tr><td class="id">C-004</td><td>Partners are a reachable population; the AI-user intersection is uncounted</td><td>medium</td><td class="num">2</td><td>no</td><td>A beachhead</td></tr>
+          <tr><td class="id">C-005</td><td>Owners of several stores compare with analytics, sync apps and spreadsheets</td><td>medium</td><td class="num">3</td><td>no</td><td>B, all moves</td></tr>
+          <tr><td class="id">C-006</td><td>Buyers distrust screenshots; access needs the seller</td><td>low</td><td class="num">2</td><td>no</td><td>J, all moves</td></tr>
+          <tr><td class="id">C-008</td><td>Shopify points multi-store AI work to its own CLI</td><td>medium</td><td class="num">2</td><td>judged (forum)</td><td>A value proof, unique attributes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Where the sources disagreed</h3>
+    <p>Grok names two unmet gaps in the market; Codex finds none, because Matrixify, ShopMCP, Datadrew and an MIT project with a near-identical name (alex-brecher/shopify-multi-store) already cover multi-store access [C-009]. Both stand, so nothing here says "the only" or "the first".</p>
+  </section>
+
+  <section class="reveal">
+    <h2>Before you bet on this</h2>
+    <p>Each test carries its pass line, written before it runs.</p>
+    <div class="scroll-x">
+      <table>
+        <thead><tr><th scope="col">Assumption</th><th scope="col">Test</th><th scope="col" class="num">Sample</th><th scope="col">Pass line</th><th scope="col">Cost</th><th scope="col">Reversible?</th></tr></thead>
+        <tbody>
+          <tr><td>Sign-in works on real stores</td><td>connect two stores, run three calls on each</td><td class="num">2 stores</td><td>6 of 6 calls return labelled data</td><td>15 minutes</td><td>yes</td></tr>
+          <tr><td>Partners will install it beside the CLI</td><td>interviews with install offer</td><td class="num">8 partners</td><td>5 of 8 would; 3 connected within 7 days</td><td>two weeks</td><td>yes</td></tr>
+          <tr><td>Labels stop wrong-store mistakes</td><td>same 3 questions through this and 2 alternatives</td><td class="num">3 questions</td><td>0 wrong-store answers; setup under 10 minutes</td><td>an afternoon</td><td>yes</td></tr>
+          <tr><td>Shopify keeps the one-store rule</td><td>weekly read of the help page</td><td class="num">weekly</td><td>sentence still present</td><td>minutes</td><td>yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Not established: how many partners hold several live client stores and use an AI assistant, and whether the sign-in passes on a real store. The full suite is in <a href="00-decision.md">00-decision.md</a> and the files beside it.</p>
+  </section>
+
+</main>
+<style>.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}</style>
+</body>
+</html>

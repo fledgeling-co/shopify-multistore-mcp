@@ -1,0 +1,449 @@
+{
+  "bindings": [
+    {
+      "claims": [
+        "C-001"
+      ],
+      "move": "hero",
+      "territory": "A",
+      "text": "",
+      "truth": [
+        "T-001",
+        "T-002"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-001"
+      ],
+      "move": "enemy",
+      "territory": "A",
+      "text": "",
+      "truth": [
+        "T-001"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-003"
+      ],
+      "move": "category",
+      "territory": "A",
+      "text": "",
+      "truth": [
+        "T-001"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-008"
+      ],
+      "move": "value_proof",
+      "territory": "A",
+      "text": "",
+      "truth": [
+        "T-003",
+        "T-010"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-008"
+      ],
+      "move": "unique_attributes",
+      "territory": "A",
+      "text": "",
+      "truth": [
+        "T-003",
+        "T-004",
+        "T-010"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-002"
+      ],
+      "move": "one_liner",
+      "territory": "A",
+      "text": "",
+      "truth": [
+        "T-007",
+        "T-002"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-005"
+      ],
+      "move": "hero",
+      "territory": "B",
+      "text": "",
+      "truth": [
+        "T-007",
+        "T-002"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-005"
+      ],
+      "move": "category",
+      "territory": "B",
+      "text": "",
+      "truth": [
+        "T-007"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-005"
+      ],
+      "move": "value_proof",
+      "territory": "B",
+      "text": "",
+      "truth": [
+        "T-007",
+        "T-006"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-006"
+      ],
+      "move": "hero",
+      "territory": "J",
+      "text": "",
+      "truth": [
+        "T-006",
+        "T-007"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-006"
+      ],
+      "move": "category",
+      "territory": "J",
+      "text": "",
+      "truth": [
+        "T-006"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-006"
+      ],
+      "move": "value_proof",
+      "territory": "J",
+      "text": "",
+      "truth": [
+        "T-006",
+        "T-010"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-004",
+        "C-002"
+      ],
+      "move": "beachhead",
+      "territory": "A",
+      "text": "",
+      "truth": [
+        "T-001",
+        "T-005"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-005"
+      ],
+      "move": "enemy",
+      "territory": "B",
+      "text": "",
+      "truth": [
+        "T-007"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-005"
+      ],
+      "move": "beachhead",
+      "territory": "B",
+      "text": "",
+      "truth": [
+        "T-001"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-006"
+      ],
+      "move": "enemy",
+      "territory": "J",
+      "text": "",
+      "truth": [
+        "T-006"
+      ],
+      "verdict": "accepted"
+    },
+    {
+      "claims": [
+        "C-006"
+      ],
+      "move": "beachhead",
+      "territory": "J",
+      "text": "",
+      "truth": [
+        "T-006"
+      ],
+      "verdict": "accepted"
+    }
+  ],
+  "claims": [
+    {
+      "citations_verified": true,
+      "confidence": "high",
+      "contested": false,
+      "id": "C-001",
+      "panel_members": [
+        "xai",
+        "perplexity",
+        "local-codex"
+      ],
+      "sources": [
+        "https://community.shopify.dev/t/shopify-connector-for-claude-allow-several-development-stores-at-the-same-time/38283",
+        "https://help.shopify.com/en/manual/ai-powered-tools/connecting-ai-tools/authorizing-access",
+        "https://github.com/anthropics/claude-code/issues/99407"
+      ],
+      "text": "Shopify's official AI connectors hold one store at a time, even within one organization; switching starts a new authorization (Shopify staff, 7 Oct 2026; hosted MCP switch-shop description, probed 30 Oct 2026)"
+    },
+    {
+      "citations_verified": true,
+      "confidence": "medium",
+      "contested": false,
+      "id": "C-002",
+      "panel_members": [
+        "xai",
+        "local-codex"
+      ],
+      "sources": [
+        "https://community.shopify.dev/t/shopify-connector-for-claude-allow-several-development-stores-at-the-same-time/38283",
+        "https://www.reddit.com/r/shopify/comments/1wjidu6/how_to_connect_multiple_stores_to_claude_code_via/"
+      ],
+      "text": "Practitioners who work across several stores voice the one-store limit in their own words: a theme developer with nine stores ('Parallel agents cannot work on different stores at all') and a consultant connecting a client's two regional stores to Claude Code"
+    },
+    {
+      "citations_verified": true,
+      "confidence": "high",
+      "contested": false,
+      "id": "C-003",
+      "panel_members": [
+        "xai",
+        "local-codex"
+      ],
+      "sources": [
+        "https://github.com/alex-brecher/shopify-multi-store",
+        "https://matrixify.app/whats-new/release-notes/",
+        "https://apps.shopify.com/shopmcp",
+        "https://datadrew.io/mcp/"
+      ],
+      "text": "Multi-store AI access to Shopify is already offered by others: alex-brecher/shopify-multi-store (MIT, v2.0, 5 stars), Matrixify (several shops per assistant since June 2026), ShopMCP, Datadrew, SyncWith"
+    },
+    {
+      "citations_verified": false,
+      "confidence": "medium",
+      "contested": false,
+      "id": "C-004",
+      "panel_members": [
+        "xai",
+        "local-codex",
+        "perplexity"
+      ],
+      "sources": [
+        "https://www.shopify.com/partners/directory/services",
+        "https://sherocommerce.com/blogs/insights/top-shopify-agencies-in-the-us",
+        "https://www.shopify.com/news/a-world-with-more-builders"
+      ],
+      "text": "Shopify service partners are an identifiable, reachable population (5,454 listed in the Partner Directory; 837 US tiered partners; 40,000 partners referred a merchant in 2025) but no source counts those working 5-30 live client stores with AI assistants"
+    },
+    {
+      "citations_verified": false,
+      "confidence": "medium",
+      "contested": false,
+      "id": "C-005",
+      "panel_members": [
+        "xai",
+        "local-codex"
+      ],
+      "sources": [
+        "https://changelog.shopify.com/posts/multi-store-reporting-is-now-available-in-analytics",
+        "https://www.reddit.com/r/shopify/comments/1nezop7/shopify_just_launched_multistore_analytics_for/",
+        "https://letsmetrix.com/app/multi-store-inventory-sync/pricing"
+      ],
+      "text": "Merchants running several of their own stores mostly solve cross-store work with native Plus analytics, sync apps and spreadsheets; their voiced pain is catalog matching, not AI access"
+    },
+    {
+      "citations_verified": false,
+      "confidence": "low",
+      "contested": false,
+      "id": "C-006",
+      "panel_members": [
+        "xai",
+        "local-codex"
+      ],
+      "sources": [
+        "https://withcommerce.com/blog/how-to-buy-existing-shopify-store-guide.html",
+        "https://support.flippa.com/hc/en-us/articles/18069156836495-Shopify-Integration-step-by-step-guide"
+      ],
+      "text": "Store acquirers distrust seller screenshots, but live access needs the seller to grant it and no source shows buyers using AI assistants across several target stores"
+    },
+    {
+      "citations_verified": true,
+      "confidence": "low",
+      "contested": false,
+      "id": "C-007",
+      "panel_members": [
+        "xai",
+        "local-codex"
+      ],
+      "sources": [
+        "https://community.shopify.dev/t/shopify-connector-for-claude-allow-several-development-stores-at-the-same-time/38283"
+      ],
+      "text": "Running several Shopify CLI commands at once on one login logged a developer out (six parallel theme pulls); running them one at a time behind a lock was stable"
+    },
+    {
+      "citations_verified": true,
+      "confidence": "medium",
+      "contested": false,
+      "id": "C-008",
+      "panel_members": [
+        "xai",
+        "local-codex"
+      ],
+      "sources": [
+        "https://community.shopify.dev/t/shopify-connector-for-claude-allow-several-development-stores-at-the-same-time/38283",
+        "https://help.shopify.com/en/manual/ai-powered-tools/shopify-cli-connector"
+      ],
+      "text": "Shopify points multi-store AI work to its own CLI (store auth per store, store execute --store) and tells merchants to use official integrations rather than build their own token-based ones"
+    },
+    {
+      "citations_verified": false,
+      "confidence": "medium",
+      "contested": true,
+      "id": "C-009",
+      "panel_members": [
+        "xai",
+        "local-codex"
+      ],
+      "sources": [
+        "https://github.com/alex-brecher/shopify-multi-store",
+        "https://matrixify.app/whats-new/release-notes/"
+      ],
+      "text": "Whether multi-store AI access is still an unmet gap: Grok finds two gaps (remembered authorization inside chat apps; parallel-safe CLI use), Codex finds no marketwide gap given Matrixify, ShopMCP and community MCPs"
+    }
+  ],
+  "product": "shopify-multi-mcp",
+  "truth": [
+    {
+      "capability": "One AI assistant works on several Shopify stores at once; every store tool takes a store choice from the connected stores",
+      "evidence": "src/tools.js buildTools + test/server.test.js 'tools/list merges store tools'",
+      "id": "T-001",
+      "status": "shipped"
+    },
+    {
+      "capability": "Every result is labelled with the store it came from",
+      "evidence": "src/tools.js storeResult + test/server.test.js 'store tools run on the named store and label the result'",
+      "id": "T-002",
+      "status": "shipped"
+    },
+    {
+      "capability": "Each store signs in through Shopify's own approval page (Shopify CLI store auth); no app to create in the Dev Dashboard",
+      "evidence": "src/shopify-cli.js startAuth + docs/REVIEW.md section 3 (CLI 5.0.0 source read; live approval not yet run, see T-012)",
+      "id": "T-003",
+      "status": "shipped"
+    },
+    {
+      "capability": "Runs the newest Shopify CLI and Dev MCP from npm, promoted only after integrity, registry-signature and smoke checks, with last-known-good fallback",
+      "evidence": "src/toolchain.js + test/toolchain.test.js (8 tests) + doctor run 2026-10-31",
+      "id": "T-004",
+      "status": "shipped"
+    },
+    {
+      "capability": "Installs with one line in Claude Code, Claude Desktop, Cursor, VS Code or Codex (any stdio MCP client)",
+      "evidence": "README.md Set up + end-to-end stdio session via npx github:fledgeling-co/shopify-multi-mcp 2026-10-31",
+      "id": "T-005",
+      "status": "shipped"
+    },
+    {
+      "capability": "Read-only stores, and changes refused everywhere except the one change tool",
+      "evidence": "test/server.test.js 'queries refuse mutations, read-only stores refuse graphql_mutation'",
+      "id": "T-006",
+      "status": "shipped"
+    },
+    {
+      "capability": "One question answered across every store side by side",
+      "evidence": "src/server.js queryAll + test/server.test.js 'graphql_query_all_stores labels each store'",
+      "id": "T-007",
+      "status": "shipped"
+    },
+    {
+      "capability": "Shopify's own docs search and code validation built in (Dev MCP passthrough)",
+      "evidence": "doctor run: 3 queries valid (validate) + test/server.test.js 'Dev MCP tools pass through'",
+      "id": "T-008",
+      "status": "shipped"
+    },
+    {
+      "capability": "Free and open source under the MIT licence",
+      "evidence": "LICENSE",
+      "id": "T-009",
+      "status": "shipped"
+    },
+    {
+      "capability": "Never reads, copies or stores Shopify tokens; sessions stay in Shopify CLI",
+      "evidence": "src/shopify-cli.js (no token handling) + README.md 'What it refuses'",
+      "id": "T-010",
+      "status": "shipped"
+    },
+    {
+      "capability": "A store that needs signing in again tells the assistant exactly how to fix it",
+      "evidence": "test/server.test.js 'an expired session tells the model exactly how to recover' + live CLI error 2026-10-31",
+      "id": "T-011",
+      "status": "shipped"
+    },
+    {
+      "capability": "Sign-in and store calls verified against a real Shopify store",
+      "evidence": "STATUS.html: gate 'Sign-in and calls against a real store' unmeasured",
+      "id": "T-012",
+      "status": "designed"
+    },
+    {
+      "capability": "Install from npm as shopify-multi-mcp@latest",
+      "evidence": "not published; README uses github: install",
+      "id": "T-013",
+      "status": "designed"
+    },
+    {
+      "capability": "A hosted version that needs nothing installed",
+      "evidence": "docs/REVIEW.md finding 1: Shopify's hosted MCP rejects third-party OAuth clients",
+      "id": "T-014",
+      "status": "aspirational"
+    }
+  ]
+}
