@@ -455,15 +455,15 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
 -->
 <script type="application/json" id="report-data">
 {
- "project": "shopherd-shopify-mcp",
- "updated": "2026-10-31T17:40:00+11:00",
+ "project": "shopify-multistore-mcp",
+ "updated": "2026-10-31T18:10:00+11:00",
  "verdict": {
   "token": "blocked",
-  "number": "13 of 15",
+  "number": "17 of 19",
   "unit": "tasks finished",
-  "headline": "Shopherd Shopify MCP 0.3.0 beats the closest alternative on accuracy and cost; npm publish waits on you.",
-  "run_label": "0.3.0: reports, side-by-side stores, evals",
-  "head_sha": "afd8ded"
+  "headline": "shopify-multistore-mcp 0.3.1 has its tag ring icon and a redesigned site; npm publish still waits on you.",
+  "run_label": "0.3.1: new name, tag ring icon, site redesign",
+  "head_sha": "a79cbbe"
  },
  "tasks": [
   {
@@ -491,7 +491,7 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "stage": "code written",
    "outcome": "done",
    "version": "216506f",
-   "note": "now fledgeling-co/shopherd-shopify-mcp"
+   "note": "now fledgeling-co/shopify-multistore-mcp"
   },
   {
    "id": "SMM-4",
@@ -513,7 +513,7 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
   },
   {
    "id": "SMM-6",
-   "title": "App icon: a row of shopfronts",
+   "title": "First app icon: a row of shopfronts (since replaced)",
    "origin": "planned",
    "stage": "code written",
    "outcome": "done",
@@ -554,7 +554,7 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "stage": "code written",
    "outcome": "done",
    "version": "d6baaf0",
-   "note": "StoreRow, then Shopherd Shopify MCP"
+   "note": "StoreRow, then Shopherd, then shopify-multistore-mcp"
   },
   {
    "id": "SMM-11",
@@ -563,11 +563,11 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "stage": "code written",
    "outcome": "done",
    "version": "afd8ded",
-   "note": "fledgeling-co.github.io/shopherd-shopify-mcp"
+   "note": "fledgeling-co.github.io/shopify-multistore-mcp"
   },
   {
    "id": "SMM-12",
-   "title": "Publish shopherd-shopify-mcp 0.3.0 to npm",
+   "title": "Publish shopify-multistore-mcp 0.3.1 to npm",
    "origin": "planned",
    "stage": "code written",
    "outcome": "stuck",
@@ -585,7 +585,7 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
   },
   {
    "id": "SMM-14",
-   "title": "Head-to-head evals against Shopify Multi-Store MCP",
+   "title": "Head-to-head evals against alex-brecher/shopify-multi-store",
    "origin": "planned",
    "stage": "code written",
    "outcome": "done",
@@ -600,6 +600,42 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "outcome": "done",
    "version": "afd8ded",
    "note": "voice lint clean on the hard checks"
+  },
+  {
+   "id": "SMM-16",
+   "title": "Rename to shopify-multistore-mcp",
+   "origin": "asked",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "60e3f6f",
+   "note": "old names and settings still work"
+  },
+  {
+   "id": "SMM-17",
+   "title": "App icon options, then ship the tag ring",
+   "origin": "asked",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "d1d34e8",
+   "note": "6 directions x 3 engines; design/icon/options/audit.html"
+  },
+  {
+   "id": "SMM-18",
+   "title": "Redesign the marketing page around the tag ring",
+   "origin": "asked",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "a79cbbe",
+   "note": "copy by Gemini 4 Argon; design review: Solid"
+  },
+  {
+   "id": "SMM-19",
+   "title": "Show on the site why it beats other multi-store servers",
+   "origin": "asked",
+   "stage": "code written",
+   "outcome": "done",
+   "version": "a79cbbe",
+   "note": "'Why choose it' band with a side-by-side table"
   }
  ],
  "gates": [
@@ -645,33 +681,57 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
   },
   {
    "name": "Live site loads with no errors or broken files",
-   "command": "Playwright on the Pages URL at 1280 and 390",
+   "command": "Chromium on the Pages URL at 1280 after the redesign",
    "exit_code": 0,
-   "counts": "2/2",
+   "counts": "1/1",
    "state": "done",
    "kind": "design"
   },
   {
-   "name": "No sideways scrolling, 320 to 1280 wide",
-   "command": "Playwright at 4 widths",
+   "name": "No sideways scrolling, 320 to 1920 wide",
+   "command": "Chromium at 320, 375, 768, 1280, 1440 and 1920",
    "exit_code": 0,
-   "counts": "4/4",
+   "counts": "6/6",
    "state": "done",
    "kind": "design"
   },
   {
    "name": "Package installs from npm",
-   "command": "npx -y shopherd-shopify-mcp@latest",
+   "command": "npx -y shopify-multistore-mcp@latest",
    "counts": "0/0",
    "state": "unmeasured",
    "kind": "build"
   },
   {
    "name": "Sign-in and calls against a real store",
-   "command": "shopherd connect",
+   "command": "shopify-multistore-mcp connect",
    "counts": "0/0",
    "state": "unmeasured",
    "kind": "sign-off"
+  },
+  {
+   "name": "Text contrast on the redesigned site",
+   "command": "design-review sweep at 6 widths (1280 shown)",
+   "exit_code": 0,
+   "counts": "210/210",
+   "state": "done",
+   "kind": "design"
+  },
+  {
+   "name": "Copy buttons put the exact command on the clipboard",
+   "command": "Chromium clipboard read after each click",
+   "exit_code": 0,
+   "counts": "3/3",
+   "state": "done",
+   "kind": "tests"
+  },
+  {
+   "name": "Icon contact sheet: every image present and current",
+   "command": "audit_sheet.py check design/icon/options",
+   "exit_code": 0,
+   "counts": "140/140",
+   "state": "done",
+   "kind": "design"
   }
  ],
  "not_checked": [
@@ -690,11 +750,15 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
   {
    "axis": "Screen-reader reading of the site's demo",
    "why_not": "Needs a person with a screen reader."
+  },
+  {
+   "axis": "Dark theme on the site",
+   "why_not": "The redesign is light only; the old page had a dark theme."
   }
  ],
  "not_done": [
   {
-   "action": "Publish shopherd-shopify-mcp to npm",
+   "action": "Publish shopify-multistore-mcp to npm",
    "reason": "The Warden request for the npm token timed out three times.",
    "what_would_unblock": "Approve it in Warden, or run npm publish yourself.",
    "size": "minutes"
@@ -709,7 +773,7 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
  "roadmap": [
   {
    "round": "Round 1",
-   "goal": "Publish shopherd-shopify-mcp 0.3.0 to npm",
+   "goal": "Publish shopify-multistore-mcp 0.3.1 to npm",
    "tasks": [
     "SMM-12"
    ],
@@ -754,15 +818,25 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
  },
  "artifacts": [
   {
-   "path": "README.md",
-   "kind": "md",
-   "contains": "What it does, how it compares, and setup, for non-developers.",
+   "path": "https://fledgeling-co.github.io/shopify-multistore-mcp/",
+   "kind": "html",
+   "contains": "The live site, redesigned around the tag ring.",
    "open_first": true
   },
   {
-   "path": "https://fledgeling-co.github.io/shopherd-shopify-mcp/",
+   "path": "README.md",
+   "kind": "md",
+   "contains": "What it does, how it compares, and setup, for non-developers."
+  },
+  {
+   "path": "design/marketing/design-review.md",
+   "kind": "md",
+   "contains": "The review of the redesigned site and what it fixed."
+  },
+  {
+   "path": "design/icon/options/audit.html",
    "kind": "html",
-   "contains": "The live site."
+   "contains": "All 20 icon takes, scored, with the tag ring recommended."
   },
   {
    "path": "evals/results/SUMMARY.md",
@@ -770,19 +844,9 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "contains": "The head-to-head numbers, per question."
   },
   {
-   "path": "evals/README.md",
-   "kind": "md",
-   "contains": "How the evals work and what they do not show."
-  },
-  {
    "path": "docs/TECHNICAL.md",
    "kind": "md",
    "contains": "The developer guide: tools, reports, settings, speed."
-  },
-  {
-   "path": "design/marketing/index.html",
-   "kind": "html",
-   "contains": "The site source."
   }
  ],
  "needs_you": [
@@ -850,6 +914,14 @@ th[aria-sort="ascending"] button.sort, th[aria-sort="descending"] button.sort { 
    "severity": "low",
    "file_line": "src/reports.js:328",
    "claim": "catalogue health listed handles where people expect titles",
+   "state": "done"
+  },
+  {
+   "id": "DR-1",
+   "score": 70,
+   "severity": "high",
+   "file_line": "design/marketing/index.html:932",
+   "claim": "the setup Copy button copied nothing after it moved into the terminal bar",
    "state": "done"
   }
  ]
