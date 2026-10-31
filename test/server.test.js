@@ -18,13 +18,15 @@ function fakeCli({ signedIn = ['acme-au.myshopify.com', 'acme-nz.myshopify.com',
   return {
     calls,
     binary: async () => ({ version: '5.0.0' }),
-    sessions: async () => signedIn.map((store) => ({ store, scopes: ['write_products'], associatedUser: { email: 'owner@example.com' } })),
-    execute: async (domain, req) => {
-      calls.push({ domain, ...req });
+    sessions: async (home) => (home ? [] : signedIn.map((store) => ({ store, scopes: ['write_products'], associatedUser: { email: 'owner@example.com' } }))),
+    execute: async (target, req) => {
+      const domain = target.domain;
+      calls.push({ domain, home: target.home, ...req });
       if (domain === 'acme-us.myshopify.com') throw new CliError('No stored app authentication found for acme-us.myshopify.com. Run shopify store auth.', { notAuthenticated: true });
       return { result: { data: { shop: { name: domain.split('.')[0] } } }, cliVersion: '5.0.0' };
     },
-    startAuth: (domain, scopes) => ({ domain, url: null, done: Promise.resolve({ store: domain, scopes }) }),
+    auths: [],
+    startAuth(target, scopes) { this.auths.push(target); return { domain: target.domain, url: null, done: Promise.resolve({ store: target.domain, scopes }) }; },
   };
 }
 
@@ -157,4 +159,78 @@ test('Dev MCP tools pass through under their own names', async () => {
   assert.equal(res.text, 'dev:learn_shopify_api');
   await call('dev_graphql_query', {});
   assert.deepEqual(devMcp.calls.map((c) => c[0]), ['learn_shopify_api', 'graphql_query']);
+});
+
+test('store_report asks every store at once and combines the answers', async () => {
+  const { call, cli } = await setup({ readOnly: [] });
+  cli.execute = async (target, req) => {
+    cli.calls.push({ domain: target.domain, ...req });
+    const currency = target.domain.includes('-au') ? 'AUD' : 'NZD';
+    return { result: { data: { orders: { nodes: [{ currentTotalPriceSet: { shopMoney: { amount: '10.00', currencyCode: currency } } }], pageInfo: { hasNextPage: false } } } } };
+  };
+  const res = await call('store_report', { report: 'sales', days: 1 });
+  assert.equal(res.isError, undefined);
+  assert.match(res.text, /^Sales by store: 2 of 2 stores answered\./);
+  assert.match(res.text, /All stores: 2 orders, 10\.00 AUD \+ 10\.00 NZD/);
+  assert.deepEqual(cli.calls.map((c) => c.domain).sort(), ['acme-au.myshopify.com', 'acme-nz.myshopify.com']);
+  const bad = await call('store_report', { report: 'nope' });
+  assert.equal(bad.isError, true);
+});
+
+test('prompts are listed and filled in', async () => {
+  const { client } = await setup();
+  const { prompts } = await client.listPrompts();
+  assert.ok(['morning-check', 'sales', 'unfulfilled-orders', 'low-stock', 'compare-product', 'catalogue-check', 'connect-store'].every((n) => prompts.some((p) => p.name === n)));
+  const got = await client.getPrompt({ name: 'compare-product', arguments: { product: 'CAP-1' } });
+  assert.match(got.messages[0].content.text, /Compare "CAP-1" across every store with store_report/);
+  const connect = await client.getPrompt({ name: 'connect-store', arguments: { domain: 'acme-uk.myshopify.com', read_only: 'yes' } });
+  assert.match(connect.messages[0].content.text, /Connect acme-uk\.myshopify\.com as "acme-uk", read-only/);
+});
+
+test('mutations that mint credentials or charge the store are blocked', async () => {
+  const { call, cli } = await setup({ readOnly: [] });
+  const res = await call('graphql_mutation', { store: 'au', query: 'mutation { appSubscriptionCreate(name: "x", lineItems: []) { userErrors { message } } }' });
+  assert.match(res.text, /appSubscriptionCreate is blocked/);
+  assert.equal(cli.calls.length, 0);
+});
+
+test('very large results are cut and say so', async () => {
+  const { call, cli } = await setup();
+  cli.execute = async () => ({ result: { data: { blob: 'x'.repeat(80_000) } } });
+  const res = await call('get_shop', { store: 'au' });
+  assert.match(res.text, /\[Cut at 60,000 of [\d,]+ characters\./);
+  assert.equal(res.structuredContent, undefined);
+});
+
+test('connect_store gives each new store its own sign-in folder', async () => {
+  const { call, cli, config } = await setup();
+  await call('connect_store', { store: 'uk', domain: 'acme-uk' });
+  assert.equal(cli.auths[0].domain, 'acme-uk.myshopify.com');
+  assert.equal(cli.auths[0].home, path.join(path.dirname(config.file), 'sessions', 'uk'));
+  const saved = await new Config({ dir: path.dirname(config.file) }).load();
+  assert.equal(saved.stores().uk.session, 'own');
+  assert.equal(saved.target(saved.stores().au ?? { name: 'au', domain: 'acme-au.myshopify.com' }).home, '');
+});
+
+test('Dev MCP tools from the last run are served at once, and an unchanged list is not re-announced', async () => {
+  const { app, client } = await setup();
+  const tools = await app.devMcp.listTools();
+  const live = app.devMcp.active;
+  app.devMcp.active = null;
+  app.devMcp.remembered = { version: '1.18.0', tools };
+  let started;
+  app.devMcp.current = () => new Promise((r) => { started = () => { app.devMcp.active = live; r(live); }; });
+  let changed = 0;
+  client.setNotificationHandler((await import('@modelcontextprotocol/sdk/types.js')).ToolListChangedNotificationSchema, () => { changed++; });
+  const names = (await client.listTools()).tools.map((t) => t.name);
+  assert.ok(names.includes('learn_shopify_api'), 'remembered Dev MCP tools are listed before Dev MCP runs');
+  started();
+  await new Promise((r) => setTimeout(r, 20));
+  app.devReady();
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(changed, 0);
+  app.devMcp.active = { ...live, tools: [...tools, { name: 'new_tool', description: 'x', inputSchema: { type: 'object' } }] };
+  app.devReady();
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(changed, 1);
 });

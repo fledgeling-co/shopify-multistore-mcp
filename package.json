@@ -1,7 +1,7 @@
 {
-  "name": "storerow",
-  "version": "0.2.0",
-  "description": "Several Shopify stores in one AI assistant. Every answer names its store. Signs in through Shopify's own CLI and always runs Shopify's newest CLI and Dev MCP.",
+  "name": "shopherd",
+  "version": "0.3.0",
+  "description": "Shopherd: several Shopify stores in one AI assistant. Ask once, every store answers, each answer names its store. Signs in through Shopify's own CLI; no keys stored.",
   "keywords": [
     "mcp",
     "mcp-server",
@@ -14,18 +14,18 @@
     "codex",
     "agency"
   ],
-  "homepage": "https://fledgeling-co.github.io/storerow/",
+  "homepage": "https://fledgeling-co.github.io/shopherd/",
   "bugs": {
-    "url": "https://github.com/fledgeling-co/storerow/issues"
+    "url": "https://github.com/fledgeling-co/shopherd/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fledgeling-co/storerow.git"
+    "url": "git+https://github.com/fledgeling-co/shopherd.git"
   },
   "license": "MIT",
   "type": "module",
   "bin": {
-    "storerow": "bin/storerow.js"
+    "shopherd": "bin/shopherd.js"
   },
   "files": [
     "bin",
@@ -34,8 +34,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "start": "node bin/storerow.js",
-    "test": "node --test test/*.test.js"
+    "start": "node bin/shopherd.js",
+    "test": "node --test test/*.test.js",
+    "eval": "node evals/run.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

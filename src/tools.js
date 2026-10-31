@@ -1,7 +1,8 @@
 import { DEFAULT_SCOPES, normalizeDomain, normalizeName, readOnlyScopes } from './config.js';
+import { REPORTS, REPORT_NAMES } from './reports.js';
 
 // Curated reads use fields checked against the Admin API 2026-10 schema bundled in
-// @shopify/dev-mcp 1.18.0; `storerow doctor` re-checks them against the schema in
+// @shopify/dev-mcp 1.18.0; `shopherd doctor` re-checks them against the schema in
 // whatever Dev MCP release is newest.
 export const CURATED_QUERIES = {
   get_shop: `query Shop {
@@ -142,7 +143,7 @@ export function buildTools(stores, { validator = 'validate' } = {}) {
     {
       name: 'graphql_query_all_stores',
       title: 'Run one query on every store',
-      description: 'Run the same read-only Admin GraphQL query on several stores and get the results side by side, each labelled with its store. Use it to compare stores, for example sales, inventory or settings. Stores are queried one after another.',
+      description: 'Run the same read-only Admin GraphQL query on several stores at once and get the results side by side, each labelled with its store. For common comparisons (sales, unfulfilled orders, low stock, catalogue gaps) store_report is quicker and already combines the answers.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -152,6 +153,30 @@ export function buildTools(stores, { validator = 'validate' } = {}) {
           api_version: { type: 'string', description: 'Admin API version such as "2026-10". Omit for the latest stable version.' },
         },
         required: ['query'],
+        additionalProperties: false,
+      },
+      annotations: { readOnlyHint: true, openWorldHint: false },
+    },
+    {
+      name: 'store_report',
+      title: 'Run a ready-made report across stores',
+      description: `Ask every store (or the ones listed) at once and get one combined, store-labelled answer. Reports:\n${REPORT_NAMES.map((n) => `- ${n}: ${REPORTS[n].description}`).join('\n')}\nPeriods default to the last 7 days; a bare date is read in each store's own time zone. Large stores are read up to max_pages pages and the result says when it stopped early.`,
+      inputSchema: {
+        type: 'object',
+        properties: {
+          report: { type: 'string', enum: REPORT_NAMES, description: 'Which report to run.' },
+          stores: { type: 'array', items: storeProperty(stores, { allowAll: true }), description: 'Stores to include. Omit for every connected store.' },
+          days: { type: 'integer', minimum: 0, maximum: 366, description: 'overview, sales, recent_changes: how many days back (default 7; 1 means since yesterday).' },
+          since: { type: 'string', description: 'sales, overview, recent_changes: start date, for example 2026-10-01. Overrides days.' },
+          until: { type: 'string', description: 'sales, overview, recent_changes: end date (exclusive), for example 2026-10-31.' },
+          threshold: { type: 'integer', minimum: 0, description: 'low_stock: report variants at or below this quantity (default 5).' },
+          sku: { type: 'string', description: 'find_product: exact SKU.' },
+          handle: { type: 'string', description: 'find_product: product handle.' },
+          query: { type: 'string', description: 'find_product: title words or Shopify search syntax. catalog_gaps, catalog_health, duplicate_skus: optional filter such as "vendor:Acme".' },
+          limit: { type: 'integer', minimum: 1, maximum: 50, description: 'unfulfilled: how many of the oldest orders to list per store (default 5).' },
+          max_pages: { type: 'integer', minimum: 1, maximum: 50, description: 'Upper bound on pages read per store (each page is 100-250 records). Defaults differ per report.' },
+        },
+        required: ['report'],
         additionalProperties: false,
       },
       annotations: { readOnlyHint: true, openWorldHint: false },
@@ -174,6 +199,28 @@ export function resolveStore(stores, value) {
   return hit;
 }
 
+// Mutations that mint credentials or charge the store are refused outright: an AI assistant has no
+// business creating access tokens or app charges, and neither can be undone from the chat.
+export const BLOCKED_MUTATIONS = [
+  'delegateAccessTokenCreate', 'storefrontAccessTokenCreate',
+  'appSubscriptionCreate', 'appSubscriptionTrialExtend', 'appPurchaseOneTimeCreate', 'appUsageRecordCreate',
+  'appRevokeAccessScopes',
+];
+
+export function assertAllowedMutation(query) {
+  const hit = BLOCKED_MUTATIONS.find((m) => new RegExp(`\\b${m}\\b`).test(String(query)));
+  if (hit) throw new ToolError(`${hit} is blocked: it creates credentials, charges the store or changes app access. Do it in Shopify admin instead.`);
+}
+
+// Picks stores from a list of names, or every store when the list is empty or contains "all".
+export function resolveStores(stores, list) {
+  const picked = Array.isArray(list) && list.length && !list.includes('all')
+    ? [...new Map(list.map((s) => resolveStore(stores, s)).map((s) => [s.name, s])).values()]
+    : Object.values(stores);
+  if (!picked.length) throw new ToolError('No stores are connected yet. Call connect_store first.');
+  return picked;
+}
+
 export function assertNotMutation(query) {
   const body = String(query).replace(/#[^\n]*/g, '').replace(/"""[\s\S]*?"""|"(?:\\.|[^"\\])*"/g, '""');
   if (/(^|[\s{}])mutation\b/.test(body)) throw new ToolError('This tool only runs queries. Use graphql_mutation for changes.');
@@ -189,6 +236,10 @@ export function connectArgs(args, existing) {
 }
 
 export function textResult(text, structured) {
+  if (text.length > TEXT_LIMIT) {
+    text = `${text.slice(0, TEXT_LIMIT)}\n\n[Cut at ${TEXT_LIMIT.toLocaleString('en')} of ${text.length.toLocaleString('en')} characters. Ask for fewer fields or records, or page with pageInfo.endCursor.]`;
+    structured = undefined;
+  }
   const result = { content: [{ type: 'text', text }] };
   if (structured !== undefined) result.structuredContent = structured;
   return result;
@@ -198,7 +249,11 @@ export function errorResult(text) {
   return { content: [{ type: 'text', text }], isError: true };
 }
 
+// Results go to the model as compact JSON, cut at TEXT_LIMIT characters so one large query cannot
+// fill the conversation; the cut is stated so the assistant narrows the query or pages on.
+export const TEXT_LIMIT = 60_000;
+
 export function storeResult(store, payload) {
   const header = `store: ${store.name} (${store.domain})`;
-  return textResult(`${header}\n${JSON.stringify(payload, null, 2)}`, { store: store.name, domain: store.domain, ...payload });
+  return textResult(`${header}\n${JSON.stringify(payload)}`, { store: store.name, domain: store.domain, ...payload });
 }

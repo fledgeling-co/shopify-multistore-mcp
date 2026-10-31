@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-31T05:26:38.945Z",
+  "runs": 7,
+  "note": "Shopherd calls go through a stand-in for Shopify CLI that waits 470 ms per call, the start-up time measured for Shopify CLI 5.0.0; neither server pays network latency to Shopify here.",
+  "toolList": {
+    "shopherd": {
+      "tools": 14,
+      "characters": 38993,
+      "approxTokens": 9748,
+      "names": [
+        "list_stores",
+        "connect_store",
+        "get_shop",
+        "search_products",
+        "list_orders",
+        "graphql_query",
+        "graphql_mutation",
+        "graphql_query_all_stores",
+        "store_report",
+        "feedback",
+        "learn_shopify_api",
+        "search_docs_chunks",
+        "validate",
+        "validate_theme"
+      ]
+    },
+    "shopify-multi-store": {
+      "tools": 29,
+      "characters": 46718,
+      "approxTokens": 11680,
+      "names": [
+        "shopify_graphql_schema",
+        "shopify_validate_graphql_codeblocks",
+        "shopify_create_product",
+        "shopify_update_product",
+        "shopify_create_collection",
+        "shopify_update_collection",
+        "shopify_set_inventory",
+        "shopify_create_discount",
+        "shopify_upload_image",
+        "shopify_update_prices",
+        "shopify_metafields",
+        "shopify_redirects",
+        "shopify_update_order",
+        "shopify_tags",
+        "shopify_update_customer",
+        "shopify_create_fulfillment",
+        "shopify_check_access",
+        "shopify_search",
+        "shopify_get",
+        "shopify_report",
+        "shopify_search_docs_chunks",
+        "shopify_find_actions",
+        "shopify_describe_action",
+        "shopify_run_action",
+        "shopify_list_stores",
+        "shopify_get_shop_info",
+        "shopify_graphql_query",
+        "shopify_graphql_query_many",
+        "shopify_graphql_mutation"
+      ]
+    }
+  },
+  "speed": {
+    "3 stores": {
+      "shopherd": {
+        "medianMs": 541,
+        "isError": false,
+        "sample": "Unfulfilled orders by age: 3 of 3 stores answered.\n\n| store | unfulfilled | under 1 day | 1-2 days | 2-7 days | over 7 days | oldest |\n|---|---|---|---|---|---|---|\n| harbour | 4 | 1 | 1 | 1 | 1 | #10"
+      },
+      "shopherd, one store at a time (0.2 behaviour)": {
+        "medianMs": 1580,
+        "isError": false,
+        "sample": "Unfulfilled orders by age: 3 of 3 stores answered.\n\n| store | unfulfilled | under 1 day | 1-2 days | 2-7 days | over 7 days | oldest |\n|---|---|---|---|---|---|---|\n| harbour | 4 | 1 | 1 | 1 | 1 | #10"
+      },
+      "shopify-multi-store": {
+        "medianMs": 7,
+        "isError": false,
+        "sample": "{\"report\":\"list_unfulfilled_orders\",\"since\":\"2025-10-31T05:27:02.750Z\",\"days\":365,\"rowLimitPerStore\":25,\"summaries\":[{\"store\":\"harbour\",\"ok\":true,\"returnedOrders\":3,\"complete\":true,\"truncated\":false},"
+      }
+    },
+    "1 store, shop details": {
+      "shopherd": {
+        "medianMs": 526,
+        "isError": false,
+        "sample": "store: northpaper (northpaper.myshopify.com)\n{\"data\":{\"shop\":{\"name\":\"Northpaper\",\"myshopifyDomain\":\"northpaper.myshopify.com\",\"primaryDomain\":{\"url\":\"https://northpaper.example\"},\"email\":\"hello@north"
+      },
+      "shopify-multi-store": {
+        "medianMs": 5,
+        "isError": false,
+        "sample": "{\"store\":\"northpaper\",\"shop\":\"northpaper.myshopify.com\",\"apiVersion\":\"2026-07\",\"elapsedMs\":3,\"retryCount\":0,\"data\":{\"shop\":{\"id\":\"gid://shopify/Shop/37072\",\"name\":\"Northpaper\",\"myshopifyDomain\":\"north"
+      }
+    },
+    "8 stores": {
+      "shopherd": {
+        "medianMs": 1095,
+        "isError": false,
+        "sample": "Unfulfilled orders by age: 8 of 8 stores answered.\n\n| store | unfulfilled | under 1 day | 1-2 days | 2-7 days | over 7 days | oldest |\n|---|---|---|---|---|---|---|\n| harbour | 4 | 1 | 1 | 1 | 1 | #10"
+      },
+      "shopherd, one store at a time (0.2 behaviour)": {
+        "medianMs": 4202,
+        "isError": false,
+        "sample": "Unfulfilled orders by age: 8 of 8 stores answered.\n\n| store | unfulfilled | under 1 day | 1-2 days | 2-7 days | over 7 days | oldest |\n|---|---|---|---|---|---|---|\n| harbour | 4 | 1 | 1 | 1 | 1 | #10"
+      },
+      "shopify-multi-store": {
+        "medianMs": 12,
+        "isError": false,
+        "sample": "{\"report\":\"list_unfulfilled_orders\",\"since\":\"2025-10-31T05:27:46.312Z\",\"days\":365,\"rowLimitPerStore\":25,\"summaries\":[{\"store\":\"harbour\",\"ok\":true,\"returnedOrders\":3,\"complete\":true,\"truncated\":false},"
+      }
+    }
+  },
+  "install": {
+    "shopherd": {
+      "packageBytes": 39764,
+      "unpackedBytes": 126951,
+      "installedBytes": 27799552,
+      "installedPackages": 96,
+      "firstRunDownloadBytes": 397451264,
+      "firstRunDownload": "Shopify CLI and Shopify Dev MCP, fetched and checked on first start"
+    },
+    "shopify-multi-store": {
+      "installedBytes": 31846400,
+      "installedPackages": 42
+    }
+  }
+}

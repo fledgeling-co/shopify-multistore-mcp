@@ -26,6 +26,15 @@ export function run(command, args, { cwd, env, timeoutMs = 0, input } = {}) {
   });
 }
 
+function alive(pid) {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (err) {
+    return err.code === 'EPERM';
+  }
+}
+
 function compareSemver(a, b) {
   const pa = a.split(/[.-]/).map((x) => (/^\d+$/.test(x) ? Number(x) : x));
   const pb = b.split(/[.-]/).map((x) => (/^\d+$/.test(x) ? Number(x) : x));
@@ -44,7 +53,7 @@ function compareSemver(a, b) {
 // signatures verify, and the caller's smoke test passes; until then the previous good
 // version keeps serving.
 export class Toolchain {
-  constructor({ dir, pins = {}, checkEveryMs = 15 * 60_000, sessionPinned = false, fetchImpl = fetch, log = () => {}, runImpl = run }) {
+  constructor({ dir, pins = {}, checkEveryMs = 15 * 60_000, sessionPinned = false, fetchImpl = fetch, log = () => {}, runImpl = run, lockWaitMs = 20 * 60_000, lockPollMs = 500 }) {
     this.dir = dir;
     this.pins = pins;
     this.checkEveryMs = checkEveryMs;
@@ -54,6 +63,8 @@ export class Toolchain {
     this.run = runImpl;
     this.smokeTests = new Map();
     this.state = new Map(); // pkg -> { version, dir, checkedAt, latest, error, signatures, pending }
+    this.lockWaitMs = lockWaitMs;
+    this.lockPollMs = lockPollMs;
   }
 
   setSmokeTest(pkg, fn) {
@@ -140,26 +151,83 @@ export class Toolchain {
       return { entry: await this.entry(pkg, version, binName), signatures: ready.signatures };
     };
     try { return await readReady(); } catch { /* not verified yet */ }
-    // Install and verify in a private directory, then rename it into place, so two servers
-    // updating at once never see each other's half-finished install.
-    const tmp = `${final}.tmp-${process.pid}-${Date.now()}`;
-    try {
-      await this.install(pkg, version, tmp);
-      const signatures = await this.verifySignatures(tmp);
-      if (!signatures.ok) throw new Error(`${pkg}@${version} rejected: ${signatures.detail}`);
-      const smoke = this.smokeTests.get(pkg);
-      if (smoke) await smoke(await this.entry(pkg, version, binName, tmp), version);
-      await fs.writeFile(path.join(tmp, '.ready'), JSON.stringify({ verifiedAt: new Date().toISOString(), signatures: signatures.detail }));
-      try { return await readReady(); } catch { /* still ours to place */ }
-      await fs.rm(final, { recursive: true, force: true });
+    await this.sweep(final);
+    // One install per version across every server on this computer: the first takes the lock,
+    // the others wait for its result instead of each downloading their own copy.
+    const placed = await this.withInstallLock(final, async () => {
+      try { return await readReady(); } catch { /* ours to install */ }
+      // Install and verify in a private directory, then rename it into place, so nothing ever
+      // sees a half-finished install.
+      const tmp = `${final}.tmp-${process.pid}-${Date.now()}`;
       try {
-        await fs.rename(tmp, final);
-      } catch (err) {
-        if (!['EEXIST', 'ENOTEMPTY', 'EPERM'].includes(err.code)) throw err;
+        await this.install(pkg, version, tmp);
+        const signatures = await this.verifySignatures(tmp);
+        if (!signatures.ok) throw new Error(`${pkg}@${version} rejected: ${signatures.detail}`);
+        const smoke = this.smokeTests.get(pkg);
+        if (smoke) await smoke(await this.entry(pkg, version, binName, tmp), version);
+        await fs.writeFile(path.join(tmp, '.ready'), JSON.stringify({ verifiedAt: new Date().toISOString(), signatures: signatures.detail }));
+        await fs.rm(final, { recursive: true, force: true });
+        try {
+          await fs.rename(tmp, final);
+        } catch (err) {
+          if (!['EEXIST', 'ENOTEMPTY', 'EPERM'].includes(err.code)) throw err;
+        }
+        return await readReady();
+      } finally {
+        await fs.rm(tmp, { recursive: true, force: true }).catch(() => {});
       }
-      return await readReady();
+    });
+    return placed ?? readReady();
+  }
+
+  // A lock is a directory (mkdir is atomic) holding the owner's pid. It is taken over when that
+  // process has gone or the lock is older than the longest install allowed.
+  async withInstallLock(final, fn) {
+    const lock = `${final}.lock`;
+    const deadline = Date.now() + this.lockWaitMs;
+    await fs.mkdir(path.dirname(final), { recursive: true });
+    for (;;) {
+      try {
+        await fs.mkdir(lock);
+        await fs.writeFile(path.join(lock, 'owner'), String(process.pid));
+        break;
+      } catch (err) {
+        if (err.code !== 'EEXIST') throw err;
+        if (await this.lockIsStale(lock)) { await fs.rm(lock, { recursive: true, force: true }); continue; }
+        try { await fs.access(path.join(final, '.ready')); return null; } catch { /* still installing */ }
+        if (Date.now() > deadline) throw new Error(`timed out waiting for another install of ${path.basename(path.dirname(final))}@${path.basename(final)}`);
+        await new Promise((r) => setTimeout(r, this.lockPollMs));
+      }
+    }
+    try {
+      return await fn();
     } finally {
-      await fs.rm(tmp, { recursive: true, force: true }).catch(() => {});
+      await fs.rm(lock, { recursive: true, force: true }).catch(() => {});
+    }
+  }
+
+  async lockIsStale(lock) {
+    try {
+      const { mtimeMs } = await fs.stat(lock);
+      if (Date.now() - mtimeMs > this.lockWaitMs) return true;
+      const pid = Number(await fs.readFile(path.join(lock, 'owner'), 'utf8').catch(() => ''));
+      if (!pid) return Date.now() - mtimeMs > 60_000;
+      return !alive(pid);
+    } catch {
+      return false;
+    }
+  }
+
+  // Removes half-finished installs left by servers that were stopped mid-install.
+  async sweep(final) {
+    const base = path.dirname(final);
+    const prefix = `${path.basename(final)}.tmp-`;
+    let names = [];
+    try { names = await fs.readdir(base); } catch { return; }
+    for (const n of names) {
+      if (!n.startsWith(prefix)) continue;
+      const pid = Number(n.slice(prefix.length).split('-')[0]);
+      if (pid !== process.pid && !alive(pid)) await fs.rm(path.join(base, n), { recursive: true, force: true }).catch(() => {});
     }
   }
 

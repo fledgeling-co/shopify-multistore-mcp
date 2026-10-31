@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
@@ -7,10 +8,16 @@ export const DEV_MCP_PACKAGE = '@shopify/dev-mcp';
 // store, so one child serves every store. It always runs the newest verified release and is
 // swapped between calls when a new one is promoted.
 export class DevMcp {
-  constructor({ toolchain, log = () => {}, clientInfo = { name: 'storerow', version: '0' } }) {
+  constructor({ toolchain, log = () => {}, clientInfo = { name: 'shopherd', version: '0' }, toolsFile = null }) {
     this.toolchain = toolchain;
     this.log = log;
     this.clientInfo = clientInfo;
+    // Dev MCP's tool list from the last run, served until this run's Dev MCP is up. AI apps cache
+    // the tool list as part of the prompt, so a list that changes as Dev MCP starts would make
+    // every conversation pay to re-cache it.
+    this.toolsFile = toolsFile;
+    this.remembered = null;
+    try { if (toolsFile) this.remembered = JSON.parse(fs.readFileSync(toolsFile, 'utf8')); } catch { /* first run */ }
     this.active = null; // { version, client, tools, instructions }
     this.starting = null;
     this.error = null;
@@ -46,6 +53,7 @@ export class DevMcp {
           const old = this.active;
           this.active = next;
           this.error = null;
+          if (this.toolsFile) fs.promises.writeFile(this.toolsFile, JSON.stringify({ version: next.version, tools: next.tools })).catch(() => {});
           if (old) {
             this.log(`Dev MCP swapped ${old.version} -> ${next.version}`);
             setTimeout(() => old.client.close().catch(() => {}), 30_000).unref();

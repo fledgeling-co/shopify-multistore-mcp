@@ -27,26 +27,29 @@ export function readOnlyScopes(scopes) {
   return [...new Set(scopes.map((s) => s.replace(/^write_/, 'read_')))];
 }
 
-// Settings are read as STOREROW_<NAME>. Until 0.2.0 the project was called
-// shopify-multi-mcp, so the SHOPIFY_MULTI_MCP_<NAME> spelling still works.
+// Settings are read as SHOPHERD_<NAME>. The project was called shopify-multi-mcp until 0.2.0 and
+// StoreRow in 0.2.0, so those spellings still work.
 export function setting(name, env = process.env) {
-  return env[`STOREROW_${name}`] ?? env[`SHOPIFY_MULTI_MCP_${name}`];
+  return env[`SHOPHERD_${name}`] ?? env[`STOREROW_${name}`] ?? env[`SHOPIFY_MULTI_MCP_${name}`];
 }
 
 export function configDir(env = process.env) {
   const override = setting('HOME', env);
   if (override) return override;
   const base = env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config');
-  const current = path.join(base, 'storerow');
-  const legacy = path.join(base, 'shopify-multi-mcp');
-  return !existsSync(current) && existsSync(legacy) ? legacy : current;
+  const current = path.join(base, 'shopherd');
+  if (existsSync(current)) return current;
+  return ['storerow', 'shopify-multi-mcp'].map((n) => path.join(base, n)).find((d) => existsSync(d)) ?? current;
 }
 
 export function cacheDir(env = process.env) {
   const override = setting('CACHE', env);
   if (override) return override;
   const base = env.XDG_CACHE_HOME || path.join(os.homedir(), '.cache');
-  return path.join(base, 'storerow');
+  const current = path.join(base, 'shopherd');
+  if (existsSync(current)) return current;
+  // Reuse the verified packages an earlier name downloaded rather than fetching them again.
+  return ['storerow', 'shopify-multi-mcp'].map((n) => path.join(base, n)).find((d) => existsSync(d)) ?? current;
 }
 
 // "acme", "acme.myshopify.com", "https://acme.myshopify.com/admin" all become
@@ -129,10 +132,23 @@ export class Config {
     return { name, ...next };
   }
 
+  // A store connected since 0.3.0 keeps its Shopify CLI sign-in in its own folder, so stores can
+  // be queried side by side without sharing one session file.
+  sessionHome(name) {
+    return path.join(path.dirname(this.file), 'sessions', name);
+  }
+
+  // Where the CLI looks for this store's sign-in: { domain, home }. `home` is empty for stores
+  // signed in before 0.3.0 and for stores passed with --store, which use the CLI's default.
+  target(store) {
+    return { domain: store.domain, home: store.session === 'own' ? this.sessionHome(store.name) : '' };
+  }
+
   async removeStore(name) {
     const existed = Boolean(this.data.stores[name]);
     delete this.data.stores[name];
     await this.save();
+    await fs.rm(this.sessionHome(name), { recursive: true, force: true });
     return existed;
   }
 }

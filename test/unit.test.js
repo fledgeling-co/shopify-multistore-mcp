@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { Config, configDir, DEFAULT_SCOPES, normalizeDomain, parseStoreSpec, readOnlyScopes, setting } from '../src/config.js';
-import { CliError, parseJson, Queue, ShopifyCli } from '../src/shopify-cli.js';
+import { CliError, Limiter, parseJson, Queue, sessionEnv, ShopifyCli } from '../src/shopify-cli.js';
 import { assertNotMutation, buildTools, connectArgs, resolveStore } from '../src/tools.js';
 import { parseArgs } from '../src/runtime.js';
 
@@ -33,15 +33,18 @@ test('parseStoreSpec and parseArgs read stores from flags and env', () => {
   assert.deepEqual(connect.flags['read-only'], [true]);
 });
 
-test('settings and the config folder still honour the pre-0.2.0 name', async () => {
-  assert.equal(setting('UPDATES', { STOREROW_UPDATES: 'session', SHOPIFY_MULTI_MCP_UPDATES: 'off' }), 'session');
+test('settings and the config folder still honour the earlier names', async () => {
+  assert.equal(setting('UPDATES', { SHOPHERD_UPDATES: 'session', STOREROW_UPDATES: 'off', SHOPIFY_MULTI_MCP_UPDATES: 'off' }), 'session');
+  assert.equal(setting('UPDATES', { STOREROW_UPDATES: 'session' }), 'session');
   assert.equal(setting('UPDATES', { SHOPIFY_MULTI_MCP_UPDATES: 'session' }), 'session');
-  const base = await fs.mkdtemp(path.join(os.tmpdir(), 'storerow-cfg-'));
-  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'storerow'));
+  const base = await fs.mkdtemp(path.join(os.tmpdir(), 'shopherd-cfg-'));
+  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopherd'));
   await fs.mkdir(path.join(base, 'shopify-multi-mcp'));
   assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopify-multi-mcp'));
   await fs.mkdir(path.join(base, 'storerow'));
   assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'storerow'));
+  await fs.mkdir(path.join(base, 'shopherd'));
+  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopherd'));
   await fs.rm(base, { recursive: true });
 });
 
@@ -136,9 +139,71 @@ test('ShopifyCli passes flags through and classifies sign-in errors', async () =
     return { code: 0, stdout: 'warming up\n{"data":{"shop":{"name":"Acme"}}}', stderr: '' };
   };
   const cli = new ShopifyCli({ toolchain, runImpl });
-  const { result, cliVersion } = await cli.execute('acme.myshopify.com', { query: 'mutation { x }', variables: { id: 1 }, apiVersion: '2026-10', allowMutations: true });
+  const { result, cliVersion } = await cli.execute({ domain: 'acme.myshopify.com' }, { query: 'mutation { x }', variables: { id: 1 }, apiVersion: '2026-10', allowMutations: true });
   assert.equal(cliVersion, '5.0.0');
   assert.deepEqual(result, { data: { shop: { name: 'Acme' } } });
   assert.deepEqual(calls[0], ['/cli/run.js', 'store', 'execute', '--store', 'acme.myshopify.com', '--query', 'mutation { x }', '--variables', '{"id":1}', '--version', '2026-10', '--allow-mutations', '--json', '--no-input']);
-  await assert.rejects(cli.execute('broken.myshopify.com', { query: '{ shop { name } }' }), (err) => err instanceof CliError && err.notAuthenticated);
+  await assert.rejects(cli.execute({ domain: 'broken.myshopify.com' }, { query: '{ shop { name } }' }), (err) => err instanceof CliError && err.notAuthenticated);
+});
+
+const tick = (ms) => new Promise((r) => setTimeout(r, ms));
+const cliToolchain = { setSmokeTest() {}, ensure: async () => ({ version: '5.0.0', entry: '/cli/run.js' }) };
+
+test('Limiter caps how many jobs run at once', async () => {
+  const lim = new Limiter(2);
+  let active = 0;
+  let peak = 0;
+  await Promise.all([1, 2, 3, 4, 5].map(() => lim.run(async () => { active++; peak = Math.max(peak, active); await tick(5); active--; })));
+  assert.equal(peak, 2);
+});
+
+test('sessionEnv points every home-folder variable at the store\'s own folder', () => {
+  assert.deepEqual(sessionEnv(''), {});
+  const env = sessionEnv('/cfg/sessions/au');
+  assert.equal(env.HOME, '/cfg/sessions/au');
+  assert.equal(env.USERPROFILE, '/cfg/sessions/au');
+  assert.equal(env.XDG_CONFIG_HOME, path.join('/cfg/sessions/au', '.config'));
+  assert.equal(env.APPDATA, path.join('/cfg/sessions/au', 'AppData', 'Roaming'));
+});
+
+test('ShopifyCli runs different stores side by side, one store in order, within the limit', async () => {
+  let active = 0;
+  let peak = 0;
+  const perHome = new Map();
+  const runImpl = async (cmd, args, opts) => {
+    const home = opts.env.HOME || 'default';
+    perHome.set(home, (perHome.get(home) || 0) + 1);
+    assert.equal(perHome.get(home), 1, `two calls overlapped on ${home}`);
+    active++; peak = Math.max(peak, active);
+    await tick(15);
+    active--; perHome.set(home, perHome.get(home) - 1);
+    return { code: 0, stdout: '{"data":{}}', stderr: '' };
+  };
+  const cli = new ShopifyCli({ toolchain: cliToolchain, runImpl, concurrency: 3 });
+  const at = (home) => cli.execute({ domain: 'x.myshopify.com', home }, { query: '{ shop { name } }' });
+  const started = Date.now();
+  await Promise.all([at('/a'), at('/b'), at('/c'), at('/d'), at('/a'), at('')]);
+  assert.equal(peak, 3);
+  assert.ok(Date.now() - started < 6 * 15, 'calls on different stores overlapped');
+});
+
+test('ShopifyCli retries throttled queries but never a throttled mutation', async () => {
+  let calls = 0;
+  const throttled = '{"errors":[{"message":"Throttled","extensions":{"code":"THROTTLED"}}]}';
+  const runImpl = async () => { calls++; return { code: 0, stdout: calls < 3 ? throttled : '{"data":{"shop":{"name":"A"}}}', stderr: '' }; };
+  const cli = new ShopifyCli({ toolchain: cliToolchain, runImpl, retryDelayMs: 1 });
+  const { result } = await cli.execute({ domain: 'a.myshopify.com' }, { query: '{ shop { name } }' });
+  assert.equal(calls, 3);
+  assert.equal(result.data.shop.name, 'A');
+  calls = 0;
+  const m = await cli.execute({ domain: 'a.myshopify.com' }, { query: 'mutation { x }', allowMutations: true });
+  assert.equal(calls, 1);
+  assert.equal(m.result.errors[0].extensions.code, 'THROTTLED');
+});
+
+test('setup --client takes a value', () => {
+  const { positional, flags } = parseArgs(['setup', '--client', 'cursor,vscode', '--yes']);
+  assert.deepEqual(positional, ['setup']);
+  assert.equal(flags.client, 'cursor,vscode');
+  assert.equal(flags.yes, true);
 });

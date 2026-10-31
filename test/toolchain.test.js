@@ -121,3 +121,27 @@ test('old versions are pruned down to the current and previous release', async (
   for (let i = 0; i < 2; i++) { await tc.ensure(PKG); await tc.state.get(PKG).pending; }
   assert.deepEqual(await tc.installedVersions(PKG), ['5.1.0', '5.2.0']);
 });
+
+test('servers starting together share one install, and a crashed install is swept away', async () => {
+  const dir = await tmp();
+  const installs = [];
+  const slow = fakeNpm({ installs });
+  const runImpl = async (cmd, args, opts) => { if (args[0] === 'install') await new Promise((r) => setTimeout(r, 40)); return slow(cmd, args, opts); };
+  const final = path.join(dir, '@shopify__cli', '5.0.0');
+  await fs.mkdir(`${final}.tmp-999999-1`, { recursive: true }); // left by a process that no longer exists
+  const make = () => new Toolchain({ dir, fetchImpl: registry(['5.0.0']), runImpl, lockPollMs: 5 });
+  const results = await Promise.all([make(), make(), make()].map((tc) => tc.ensure(PKG, { binName: 'shopify' })));
+  assert.deepEqual(installs, ['5.0.0']);
+  assert.ok(results.every((r) => r.version === '5.0.0'));
+  const left = await fs.readdir(path.dirname(final));
+  assert.deepEqual(left, ['5.0.0']);
+});
+
+test('a lock held by a process that has gone is taken over', async () => {
+  const dir = await tmp();
+  const final = path.join(dir, '@shopify__cli', '5.0.0');
+  await fs.mkdir(`${final}.lock`, { recursive: true });
+  await fs.writeFile(path.join(`${final}.lock`, 'owner'), '999999');
+  const tc = new Toolchain({ dir, fetchImpl: registry(['5.0.0']), runImpl: fakeNpm(), lockPollMs: 5 });
+  assert.equal((await tc.ensure(PKG, { binName: 'shopify' })).version, '5.0.0');
+});

@@ -1,0 +1,1217 @@
+{
+  "date": "2026-10-31T05:32:12.490Z",
+  "model": "claude-sonnet-5-5",
+  "repeats": 3,
+  "tasks": [
+    {
+      "id": "unfulfilled",
+      "prompt": "How many orders are still waiting to be fulfilled in each store, and which order has been waiting longest in each?"
+    },
+    {
+      "id": "sales",
+      "prompt": "What did each store sell over the last 7 days? Leave out cancelled and test orders, and give each total in the store's own currency."
+    },
+    {
+      "id": "low_stock",
+      "prompt": "Which products have 5 or fewer units left in each store? Give me the SKUs."
+    },
+    {
+      "id": "compare_sku",
+      "prompt": "Compare SKU HB-BEANS-1KG across all my stores: price, compare-at price and stock in each."
+    },
+    {
+      "id": "catalog_gap",
+      "prompt": "Which active products does harbour sell that tidewater doesn't carry at all?"
+    },
+    {
+      "id": "no_image",
+      "prompt": "Which active products have no image, in each store?"
+    },
+    {
+      "id": "duplicate_skus",
+      "prompt": "Is any SKU used by more than one product or variant inside the same store? Tell me which store."
+    },
+    {
+      "id": "active_count",
+      "prompt": "How many active products does each store have?"
+    },
+    {
+      "id": "shop_settings",
+      "prompt": "What currency and time zone does the northpaper store use?"
+    },
+    {
+      "id": "find_title",
+      "prompt": "Which of my stores sell something with \"linen\" in the name, and at what price?"
+    }
+  ],
+  "summary": {
+    "shopherd": {
+      "runs": 30,
+      "passed": 30,
+      "medianToolCalls": 1,
+      "medianSeconds": 8.797,
+      "medianInputTokens": 24470.5,
+      "medianOutputTokens": 526.5,
+      "totalCostUsd": 1.35,
+      "byTask": {
+        "unfulfilled": "3/3",
+        "sales": "3/3",
+        "low_stock": "3/3",
+        "compare_sku": "3/3",
+        "catalog_gap": "3/3",
+        "no_image": "3/3",
+        "duplicate_skus": "3/3",
+        "active_count": "3/3",
+        "shop_settings": "3/3",
+        "find_title": "3/3"
+      }
+    },
+    "shopify-multi-store": {
+      "runs": 30,
+      "passed": 27,
+      "medianToolCalls": 2,
+      "medianSeconds": 8.590499999999999,
+      "medianInputTokens": 70706,
+      "medianOutputTokens": 568,
+      "totalCostUsd": 1.11,
+      "byTask": {
+        "unfulfilled": "0/3",
+        "sales": "3/3",
+        "low_stock": "3/3",
+        "compare_sku": "3/3",
+        "catalog_gap": "3/3",
+        "no_image": "3/3",
+        "duplicate_skus": "3/3",
+        "active_count": "3/3",
+        "shop_settings": "3/3",
+        "find_title": "3/3"
+      }
+    }
+  },
+  "mock": {
+    "requests": 198,
+    "errors": 0,
+    "defaultedFields": []
+  },
+  "results": [
+    {
+      "arm": "shopherd",
+      "task": "unfulfilled",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Ten orders are still waiting to be fulfilled across the three stores. The report counts open orders that aren't fully fulfilled.\n\n| Store | Unfulfilled orders | Longest-waiting order | Placed | Waiting (as of 2026-10-31) | Total |\n|---|---|---|---|---|---|\n| Harbour Coffee (harbour) | 4 | #1009 | 2026-10-22 | 9 days | 42 AUD |\n| Tidewater Swim (tidewater) | 3 | #1007 | 2026-10-18 | 13 days | 90 NZD |\n| Northpaper (northpaper) | 3 | #1009 | 2026-10-06 | 25 days | 28 GBP |\n\nOrder age breakdown by store:\n- **Harbour Coffee:** 1 order under a day old, 1 at 1–2 days, 1 at 2–7 days, and 1 over 7 days.\n- **Tidewater Swim:** none under a day old, 1 at 1–2 days, 1 at 2–7 days, and 1 over 7 days.\n- **Northpaper:** 1 order under a day old and 2 over 7 days.\n\nNorthpaper's #1009 has waited longest of all, at 25 days. Northpaper has two orders over a week old, so its second one is also overdue.",
+      "error": false,
+      "wallMs": 10856,
+      "durationMs": 9111,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24474,
+      "outputTokens": 630,
+      "costUsd": 0.048640300000000004
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "unfulfilled",
+      "repeat": 0,
+      "pass": false,
+      "misses": [
+        "harbour: 4"
+      ],
+      "answer": "Each store has 3 open, unfulfilled orders. I checked back 365 days, and every list was complete.\n\n| Store | Unfulfilled orders | Longest-waiting order | Created | Waiting | Total |\n|---|---|---|---|---|---|\n| **harbour** (harbour-coffee) | 3 | #1009 | 2026-10-22 | 9 days | AUD 42.00 |\n| **tidewater** (tidewater-swim) | 3 | #1007 | 2026-10-18 | 13 days | NZD 90.00 |\n| **northpaper** | 3 | #1009 | 2026-10-06 | 25 days | GBP 28.00 |\n\nAll nine orders are paid. Using a 2-day SLA, these are past it:\n- **harbour:** 1 order (#1009).\n- **tidewater:** 2 orders (#1007 and #1004).\n- **northpaper:** 2 orders (#1009 and #1008, 16 days).\n\nThe order numbers repeat across stores, so #1009 in harbour is a different order from #1009 in northpaper.",
+      "error": false,
+      "wallMs": 11108,
+      "durationMs": 8958,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 71028,
+      "outputTokens": 545,
+      "costUsd": 0.037025
+    },
+    {
+      "arm": "shopherd",
+      "task": "sales",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Here are sales for the last 7 days (since 2026-10-24), with cancelled and test orders left out:\n\n| Store | Orders | Sales total | Average order |\n|---|---|---|---|\n| Harbour Coffee | 6 | AUD 291.00 | AUD 48.50 |\n| Tidewater Swim | 4 | NZD 469.00 | NZD 117.25 |\n| Northpaper | 5 | GBP 146.50 | GBP 29.30 |\n\n- **Harbour Coffee:** 1 cancelled order was excluded. The report scanned 8 orders, so the other excluded order was probably a test order.\n- **Tidewater Swim:** 1 cancelled order was excluded.\n- **Northpaper:** no cancelled orders. It scanned 6 orders and counted 5, so the other was probably a test order.\n\nThe three totals are in different currencies, so I haven't added them together. All three reports covered every order in the period. The totals use current order values, after any edits and refunds.",
+      "error": false,
+      "wallMs": 11876,
+      "durationMs": 10136,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24368,
+      "outputTokens": 640,
+      "costUsd": 0.0482695
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "sales",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Sales over the last 7 days (since 24 Oct 2026), excluding cancelled and test orders, in each store's own currency:\n\n| Store | Orders counted | Total sales |\n|---|---|---|\n| **harbour** | 6 | **AUD 291.00** |\n| **tidewater** | 4 | **NZD 469.00** |\n| **northpaper** | 5 | **GBP 146.50** |\n\nI left out these orders:\n- **harbour:** #1006 (AUD 120.00, cancelled) and #1007 (AUD 300.00, test).\n- **tidewater:** #1005 (NZD 22.00, cancelled).\n- **northpaper:** #1004 (GBP 12.00, test).\n\n- **Why not the report totals:** The built-in order summary counted cancelled orders and has no test-order filter. Its totals were AUD 711, NZD 491 and GBP 158.50. I recalculated from the individual orders using each order's test flag.\n- **Currencies:** I did not convert between currencies, so the three totals can't be added together.\n- **What the totals are:** They are order totals as they stand now. Discounts, shipping and tax were all zero in this period.",
+      "error": false,
+      "wallMs": 31505,
+      "durationMs": 13359,
+      "turns": 4,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 105584,
+      "outputTokens": 1054,
+      "costUsd": 0.0666851
+    },
+    {
+      "arm": "shopherd",
+      "task": "low_stock",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Products with 5 or fewer units, by store:\n\n**Harbour Coffee (harbour)**\n| SKU | Product | Units |\n|---|---|---|\n| HB-GRINDER | Burr grinder | 0 |\n| HB-KETTLE | Pour-over kettle | 3 |\n| HB-FILTERS | Filter papers | 4 |\n| HB-COLDBREW | Cold brew jar | 5 |\n\n**Tidewater Swim (tidewater)**\n| SKU | Product | Units |\n|---|---|---|\n| HB-BEANS-1KG | Coffee beans 1kg | 0 |\n| TW-FINS | Fins | 1 |\n| TW-GOGGLES | Goggles | 2 |\n| TW-BUOY | Pull buoy | 5 |\n\n**Northpaper (northpaper)**\n| SKU | Product | Units |\n|---|---|---|\n| NP-PAD-A5 | A5 notebook, ruled | 0 |\n| NP-INK | Ink, blue-black | 3 |\n| NP-CARDS | Letterpress cards | 5 |\n\n- **Unexpected SKU:** Tidewater Swim lists a coffee product, HB-BEANS-1KG, with 0 units. That SKU belongs to Harbour Coffee's range, where harbour has 18 units. It may have been added to the wrong store by mistake. If it's meant to be there, harbour could restock it.\n- **Possible stock discrepancy:** Harbour's report shows 0 units for HB-GRINDER, but Northpaper shows 33 units for NP-PAD-A5. I haven't checked whether that's a data error, so the 0 for NP-PAD-A5 in the table above may need a second look. The report's per-SKU stock lists 33 for it and its low-stock list shows 0, so the two figures disagree. Check it in the Northpaper admin before you reorder.",
+      "error": false,
+      "wallMs": 20639,
+      "durationMs": 11000,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24905,
+      "outputTokens": 830,
+      "costUsd": 0.0523877
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "low_stock",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Variants with 5 or fewer units, by store:\n\n**harbour** (5 variants)\n| SKU | Product | Units |\n|---|---|---|\n| HB-GRINDER | Burr grinder | 0 |\n| HB-GIFT | Gift card | 0 |\n| HB-KETTLE | Pour-over kettle | 3 |\n| HB-FILTERS | Filter papers | 4 |\n| HB-COLDBREW | Cold brew jar | 5 |\n\n**tidewater** (4 variants)\n| SKU | Product | Units |\n|---|---|---|\n| HB-BEANS-1KG | Coffee beans 1kg | 0 |\n| TW-FINS | Fins | 1 |\n| TW-GOGGLES | Goggles | 2 |\n| TW-BUOY | Pull buoy | 5 |\n\n**northpaper** (3 variants)\n| SKU | Product | Units |\n|---|---|---|\n| NP-PAD-A5 | A5 notebook, ruled | 0 |\n| NP-INK | Ink, blue-black | 3 |\n| NP-CARDS | Letterpress cards | 5 |\n\n- **Out of stock:** harbour has 2 variants at zero (HB-GRINDER, HB-GIFT). tidewater has 1 (HB-BEANS-1KG). northpaper has 1 (NP-PAD-A5).\n- **Cross-store SKU:** tidewater carries the SKU HB-BEANS-1KG, which looks like a harbour SKU. It's at 0 units in tidewater. harbour has 18 units of the same SKU, so it isn't on the low-stock list there.\n- **Gift card:** HB-GIFT shows 0 units in harbour. Gift cards often don't track inventory in a meaningful way, so check whether that zero matters.",
+      "error": false,
+      "wallMs": 20400,
+      "durationMs": 9951,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 70857,
+      "outputTokens": 770,
+      "costUsd": 0.0385598
+    },
+    {
+      "arm": "shopherd",
+      "task": "compare_sku",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Here is HB-BEANS-1KG in each store:\n\n| Store | Price | Compare-at price | Stock |\n|---|---|---|---|\n| **harbour** (Harbour Coffee) | 42.00 | 48.00 | 18 |\n| **tidewater** (Tidewater Swim) | 46.00 | none | 0 (out of stock) |\n| **northpaper** (Northpaper) | not listed | not listed | not listed |\n\n- **Harbour:** The product is \"Coffee beans 1kg\" and it's active. It's marked down from 48.00 to 42.00.\n- **Tidewater:** It has a product with the same SKU and title, also active, but it has no compare-at price and no stock. It sells for 4.00 more than in Harbour (46.00 vs 42.00), so customers can order a product that is out of stock.\n- **Northpaper:** No product with this SKU exists.\n\nThe report doesn't show currencies, and the stores may use different ones. Check that before reading the price gap as a real difference.\n\nI can look into moving stock from Harbour to Tidewater, or into the price gap, if you want.",
+      "error": false,
+      "wallMs": 19628,
+      "durationMs": 8838,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24461,
+      "outputTokens": 518,
+      "costUsd": 0.0474644
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "compare_sku",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "SKU HB-BEANS-1KG (\"Coffee beans 1kg\") is in two of your three stores.\n\n| Store | Price | Compare-at price | Stock | Status |\n|---|---|---|---|---|\n| **harbour** | 42.00 | 48.00 | 18 | Active |\n| **tidewater** | 46.00 | none | 0 | Active |\n| **northpaper** | not found | not found | not found | SKU not in this store |\n\n- **Price:** tidewater is 4.00 higher than harbour (46.00 vs 42.00).\n- **Compare-at price:** harbour shows 48.00, so it displays as a sale. tidewater has no compare-at price.\n- **Stock:** tidewater has 0 units and the product is still Active, so it's listed but can't be bought. harbour has 18 units.\n- **Odd listing:** tidewater is a swim brand (vendor \"Tidewater Swim\") and sells this coffee SKU. That may be a mistaken listing.\n\nThe figures are the variant-level inventory quantities from the report. I didn't check stock by location.",
+      "error": false,
+      "wallMs": 14824,
+      "durationMs": 9402,
+      "turns": 4,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report",
+        "shopify_report"
+      ],
+      "inputTokens": 70579,
+      "outputTokens": 658,
+      "costUsd": 0.0362654
+    },
+    {
+      "arm": "shopherd",
+      "task": "catalog_gap",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Harbour Coffee has 9 active products whose handles don't appear anywhere in Tidewater Swim's catalogue:\n\n1. Coffee beans 250g (`coffee-beans-250g`)\n2. Pour-over kettle (`pour-over-kettle`)\n3. Ceramic mug, speckled (`ceramic-mug-speckled`)\n4. Linen apron (`linen-apron`)\n5. Burr grinder (`burr-grinder`)\n6. Cold brew jar (`cold-brew-jar`)\n7. Gift card (`gift-card`)\n8. Tasting flight (`tasting-flight`)\n9. Filter papers (`filter-papers`)\n\nI matched products by handle, so a product that Tidewater lists under a different handle would show up here as missing.\n\nSome Harbour products are excluded because Tidewater does carry them:\n- **Coffee beans 1kg:** active in both Harbour Coffee and Tidewater Swim.\n- **Ceramic mug:** active in Harbour Coffee, but only a draft in Tidewater Swim. Tidewater has it, just unpublished, so it isn't \"not carried at all\". Include it if you count drafts as not sold.\n- **Barista course:** a draft in Harbour Coffee, so it isn't active. It's also missing from Tidewater Swim.",
+      "error": false,
+      "wallMs": 14830,
+      "durationMs": 8870,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 19317,
+      "outputTokens": 535,
+      "costUsd": 0.027101300000000002
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "catalog_gap",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Harbour sells 9 active products that Tidewater doesn't carry. Tidewater has no product with any of these handles, in any status.\n\n| Product (harbour) | Handle | Inventory (harbour) |\n|---|---|---|\n| Burr grinder | burr-grinder | 0 |\n| Ceramic mug, speckled | ceramic-mug-speckled | 12 |\n| Coffee beans 250g | coffee-beans-250g | 64 |\n| Cold brew jar | cold-brew-jar | 5 |\n| Filter papers | filter-papers | 4 |\n| Gift card | gift-card | 0 |\n| Linen apron | linen-apron | 9 |\n| Pour-over kettle | pour-over-kettle | 3 |\n| Tasting flight | tasting-flight | 22 |\n\n- **Matching:** I matched products by handle across harbour and tidewater. Harbour has 12 products and tidewater has 10, and I scanned all of both.\n- **Out of stock:** Burr grinder and Gift card show 0 inventory on harbour. They are still active listings.\n- **Excluded, in tidewater as a draft:** Ceramic mug is active on harbour, but tidewater has it as a DRAFT. I counted it as carried because it exists there.\n- **Excluded, active on both:** Coffee beans 1kg is active on harbour and on tidewater, so it isn't a gap.\n- **Excluded, draft on harbour:** Barista course isn't on tidewater, but it's a DRAFT on harbour, so it isn't an active product.\n- **Possible overlap:** Ceramic mug, speckled has a different handle from Ceramic mug. If you'd count it as the same item as tidewater's draft mug, the list drops to 8.",
+      "error": false,
+      "wallMs": 14827,
+      "durationMs": 10826,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 73477,
+      "outputTokens": 934,
+      "costUsd": 0.050711
+    },
+    {
+      "arm": "shopherd",
+      "task": "no_image",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products with no image (media count of 0), by store. Each store has fewer than 100 active products, so these lists are complete.\n\n**Harbour Coffee (harbour):** 2 of 11 active products\n- Cold brew jar (`cold-brew-jar`)\n- Tasting flight (`tasting-flight`)\n\n**Tidewater Swim (tidewater):** 1 of 9 active products\n- Kickboard (`kickboard`)\n\n**Northpaper (northpaper):** 2 of 9 active products\n- Desk calendar (`desk-calendar`)\n- Letterpress cards (`letterpress-cards`)\n\nThat makes 5 products in total. I counted all media, not only images. A product with only a video or 3D model would show as having media, but none of these 5 have any media at all.",
+      "error": false,
+      "wallMs": 14824,
+      "durationMs": 6997,
+      "turns": 2,
+      "toolCalls": [
+        "graphql_query_all_stores"
+      ],
+      "inputTokens": 19126,
+      "outputTokens": 365,
+      "costUsd": 0.0246958
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "no_image",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products with no image (media count 0), by store:\n\n**harbour** (harbour-coffee.myshopify.com): 2 of 11 active products\n- Cold brew jar (`cold-brew-jar`, Product/11037)\n- Tasting flight (`tasting-flight`, Product/11046)\n\n**tidewater** (tidewater-swim.myshopify.com): 1 of 9 active products\n- Kickboard (`kickboard`, Product/23022)\n\n**northpaper** (northpaper.myshopify.com): 2 of 9 active products\n- Desk calendar (`desk-calendar`, Product/37027)\n- Letterpress cards (`letterpress-cards`, Product/37041)\n\nThat makes 5 products across the three stores. Each store returned all of its active products in a single page, so the lists are complete. I checked media count, which includes video and 3D models as well as images. A product with only a video would not show up here.",
+      "error": false,
+      "wallMs": 27368,
+      "durationMs": 7608,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 69836,
+      "outputTokens": 489,
+      "costUsd": 0.031813999999999995
+    },
+    {
+      "arm": "shopherd",
+      "task": "duplicate_skus",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Yes, two stores have a SKU shared by more than one product. Tidewater Swim has none.\n\n- **Harbour Coffee (harbour):** SKU `HB-MUG-01` is used by two products, `ceramic-mug` and `ceramic-mug-speckled`.\n- **Northpaper (northpaper):** SKU `NP-PAD-A5` is used by two products, `a5-notebook-ruled` and `a5-notebook-dotted`.\n- **Tidewater Swim (tidewater):** I found no duplicates among its 10 variants scanned.\n\nThe report scanned every variant in each store: 12 in Harbour Coffee, 10 in Tidewater Swim and 10 in Northpaper.\n\n- **Same-product duplicates:** The report groups SKUs by product. If two variants of a single product shared a SKU, it might not show up here.\n- **Across stores:** `HB-BEANS-1KG` appears in both Harbour Coffee and Tidewater Swim, on a product with the handle `coffee-beans-1kg` in each. That is a cross-store overlap, not a duplicate within one store. The report did not flag it as a conflict because the handle is the same.\n\nI haven't changed anything. I can give you the variant IDs and titles for the two duplicated SKUs if you want to fix them.",
+      "error": false,
+      "wallMs": 29032,
+      "durationMs": 9650,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24853,
+      "outputTokens": 717,
+      "costUsd": 0.0510536
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "duplicate_skus",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Yes, two of the three stores reuse a SKU inside the same store. The scan was complete for all three, with no truncation.\n\n**harbour** (12 variants scanned) has one duplicated SKU, `HB-MUG-01`. It's used by two products, both ACTIVE:\n- Ceramic mug (`ceramic-mug`), variant 11020\n- Ceramic mug, speckled (`ceramic-mug-speckled`), variant 11025\n\n**northpaper** (10 variants scanned) has one duplicated SKU, `NP-PAD-A5`. It's used by two products, both ACTIVE:\n- A5 notebook, ruled (`a5-notebook-ruled`), variant 37010\n- A5 notebook, dotted (`a5-notebook-dotted`), variant 37015\n\n**tidewater** (10 variants scanned) has no duplicate SKUs within the store.\n\n**Across stores:** `HB-BEANS-1KG` appears in both harbour (Coffee beans 1kg, variant 11005) and tidewater (Coffee beans 1kg, variant 23005). It's used once in each store, so it isn't a same-store duplicate. It looks like a harbour SKU that was copied into tidewater.\n\nI only read data and changed nothing. I can fix the duplicates if you want. The speckled mug and the dotted notebook each look like they need their own SKU.",
+      "error": false,
+      "wallMs": 30014,
+      "durationMs": 10251,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 72336,
+      "outputTokens": 617,
+      "costUsd": 0.0429614
+    },
+    {
+      "arm": "shopherd",
+      "task": "active_count",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products per store:\n\n- **harbour** (Harbour Coffee): 11\n- **tidewater** (Tidewater Swim): 9\n- **northpaper** (Northpaper): 9\n\nAcross all three stores that's 29 active products. The counts are exact. Draft products aren't included: harbour has 1, tidewater has 1 and northpaper has 0.",
+      "error": false,
+      "wallMs": 24557,
+      "durationMs": 5184,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24727,
+      "outputTokens": 174,
+      "costUsd": 0.045166399999999995
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "active_count",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Active product counts (exact):\n\n- **harbour** (harbour-coffee.myshopify.com): 11\n- **tidewater** (tidewater-swim.myshopify.com): 9\n- **northpaper** (northpaper.myshopify.com): 9\n\nAcross all three stores, that makes 29 active products.",
+      "error": false,
+      "wallMs": 9655,
+      "durationMs": 7609,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 68192,
+      "outputTokens": 258,
+      "costUsd": 0.0229436
+    },
+    {
+      "arm": "shopherd",
+      "task": "shop_settings",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Northpaper uses **GBP** (British pounds) as its currency and the **Europe/London** time zone.",
+      "error": false,
+      "wallMs": 7254,
+      "durationMs": 5775,
+      "turns": 2,
+      "toolCalls": [
+        "get_shop"
+      ],
+      "inputTokens": 24203,
+      "outputTokens": 95,
+      "costUsd": 0.042264800000000005
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "shop_settings",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "The northpaper store (northpaper.myshopify.com) uses:\n\n- **Currency:** GBP (British pound), for northpaper.\n- **Time zone:** Europe/London, for northpaper.",
+      "error": false,
+      "wallMs": 6379,
+      "durationMs": 4116,
+      "turns": 2,
+      "toolCalls": [
+        "shopify_get_shop_info"
+      ],
+      "inputTokens": 45090,
+      "outputTokens": 131,
+      "costUsd": 0.0171912
+    },
+    {
+      "arm": "shopherd",
+      "task": "find_title",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Two of your three stores sell something with \"linen\" in the name:\n\n| Store | Product | Price | Status |\n|---|---|---|---|\n| Harbour Coffee (harbour) | Linen apron | 29.00 | Active |\n| Northpaper (northpaper) | Linen-bound notebook | 18.50 | Active |\n\nTidewater Swim (tidewater) has no products with \"linen\" in the name.\n\nEach product has one variant (Default Title), so each has a single price. The prices are in each store's own currency, and I didn't check what those currencies are.",
+      "error": false,
+      "wallMs": 65110,
+      "durationMs": 63626,
+      "turns": 2,
+      "toolCalls": [
+        "graphql_query_all_stores"
+      ],
+      "inputTokens": 24485,
+      "outputTokens": 443,
+      "costUsd": 0.0468767
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "find_title",
+      "repeat": 0,
+      "pass": true,
+      "misses": [],
+      "answer": "Two of your three stores sell something with \"linen\" in the name:\n\n| Store | Product | Price | Status |\n|---|---|---|---|\n| **harbour** (harbour-coffee) | Linen apron | 29.00 | Active |\n| **northpaper** | Linen-bound notebook | 18.50 | Active |\n\n- **tidewater** has no products with \"linen\" in the name.\n- Each product has one variant, \"Default Title\". The harbour price is for SKU HB-APRON and the northpaper price is for SKU NP-NOTE-LINEN.\n- The tools return the prices without a currency code. I didn't check each store's currency.\n- The search matched on product titles only. A product with \"linen\" only in its description, tags or variant name wouldn't appear.",
+      "error": false,
+      "wallMs": 10512,
+      "durationMs": 8497,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_search"
+      ],
+      "inputTokens": 69061,
+      "outputTokens": 425,
+      "costUsd": 0.0279804
+    },
+    {
+      "arm": "shopherd",
+      "task": "unfulfilled",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Ten orders are waiting to be fulfilled across the three stores. The oldest order in each store is listed below.\n\n| Store | Orders waiting | Longest-waiting order | Placed | Order total |\n|---|---|---|---|---|\n| **harbour** (Harbour Coffee) | 4 | #1009 | 2026-10-22 | 42 AUD |\n| **tidewater** (Tidewater Swim) | 3 | #1007 | 2026-10-18 | 90 NZD |\n| **northpaper** (Northpaper) | 3 | #1009 | 2026-10-06 | 28 GBP |\n\nBy age:\n- **harbour:** 1 order is under a day old, 1 is 1–2 days, 1 is 2–7 days and 1 is over 7 days.\n- **tidewater:** none are under a day old, 1 is 1–2 days, 1 is 2–7 days and 1 is over 7 days.\n- **northpaper:** 1 order is under a day old and 2 are over 7 days. None are in the middle two groups.\n\nNorthpaper's #1009 has waited longest of all, about 25 days as of today (2026-10-31). Order numbers repeat between stores: harbour and northpaper both have a #1009.",
+      "error": false,
+      "wallMs": 10584,
+      "durationMs": 9119,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24480,
+      "outputTokens": 640,
+      "costUsd": 0.0487526
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "unfulfilled",
+      "repeat": 1,
+      "pass": false,
+      "misses": [
+        "harbour: 4"
+      ],
+      "answer": "Each store has 3 orders waiting to be fulfilled. Each report was complete, with no truncation, over a 365-day lookback.\n\n| Store | Unfulfilled orders | Longest-waiting order | Placed | Age | Value |\n|---|---|---|---|---|---|\n| **harbour** | 3 | #1009 | 2026-10-22 | 9 days | 42.00 AUD |\n| **tidewater** | 3 | #1007 | 2026-10-18 | 13 days | 90.00 NZD |\n| **northpaper** | 3 | #1009 | 2026-10-06 | 25 days | 28.00 GBP |\n\nOrder numbers repeat across stores. harbour's #1009 and northpaper's #1009 are different orders.\n\nOrders past the 2-day SLA:\n- **harbour:** 1 order, #1009.\n- **tidewater:** 2 orders, #1007 and #1004.\n- **northpaper:** 2 orders, #1009 and #1008. northpaper is also the only store with orders older than 15 days.",
+      "error": false,
+      "wallMs": 9610,
+      "durationMs": 7730,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 71046,
+      "outputTokens": 536,
+      "costUsd": 0.0369602
+    },
+    {
+      "arm": "shopherd",
+      "task": "sales",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Sales for the last 7 days (since 2026-10-24), excluding cancelled and test orders:\n\n| Store | Orders | Sales total | Average order value |\n|---|---|---|---|\n| Harbour Coffee (harbour) | 6 | AUD 291.00 | AUD 48.50 |\n| Tidewater Swim (tidewater) | 4 | NZD 469.00 | NZD 117.25 |\n| Northpaper (northpaper) | 5 | GBP 146.50 | GBP 29.30 |\n\n- **Harbour Coffee:** The report scanned 8 orders. It excluded 1 as cancelled, and the other excluded order was presumably a test order.\n- **Tidewater Swim:** It scanned 5 orders and excluded 1 as cancelled.\n- **Northpaper:** It scanned 6 orders and reported none cancelled. The one order left out was presumably a test order.\n- **Totals:** The currencies differ, so I haven't added the three totals together. Sales totals are current order totals, after edits and refunds.\n- **Coverage:** All three reads were complete.",
+      "error": false,
+      "wallMs": 10680,
+      "durationMs": 9353,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24350,
+      "outputTokens": 646,
+      "costUsd": 0.048292600000000005
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "sales",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Sales over the last 7 days (24–31 Oct 2026), leaving out cancelled and test orders:\n\n| Store | Orders counted | Total sold | Excluded |\n|---|---|---|---|\n| **harbour** (harbour-coffee) | 6 | **AUD 291.00** | #1006 (cancelled, AUD 120.00) and #1007 (test, AUD 300.00) |\n| **tidewater** (tidewater-swim) | 4 | **NZD 469.00** | #1005 (cancelled, NZD 22.00) |\n| **northpaper** | 5 | **GBP 146.50** | #1004 (test, GBP 12.00) |\n\n- **Currencies:** I didn't convert anything. Each total is in that store's own currency, so the three figures can't be added together.\n- **Totals:** They are the order totals after discounts, with shipping and tax at zero on every order in this period.\n- **Source:** The built-in order summary report counts cancelled and test orders. I took its figures and subtracted the excluded orders. I found the test orders by querying each order's `test` flag.\n- **Window:** It starts at 2026-10-24 05:29 UTC.",
+      "error": false,
+      "wallMs": 15252,
+      "durationMs": 13277,
+      "turns": 4,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 105532,
+      "outputTokens": 1028,
+      "costUsd": 0.0661703
+    },
+    {
+      "arm": "shopherd",
+      "task": "low_stock",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Variants with 5 or fewer units, by store:\n\n**Harbour Coffee (harbour)**\n| SKU | Product | Units |\n|---|---|---|\n| HB-GRINDER | Burr grinder | 0 |\n| HB-KETTLE | Pour-over kettle | 3 |\n| HB-FILTERS | Filter papers | 4 |\n| HB-COLDBREW | Cold brew jar | 5 |\n\n**Tidewater Swim (tidewater)**\n| SKU | Product | Units |\n|---|---|---|\n| HB-BEANS-1KG | Coffee beans 1kg | 0 |\n| TW-FINS | Fins | 1 |\n| TW-GOGGLES | Goggles | 2 |\n| TW-BUOY | Pull buoy | 5 |\n\n**Northpaper (northpaper)**\n| SKU | Product | Units |\n|---|---|---|\n| NP-PAD-A5 | A5 notebook, ruled | 0 |\n| NP-INK | Ink, blue-black | 3 |\n| NP-CARDS | Letterpress cards | 5 |\n\n- **Tidewater has a Harbour SKU.** Tidewater Swim lists \"Coffee beans 1kg\" under `HB-BEANS-1KG`, which is the same SKU Harbour Coffee uses. Harbour has 18 units of it and Tidewater has 0. This is probably a stray product in Tidewater's catalogue, or a SKU mix-up.\n- **Northpaper stock is mixed.** The low-stock report showed NP-PAD-A5 at 0 units. A separate figure from the same report showed 33 units for NP-PAD-A5 in northpaper. I haven't worked out which is right, and it may be tracked across several locations. Check it in the admin before you reorder.",
+      "error": false,
+      "wallMs": 11480,
+      "durationMs": 9819,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24905,
+      "outputTokens": 769,
+      "costUsd": 0.0517777
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "low_stock",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Variants with 5 or fewer units in stock, by store:\n\n**harbour** (5 variants)\n| SKU | Product | Units |\n|---|---|---|\n| HB-GRINDER | Burr grinder | 0 |\n| HB-GIFT | Gift card | 0 |\n| HB-KETTLE | Pour-over kettle | 3 |\n| HB-FILTERS | Filter papers | 4 |\n| HB-COLDBREW | Cold brew jar | 5 |\n\n**tidewater** (4 variants)\n| SKU | Product | Units |\n|---|---|---|\n| HB-BEANS-1KG | Coffee beans 1kg | 0 |\n| TW-FINS | Fins | 1 |\n| TW-GOGGLES | Goggles | 2 |\n| TW-BUOY | Pull buoy | 5 |\n\n**northpaper** (3 variants)\n| SKU | Product | Units |\n|---|---|---|\n| NP-PAD-A5 | A5 notebook, ruled | 0 |\n| NP-INK | Ink, blue-black | 3 |\n| NP-CARDS | Letterpress cards | 5 |\n\n- **Complete results:** All three stores returned every matching variant. None had a further page of results.\n- **Gift card:** harbour's HB-GIFT shows 0 units. Gift cards are often not tracked by inventory, so that count may not mean much.\n- **Cross-store SKU:** tidewater has a product with the SKU HB-BEANS-1KG, which looks like harbour's coffee beans SKU. It has 0 units at tidewater, and harbour has 18 units of the same SKU. The tidewater listing is also vendored \"Tidewater Swim\", so it may be a mislabelled or misplaced product.",
+      "error": false,
+      "wallMs": 11578,
+      "durationMs": 9565,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 70836,
+      "outputTokens": 749,
+      "costUsd": 0.038320400000000004
+    },
+    {
+      "arm": "shopherd",
+      "task": "compare_sku",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "SKU HB-BEANS-1KG is in two of your three stores:\n\n| Store | Price | Compare-at price | Stock |\n|---|---|---|---|\n| **Harbour Coffee** (harbour) | 42.00 | 48.00 | 18 |\n| **Tidewater Swim** (tidewater) | 46.00 | none | 0 |\n| **Northpaper** (northpaper) | not listed | not listed | not listed |\n\n- **Harbour Coffee:** The product \"Coffee beans 1kg\" is active, and the 48.00 compare-at price shows the 42.00 as a discount.\n- **Tidewater Swim:** The same product is active but has no stock, so it can't be bought. It's also priced 4.00 higher than at Harbour Coffee, with no compare-at price.\n- **Northpaper:** No product with this SKU turned up.\n\nHarbour Coffee has the only stock. A Coffee beans 1kg listing at Tidewater Swim looks unusual for a swim shop, so it may be worth checking whether that listing is intended.",
+      "error": false,
+      "wallMs": 9946,
+      "durationMs": 8476,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24467,
+      "outputTokens": 504,
+      "costUsd": 0.047336699999999995
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "compare_sku",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "SKU HB-BEANS-1KG (\"Coffee beans 1kg\") is listed in two of your three stores:\n\n| Store | Price | Compare-at price | Stock |\n|---|---|---|---|\n| harbour | 42.00 | 48.00 | 18 |\n| tidewater | 46.00 | none | 0 (out of stock) |\n| northpaper | SKU not found | SKU not found | SKU not found |\n\n- **Price:** tidewater is 4.00 higher than harbour (46.00 vs 42.00).\n- **Compare-at price:** only harbour has one (48.00). harbour shows the product on sale, and tidewater shows it at full price.\n- **Stock:** harbour has 18 units and tidewater has 0. Both listings are ACTIVE, so tidewater is selling an item it can't ship.\n- **northpaper:** the SKU doesn't exist there.\n\nThe stock figures are each variant's total inventory quantity. I didn't break them down by location.",
+      "error": false,
+      "wallMs": 11666,
+      "durationMs": 9863,
+      "turns": 4,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report",
+        "shopify_report"
+      ],
+      "inputTokens": 70561,
+      "outputTokens": 624,
+      "costUsd": 0.03590020000000001
+    },
+    {
+      "arm": "shopherd",
+      "task": "catalog_gap",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Harbour (harbour-coffee) has 9 active products that Tidewater (tidewater-swim) doesn't have in any status:\n\n1. Coffee beans 250g (`coffee-beans-250g`)\n2. Pour-over kettle (`pour-over-kettle`)\n3. Ceramic mug, speckled (`ceramic-mug-speckled`)\n4. Linen apron (`linen-apron`)\n5. Burr grinder (`burr-grinder`)\n6. Cold brew jar (`cold-brew-jar`)\n7. Gift card (`gift-card`)\n8. Tasting flight (`tasting-flight`)\n9. Filter papers (`filter-papers`)\n\nI left three products off the list:\n- **Coffee beans 1kg:** it's active in both Harbour and Tidewater.\n- **Ceramic mug:** it's active in Harbour but a draft in Tidewater. Tidewater has it set up and just doesn't sell it yet, so it isn't missing there.\n- **Barista course:** it's missing from Tidewater, but it's a draft in Harbour, so Harbour isn't selling it either.\n\nI matched products by handle, so a product with the same name but a different handle in Tidewater would show up as missing. Harbour has 12 products and Tidewater has 10, and the report read both catalogs completely.",
+      "error": false,
+      "wallMs": 10613,
+      "durationMs": 9320,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 25689,
+      "outputTokens": 796,
+      "costUsd": 0.055191500000000004
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "catalog_gap",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Harbour has 9 active products that Tidewater doesn't carry at all. I matched products by handle across both stores, and both catalogs were scanned in full (12 products on Harbour, 10 on Tidewater).\n\n| Product | Harbour status | Harbour inventory |\n|---|---|---|\n| Burr grinder | Active | 0 |\n| Ceramic mug, speckled | Active | 12 |\n| Coffee beans 250g | Active | 64 |\n| Cold brew jar | Active | 5 |\n| Filter papers | Active | 4 |\n| Gift card | Active | 0 |\n| Linen apron | Active | 9 |\n| Pour-over kettle | Active | 3 |\n| Tasting flight | Active | 22 |\n\nThree Harbour products are left out, and each has a reason:\n- **Ceramic mug:** Active on Harbour (40 in stock), but Tidewater has it as a draft (11 in stock). Tidewater carries it, just not as a live product.\n- **Coffee beans 1kg:** Active on both Harbour (18 in stock) and Tidewater (0 in stock).\n- **Barista course:** Draft on Harbour, so it isn't an active product. Tidewater doesn't have it.\n\nHandle matching could miss a product that Tidewater lists under a different handle. \"Ceramic mug, speckled\" is the likeliest case, since Tidewater has a plain \"Ceramic mug\" draft.",
+      "error": false,
+      "wallMs": 12153,
+      "durationMs": 10327,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 73499,
+      "outputTokens": 857,
+      "costUsd": 0.0500524
+    },
+    {
+      "arm": "shopherd",
+      "task": "no_image",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products with no image (media count of 0), by store:\n\n**Harbour Coffee (harbour)**: 2 of 11 active products\n- Cold brew jar (`cold-brew-jar`)\n- Tasting flight (`tasting-flight`)\n\n**Tidewater Swim (tidewater)**: 1 of 9 active products\n- Kickboard (`kickboard`)\n\n**Northpaper (northpaper)**: 2 of 9 active products\n- Desk calendar (`desk-calendar`)\n- Letterpress cards (`letterpress-cards`)\n\nThat makes 5 products across the three stores. Each store returned all its active products in one page, so the lists are complete.\n\nI counted media items, which would include video or 3D models as well as images. A product that has only a video would not show up here. All the products I flagged have no media at all.\n\nTidewater Swim also has an active product called \"Coffee beans 1kg\", which looks like it belongs in Harbour Coffee. It does have an image, so it isn't in the list above.",
+      "error": false,
+      "wallMs": 13353,
+      "durationMs": 7655,
+      "turns": 2,
+      "toolCalls": [
+        "graphql_query_all_stores"
+      ],
+      "inputTokens": 25501,
+      "outputTokens": 482,
+      "costUsd": 0.0513502
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "no_image",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products with no image (media count of 0), by store. Each store has fewer than 250 active products, so the lists are complete.\n\n**harbour** (2 of 11 active products)\n- Cold brew jar (`cold-brew-jar`)\n- Tasting flight (`tasting-flight`)\n\n**tidewater** (1 of 9 active products)\n- Kickboard (`kickboard`)\n\n**northpaper** (2 of 9 active products)\n- Desk calendar (`desk-calendar`)\n- Letterpress cards (`letterpress-cards`)\n\nThat makes 5 products across the three stores. I counted all media, not only images. Any video or 3D model would count as media, but none of these products have any.",
+      "error": false,
+      "wallMs": 15670,
+      "durationMs": 7992,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 69329,
+      "outputTokens": 411,
+      "costUsd": 0.028998200000000002
+    },
+    {
+      "arm": "shopherd",
+      "task": "duplicate_skus",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Yes. Two stores have a SKU used by more than one product:\n\n- **Harbour Coffee (harbour):** SKU `HB-MUG-01` is on two products, `ceramic-mug` and `ceramic-mug-speckled`.\n- **Northpaper (northpaper):** SKU `NP-PAD-A5` is on two products, `a5-notebook-ruled` and `a5-notebook-dotted`.\n\n**Tidewater Swim (tidewater)** has no duplicate SKUs within the store. Its `HB-BEANS-1KG` SKU is also used in Harbour Coffee, but each store has it on only one product, so it isn't a duplicate inside either store.\n\nThe scans covered all products in each store: 12 in Harbour Coffee, 10 in Tidewater Swim and 10 in Northpaper.\n\nI can look at the variants on those products if you want to fix the duplicates.",
+      "error": false,
+      "wallMs": 13776,
+      "durationMs": 7032,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 18487,
+      "outputTokens": 359,
+      "costUsd": 0.0220057
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "duplicate_skus",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Yes. Two of the three stores have a SKU that is used more than once inside the same store.\n\n**harbour** (12 variants scanned)\n- SKU `HB-MUG-01` is shared by two products:\n  - \"Ceramic mug\" (variant 11020, ACTIVE)\n  - \"Ceramic mug, speckled\" (variant 11025, ACTIVE)\n\n**northpaper** (10 variants scanned)\n- SKU `NP-PAD-A5` is shared by two products:\n  - \"A5 notebook, ruled\" (variant 37010, ACTIVE)\n  - \"A5 notebook, dotted\" (variant 37015, ACTIVE)\n\n**tidewater** (10 variants scanned): no SKU is repeated inside this store.\n\nAll three scans were complete. Nothing was truncated.\n\nThe report also found one SKU shared across stores, which is a different thing from your question. `HB-BEANS-1KG` appears in both harbour and tidewater, on a product called \"Coffee beans 1kg\" in each. That one looks like a SKU copied over from harbour into tidewater.\n\nI only read data and changed nothing.",
+      "error": false,
+      "wallMs": 20337,
+      "durationMs": 8143,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 72339,
+      "outputTokens": 531,
+      "costUsd": 0.0421056
+    },
+    {
+      "arm": "shopherd",
+      "task": "active_count",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products per store:\n\n- **Harbour Coffee** (harbour): 11\n- **Tidewater Swim** (tidewater): 9\n- **Northpaper** (northpaper): 9\n\nThese counts are exact. Harbour Coffee and Tidewater Swim each also have 1 draft product. Northpaper has none.",
+      "error": false,
+      "wallMs": 28054,
+      "durationMs": 4618,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 18355,
+      "outputTokens": 162,
+      "costUsd": 0.0195662
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "active_count",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products per store (exact counts):\n\n- **harbour** (harbour-coffee.myshopify.com): 11\n- **tidewater** (tidewater-swim.myshopify.com): 9\n- **northpaper** (northpaper.myshopify.com): 9",
+      "error": false,
+      "wallMs": 13204,
+      "durationMs": 6287,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 68183,
+      "outputTokens": 243,
+      "costUsd": 0.022781000000000003
+    },
+    {
+      "arm": "shopherd",
+      "task": "shop_settings",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "The Northpaper store uses:\n- **Currency:** GBP (British pounds)\n- **Time zone:** Europe/London",
+      "error": false,
+      "wallMs": 31344,
+      "durationMs": 4312,
+      "turns": 2,
+      "toolCalls": [
+        "get_shop"
+      ],
+      "inputTokens": 24187,
+      "outputTokens": 101,
+      "costUsd": 0.042292
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "shop_settings",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "The northpaper store (northpaper.myshopify.com) uses:\n\n- **Currency:** GBP (British pound), for northpaper\n- **Time zone:** Europe/London, for northpaper",
+      "error": false,
+      "wallMs": 21586,
+      "durationMs": 4449,
+      "turns": 2,
+      "toolCalls": [
+        "shopify_get_shop_info"
+      ],
+      "inputTokens": 45092,
+      "outputTokens": 129,
+      "costUsd": 0.0171753
+    },
+    {
+      "arm": "shopherd",
+      "task": "find_title",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Two of your three stores sell a product with \"linen\" in the name:\n\n| Store | Product | Price | SKU |\n|---|---|---|---|\n| Harbour Coffee (harbour) | Linen apron | 29.00 | HB-APRON |\n| Northpaper (northpaper) | Linen-bound notebook | 18.50 | NP-NOTE-LINEN |\n\nBoth products are active and each has a single variant. Tidewater Swim (tidewater) has no product with \"linen\" in the name.\n\nThe prices are in each store's own currency, which I didn't look up. The search matched product titles only, so it wouldn't catch products that mention linen only in the description or tags.",
+      "error": false,
+      "wallMs": 24863,
+      "durationMs": 8756,
+      "turns": 2,
+      "toolCalls": [
+        "graphql_query_all_stores"
+      ],
+      "inputTokens": 24519,
+      "outputTokens": 469,
+      "costUsd": 0.0472649
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "find_title",
+      "repeat": 1,
+      "pass": true,
+      "misses": [],
+      "answer": "Two of your three stores sell something with \"linen\" in the name:\n\n| Store | Product | Price | Status |\n|---|---|---|---|\n| **harbour** (harbour-coffee) | Linen apron (SKU HB-APRON) | 29.00 | Active |\n| **northpaper** | Linen-bound notebook (SKU NP-NOTE-LINEN) | 18.50 | Active |\n\n**tidewater** (tidewater-swim) has no products with \"linen\" in the name.\n\nThe search matched on product titles. Each product has one variant, so there is one price per product. The results don't show a currency.",
+      "error": false,
+      "wallMs": 9557,
+      "durationMs": 7415,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_search"
+      ],
+      "inputTokens": 69055,
+      "outputTokens": 375,
+      "costUsd": 0.027472
+    },
+    {
+      "arm": "shopherd",
+      "task": "unfulfilled",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Ten orders are still waiting to be fulfilled across the three stores. Each store's longest-waiting order is listed with it.\n\n| Store | Orders waiting | Longest-waiting order | Placed | Order total |\n|---|---|---|---|---|\n| **harbour** (Harbour Coffee) | 4 | #1009 | 2026-10-22 (9 days ago) | 42 AUD |\n| **tidewater** (Tidewater Swim) | 3 | #1007 | 2026-10-18 (13 days ago) | 90 NZD |\n| **northpaper** (Northpaper) | 3 | #1009 | 2026-10-06 (25 days ago) | 28 GBP |\n\nOrder numbers are only unique within a store, so harbour's #1009 and northpaper's #1009 are different orders.\n\n**Age of the waiting orders**\n- **harbour:** 1 is under a day old, 1 is 1–2 days, 1 is 2–7 days, and 1 is over 7 days.\n- **tidewater:** none are under a day old, 1 is 1–2 days, 1 is 2–7 days, and 1 is over 7 days.\n- **northpaper:** 1 is under a day old and 2 are over 7 days. Northpaper has the oldest backlog.",
+      "error": false,
+      "wallMs": 9325,
+      "durationMs": 8025,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24466,
+      "outputTokens": 553,
+      "costUsd": 0.0478539
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "unfulfilled",
+      "repeat": 2,
+      "pass": false,
+      "misses": [
+        "harbour: 4"
+      ],
+      "answer": "Each store has 3 orders waiting to be fulfilled. All three stores' lists are complete, with no truncation. The ages below are measured to 2026-10-31.\n\n| Store | Unfulfilled orders | Longest-waiting order | Placed | Age | Value |\n|---|---|---|---|---|---|\n| **harbour** (harbour-coffee) | 3 | #1009 | 2026-10-22 | 9 days | 42.00 AUD |\n| **tidewater** (tidewater-swim) | 3 | #1007 | 2026-10-18 | 13 days | 90.00 NZD |\n| **northpaper** | 3 | #1009 | 2026-10-06 | 25 days | 28.00 GBP |\n\nEach of these orders is paid and unfulfilled. Order numbers repeat across stores, so #1009 in harbour is a different order from #1009 in northpaper.\n\nCounting only orders older than the report's 2-day SLA:\n- **harbour:** 1 order is past the SLA, #1009.\n- **tidewater:** 2 orders are past the SLA, #1007 and #1004.\n- **northpaper:** 2 orders are past the SLA, #1009 and #1008. #1008 is 16 days old.",
+      "error": false,
+      "wallMs": 11481,
+      "durationMs": 9647,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 71040,
+      "outputTokens": 598,
+      "costUsd": 0.0375718
+    },
+    {
+      "arm": "shopherd",
+      "task": "sales",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Sales for the last 7 days (since 2026-10-24), excluding cancelled and test orders:\n\n| Store | Orders | Sales total | Average order value |\n|---|---|---|---|\n| Harbour Coffee (harbour) | 6 | AUD 291.00 | AUD 48.50 |\n| Tidewater Swim (tidewater) | 4 | NZD 469.00 | NZD 117.25 |\n| Northpaper (northpaper) | 5 | GBP 146.50 | GBP 29.30 |\n\n- **Harbour Coffee:** 8 orders were scanned. One was cancelled, and the report excluded one other, presumably a test order.\n- **Tidewater Swim:** 5 orders were scanned. One was cancelled.\n- **Northpaper:** 6 orders were scanned. None were cancelled, and the report excluded one other, presumably a test order.\n\nThe report covered every order in the period for each store. The three currencies differ, so I haven't added them into a single figure.",
+      "error": false,
+      "wallMs": 9980,
+      "durationMs": 8690,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24356,
+      "outputTokens": 549,
+      "costUsd": 0.047334900000000006
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "sales",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Sales over the last 7 days (24 Oct to 31 Oct 2026), excluding cancelled and test orders, each in the store's own currency:\n\n| Store | Orders counted | Total sales |\n|---|---|---|\n| **harbour** (harbour-coffee) | 6 | **AUD 291.00** |\n| **tidewater** (tidewater-swim) | 4 | **NZD 469.00** |\n| **northpaper** | 5 | **GBP 146.50** |\n\nWhat I left out:\n- **harbour:** #1006 (AUD 120.00) was cancelled, and #1007 (AUD 300.00) is a test order.\n- **tidewater:** #1005 (NZD 22.00) was cancelled. It had no test orders.\n- **northpaper:** #1004 (GBP 12.00) is a test order. It had no cancelled orders.\n\nThe figures are each order's current total. All three stores show zero discounts, shipping and tax on these orders. The currencies differ, so I haven't added the stores together.",
+      "error": false,
+      "wallMs": 14079,
+      "durationMs": 12245,
+      "turns": 4,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 105513,
+      "outputTokens": 958,
+      "costUsd": 0.06546450000000001
+    },
+    {
+      "arm": "shopherd",
+      "task": "low_stock",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Products with 5 or fewer units, by store:\n\n**Harbour Coffee (harbour)**\n| SKU | Product | Units |\n|---|---|---|\n| HB-GRINDER | Burr grinder | 0 |\n| HB-KETTLE | Pour-over kettle | 3 |\n| HB-FILTERS | Filter papers | 4 |\n| HB-COLDBREW | Cold brew jar | 5 |\n\n**Tidewater Swim (tidewater)**\n| SKU | Product | Units |\n|---|---|---|\n| HB-BEANS-1KG | Coffee beans 1kg | 0 |\n| TW-FINS | Fins | 1 |\n| TW-GOGGLES | Goggles | 2 |\n| TW-BUOY | Pull buoy | 5 |\n\n**Northpaper (northpaper)**\n| SKU | Product | Units |\n|---|---|---|\n| NP-PAD-A5 | A5 notebook, ruled | 0 |\n| NP-INK | Ink, blue-black | 3 |\n| NP-CARDS | Letterpress cards | 5 |\n\n- **Coffee beans in a swim store:** Tidewater Swim (tidewater) lists the Harbour SKU HB-BEANS-1KG with 0 units. Harbour Coffee (harbour) has 18 units of the same SKU. This may be a product that was copied into the wrong store.\n- **Out of stock:** HB-GRINDER (harbour), HB-BEANS-1KG (tidewater) and NP-PAD-A5 (northpaper) are at 0 units.\n\nAll three stores' reports came back complete.",
+      "error": false,
+      "wallMs": 11428,
+      "durationMs": 9966,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24893,
+      "outputTokens": 818,
+      "costUsd": 0.0522431
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "low_stock",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Variants with 5 or fewer units in each store (active products only, from the low-stock report):\n\n**harbour** (5 variants)\n- HB-GRINDER, Burr grinder: 0 units (harbour)\n- HB-GIFT, Gift card: 0 units (harbour)\n- HB-KETTLE, Pour-over kettle: 3 units (harbour)\n- HB-FILTERS, Filter papers: 4 units (harbour)\n- HB-COLDBREW, Cold brew jar: 5 units (harbour)\n\n**tidewater** (4 variants)\n- HB-BEANS-1KG, Coffee beans 1kg: 0 units (tidewater)\n- TW-FINS, Fins: 1 unit (tidewater)\n- TW-GOGGLES, Goggles: 2 units (tidewater)\n- TW-BUOY, Pull buoy: 5 units (tidewater)\n\n**northpaper** (3 variants)\n- NP-PAD-A5, A5 notebook, ruled: 0 units (northpaper)\n- NP-INK, Ink, blue-black: 3 units (northpaper)\n- NP-CARDS, Letterpress cards: 5 units (northpaper)\n\n- **Odd SKU in tidewater:** The SKU HB-BEANS-1KG is a Harbour-style SKU, but it's listed in tidewater, which is a swim store. harbour also carries it, with 18 units. It may be a miscataloged product in tidewater, so check that.\n- **Gift card:** HB-GIFT in harbour is a gift card, so its 0 units may not be real stock.",
+      "error": false,
+      "wallMs": 11562,
+      "durationMs": 9796,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 70833,
+      "outputTokens": 697,
+      "costUsd": 0.0377962
+    },
+    {
+      "arm": "shopherd",
+      "task": "compare_sku",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Two of your three stores carry SKU HB-BEANS-1KG (\"Coffee beans 1kg\", handle `coffee-beans-1kg`, status Active in both):\n\n| Store | Price | Compare-at price | Stock |\n|---|---|---|---|\n| Harbour Coffee (harbour) | 42.00 | 48.00 | 18 |\n| Tidewater Swim (tidewater) | 46.00 | none | 0 (out of stock) |\n| Northpaper (northpaper) | not listed | not listed | not listed |\n\n- **Price:** Tidewater Swim's price is 4.00 higher than Harbour Coffee's. The report doesn't give each store's currency, so I can't say whether the two prices are directly comparable.\n- **Compare-at price:** Harbour Coffee shows 42.00 against a compare-at of 48.00, so it displays as a discount. Tidewater Swim has no compare-at price set.\n- **Stock:** Tidewater Swim has none of this product, while Harbour Coffee has 18. If you want to move stock between them, Harbour Coffee is the one that has some.\n- **Northpaper:** no product with this SKU exists in that store.",
+      "error": false,
+      "wallMs": 10359,
+      "durationMs": 9070,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24461,
+      "outputTokens": 600,
+      "costUsd": 0.0482844
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "compare_sku",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "SKU HB-BEANS-1KG (\"Coffee beans 1kg\", active) exists in two of your three stores:\n\n| Store | Price | Compare-at price | Stock |\n|---|---|---|---|\n| harbour | 42.00 | 48.00 | 18 |\n| tidewater | 46.00 | none | 0 |\n| northpaper | not found | not found | not found |\n\n- **Price:** tidewater charges 4.00 more than harbour (46.00 against 42.00).\n- **Compare-at price:** only harbour has one (48.00), so it shows a markdown there. tidewater has none.\n- **Stock:** harbour has 18 units. tidewater has 0, so it is out of stock while still listed as active.\n- **northpaper:** this store has no variant with this SKU.\n\nThe report doesn't give a currency for any store, so I haven't assumed the prices are comparable.",
+      "error": false,
+      "wallMs": 10350,
+      "durationMs": 8385,
+      "turns": 4,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report",
+        "shopify_report"
+      ],
+      "inputTokens": 70579,
+      "outputTokens": 591,
+      "costUsd": 0.0355954
+    },
+    {
+      "arm": "shopherd",
+      "task": "catalog_gap",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Harbour (harbour-coffee) has 9 active products that Tidewater (tidewater-swim) doesn't have in its catalog at all:\n\n1. Burr grinder (`burr-grinder`)\n2. Ceramic mug, speckled (`ceramic-mug-speckled`)\n3. Coffee beans 250g (`coffee-beans-250g`)\n4. Cold brew jar (`cold-brew-jar`)\n5. Filter papers (`filter-papers`)\n6. Gift card (`gift-card`)\n7. Linen apron (`linen-apron`)\n8. Pour-over kettle (`pour-over-kettle`)\n9. Tasting flight (`tasting-flight`)\n\n- **Left out, Barista course:** Harbour has it as a draft, not active, and Tidewater doesn't have it either.\n- **Left out, Ceramic mug:** Harbour has it active. Tidewater has it too, but as a draft, so it isn't missing from Tidewater's catalog.\n- **Overlap, Coffee beans 1kg:** Both stores have it active.\n\nI matched products by handle. If Tidewater sells the same item under a different handle, it would show up here as missing.",
+      "error": false,
+      "wallMs": 11392,
+      "durationMs": 10133,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 25693,
+      "outputTokens": 713,
+      "costUsd": 0.05436970000000001
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "catalog_gap",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "**Harbour has 9 active products that Tidewater doesn't carry.** I matched products by handle across the two catalogs. I scanned all 12 products in harbour and all 10 in tidewater.\n\n| Product | Handle | Status in harbour | Inventory in harbour |\n|---|---|---|---|\n| Burr grinder | burr-grinder | ACTIVE | 0 |\n| Ceramic mug, speckled | ceramic-mug-speckled | ACTIVE | 12 |\n| Coffee beans 250g | coffee-beans-250g | ACTIVE | 64 |\n| Cold brew jar | cold-brew-jar | ACTIVE | 5 |\n| Filter papers | filter-papers | ACTIVE | 4 |\n| Gift card | gift-card | ACTIVE | 0 |\n| Linen apron | linen-apron | ACTIVE | 9 |\n| Pour-over kettle | pour-over-kettle | ACTIVE | 3 |\n| Tasting flight | tasting-flight | ACTIVE | 22 |\n\nI left out three harbour products on purpose:\n- **Barista course:** it is DRAFT in harbour, so it isn't active. It is also absent from tidewater.\n- **Coffee beans 1kg:** it is ACTIVE in harbour (18 in stock) and also ACTIVE in tidewater (0 in stock), so tidewater does carry it.\n- **Ceramic mug:** it is ACTIVE in harbour (40 in stock). tidewater has it as a DRAFT (11 in stock). That counts as carried, though not sold.\n\nTwo caveats:\n- **Handle matching:** the speckled mug may be a variant of the ceramic mug that tidewater holds as a draft. If you count that as the same item, the list drops to 8.\n- **Zero stock:** burr grinder and gift card both show 0 inventory in harbour. They are active but can't currently be bought if stock is tracked.",
+      "error": false,
+      "wallMs": 13153,
+      "durationMs": 11298,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 73477,
+      "outputTokens": 1012,
+      "costUsd": 0.051491
+    },
+    {
+      "arm": "shopherd",
+      "task": "no_image",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products with no image (media count of 0), by store:\n\n- **Harbour Coffee (harbour):** 2 of 11 active products have no image.\n  - Cold brew jar (`cold-brew-jar`)\n  - Tasting flight (`tasting-flight`)\n- **Tidewater Swim (tidewater):** 1 of 9 active products has no image.\n  - Kickboard (`kickboard`)\n- **Northpaper (northpaper):** 2 of 9 active products have no image.\n  - Desk calendar (`desk-calendar`)\n  - Letterpress cards (`letterpress-cards`)\n\nThat makes 5 products across the three stores. Each store returned all its active products in one page, so the lists are complete. I counted all media, not only images. A product with video or 3D media but no photo would count as having media, but none of these five has any media at all.",
+      "error": false,
+      "wallMs": 8058,
+      "durationMs": 6753,
+      "turns": 2,
+      "toolCalls": [
+        "graphql_query_all_stores"
+      ],
+      "inputTokens": 25504,
+      "outputTokens": 387,
+      "costUsd": 0.0504083
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "no_image",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products with no image (media count of 0), by store. Each store returned all of its active products in one page, so nothing was cut off.\n\n**harbour** (11 active products, 2 without an image)\n- Cold brew jar (`cold-brew-jar`, gid://shopify/Product/11037)\n- Tasting flight (`tasting-flight`, gid://shopify/Product/11046)\n\n**tidewater** (9 active products, 1 without an image)\n- Kickboard (`kickboard`, gid://shopify/Product/23022)\n\n**northpaper** (9 active products, 2 without an image)\n- Desk calendar (`desk-calendar`, gid://shopify/Product/37027)\n- Letterpress cards (`letterpress-cards`, gid://shopify/Product/37041)\n\nThat makes 5 products across the three stores. I counted all media on each product, not just images. A product with only a video would show as having media, but none of these have any media at all.",
+      "error": false,
+      "wallMs": 9471,
+      "durationMs": 7563,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 69836,
+      "outputTokens": 495,
+      "costUsd": 0.031874
+    },
+    {
+      "arm": "shopherd",
+      "task": "duplicate_skus",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Yes. Two stores have a SKU shared by more than one product. Tidewater Swim has none.\n\n- **Harbour Coffee (harbour):** SKU `HB-MUG-01` is used by two products, `ceramic-mug` and `ceramic-mug-speckled`.\n- **Northpaper (northpaper):** SKU `NP-PAD-A5` is used by two products, `a5-notebook-ruled` and `a5-notebook-dotted`.\n- **Tidewater Swim (tidewater):** No SKU is shared inside the store. All 10 variants scanned have distinct SKUs.\n\nThe report scanned every variant in each store: 12 in Harbour Coffee, 10 in Tidewater Swim and 10 in Northpaper. It lists duplicates by product, so two variants of the same product sharing a SKU might not show up. I didn't check for that separately.\n\nTidewater Swim also has a SKU, `HB-BEANS-1KG`, that matches a Harbour Coffee SKU on its `coffee-beans-1kg` product. That's a SKU shared across two stores, not inside one, so it doesn't count here. The Harbour Coffee SKU prefix suggests it may have been copied over by mistake.",
+      "error": false,
+      "wallMs": 11396,
+      "durationMs": 10060,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24861,
+      "outputTokens": 641,
+      "costUsd": 0.05031
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "duplicate_skus",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Yes. Two stores have a SKU shared by more than one product inside the same store. The third store has none.\n\n**harbour (harbour-coffee.myshopify.com)**: 1 duplicated SKU, across 12 variants scanned.\n- `HB-MUG-01` is used by \"Ceramic mug\" (`ceramic-mug`, variant 11020) and by \"Ceramic mug, speckled\" (`ceramic-mug-speckled`, variant 11025). Both products are ACTIVE.\n\n**northpaper (northpaper.myshopify.com)**: 1 duplicated SKU, across 10 variants scanned.\n- `NP-PAD-A5` is used by \"A5 notebook, ruled\" (`a5-notebook-ruled`, variant 37010) and by \"A5 notebook, dotted\" (`a5-notebook-dotted`, variant 37015). Both products are ACTIVE.\n\n**tidewater (tidewater-swim.myshopify.com)**: 0 duplicated SKUs, across 10 variants scanned.\n\nEvery scan was complete and not truncated.\n\nThe same SKU also appears in two stores, which is a separate issue from duplicates within one store. `HB-BEANS-1KG` is on \"Coffee beans 1kg\" in harbour (variant 11005) and on \"Coffee beans 1kg\" in tidewater (variant 23005). Tidewater is a swim shop, and every other SKU there starts with `TW-`, so the `HB-` prefix there looks like a copy-over.\n\nI haven't changed anything.",
+      "error": false,
+      "wallMs": 10532,
+      "durationMs": 8684,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_report"
+      ],
+      "inputTokens": 72339,
+      "outputTokens": 673,
+      "costUsd": 0.0435256
+    },
+    {
+      "arm": "shopherd",
+      "task": "active_count",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products per store:\n\n- **Harbour Coffee** (harbour): 11\n- **Tidewater Swim** (tidewater): 9\n- **Northpaper** (northpaper): 9\n\nAll three counts are exact. Harbour Coffee also has 1 draft product and Tidewater Swim has 1. Northpaper has none.",
+      "error": false,
+      "wallMs": 6882,
+      "durationMs": 5508,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24717,
+      "outputTokens": 165,
+      "costUsd": 0.0450559
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "active_count",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Active products per store (exact counts):\n\n- **harbour** (harbour-coffee.myshopify.com): 11\n- **tidewater** (tidewater-swim.myshopify.com): 9\n- **northpaper** (northpaper.myshopify.com): 9\n\nAcross all three stores that comes to 29 active products.",
+      "error": false,
+      "wallMs": 8568,
+      "durationMs": 6636,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_graphql_query_many"
+      ],
+      "inputTokens": 68195,
+      "outputTokens": 260,
+      "costUsd": 0.0229678
+    },
+    {
+      "arm": "shopherd",
+      "task": "shop_settings",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "The Northpaper store (northpaper.myshopify.com) uses:\n\n- **Currency:** GBP (British pounds)\n- **Time zone:** Europe/London",
+      "error": false,
+      "wallMs": 5500,
+      "durationMs": 3904,
+      "turns": 2,
+      "toolCalls": [
+        "get_shop"
+      ],
+      "inputTokens": 24193,
+      "outputTokens": 114,
+      "costUsd": 0.0424343
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "shop_settings",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "The northpaper store uses these settings:\n- **Currency:** GBP (British pounds)\n- **Time zone:** Europe/London",
+      "error": false,
+      "wallMs": 6644,
+      "durationMs": 4340,
+      "turns": 2,
+      "toolCalls": [
+        "shopify_get_shop_info"
+      ],
+      "inputTokens": 45104,
+      "outputTokens": 109,
+      "costUsd": 0.0169999
+    },
+    {
+      "arm": "shopherd",
+      "task": "find_title",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Two of your three stores sell something with \"linen\" in the name:\n\n| Store | Product | Price | Stock |\n|---|---|---|---|\n| Harbour Coffee (harbour) | Linen apron | 29.00 | 9 |\n| Northpaper (northpaper) | Linen-bound notebook | 18.50 | 26 |\n\n- **Tidewater Swim (tidewater):** no products match \"linen\".\n- **Status and variants:** both products are active and each has a single default variant, so there is one price per product.\n- **Currency:** the report doesn't show currency. Each price is in that store's own currency.",
+      "error": false,
+      "wallMs": 18229,
+      "durationMs": 7809,
+      "turns": 2,
+      "toolCalls": [
+        "store_report"
+      ],
+      "inputTokens": 24349,
+      "outputTokens": 405,
+      "costUsd": 0.0459449
+    },
+    {
+      "arm": "shopify-multi-store",
+      "task": "find_title",
+      "repeat": 2,
+      "pass": true,
+      "misses": [],
+      "answer": "Two of your three stores sell something with \"linen\" in the name:\n\n| Store | Product | Price | Status |\n|---|---|---|---|\n| **harbour** (harbour-coffee) | Linen apron (SKU HB-APRON) | 29.00 | Active |\n| **northpaper** | Linen-bound notebook (SKU NP-NOTE-LINEN) | 18.50 | Active |\n\n**tidewater** (tidewater-swim) has no products with \"linen\" in the name.\n\nThe search covered product titles only, and the results were complete for all three stores. Each product has a single variant, so there is one price per product. The tools didn't report a currency, so the prices have no currency label.",
+      "error": false,
+      "wallMs": 15073,
+      "durationMs": 7842,
+      "turns": 3,
+      "toolCalls": [
+        "shopify_list_stores",
+        "shopify_search"
+      ],
+      "inputTokens": 69064,
+      "outputTokens": 400,
+      "costUsd": 0.027734599999999998
+    }
+  ]
+}

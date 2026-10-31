@@ -1,106 +1,160 @@
 <p align="center"><img src="design/icon/export/icon-512.png" alt="" width="128" height="128" /></p>
 
-<h1 align="center">StoreRow</h1>
+<h1 align="center">Shopherd</h1>
 
 <p align="center"><strong>Every client store in one AI chat. Each answer says which store it came from.</strong></p>
 
-<p align="center">Free and open source (MIT) · works with Claude Desktop, Claude Code, Cursor, VS Code and Codex · not affiliated with Shopify</p>
+<p align="center">Free and open source (MIT) · works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and Codex · not affiliated with Shopify</p>
 
 ![A row of five small shopfronts under one shared rail](design/marketing/assets/banner-shopfront-row.jpg)
 
-StoreRow lets one AI assistant work on several Shopify stores at the same time. You connect each store once, through Shopify's own approval page, and from then on you can ask your assistant about any of them, or all of them at once. Every answer starts with the name of the store it came from, so a number never lands on the wrong client.
+**Shopherd for Shopify** (say it `SHOP-herd`, like shepherd) lets one AI assistant work across several Shopify stores at the same time. Ask a question once and every connected store answers, with each reply starting with the store it came from, such as `store: harbour (harbour-coffee.myshopify.com)`, so a figure never lands on the wrong client. You connect stores through Shopify's own approval page in your browser, without creating custom Shopify apps or handing API keys around.
 
-It is built for people who look after more than one store: agencies and freelancers with client stores, and owners who run a few stores of their own.
+We built it for Shopify agencies, freelancers and account managers who look after several client stores, many of whom aren't developers. It also suits store owners running 2-6 shops of their own.
 
 ## Why it exists
 
-Shopify's own AI connector for Claude, ChatGPT and the other chat apps holds one store at a time. A Shopify staff member put it this way on the Shopify developer forum in October 2026: the connector "supports one store at a time, even when the stores are in the same organization. Switching stores starts a new authorization."
+Shopify's own AI connector holds one store at a time. As a Shopify staff member wrote on the Shopify Developer Community forum on 7 October 2026: "The Shopify connector supports one store at a time, even when the stores are in the same organization. Switching stores starts a new authorization."
 
-If you look after several stores, that means approving access again every time you move between them, and never having two stores in the same conversation. StoreRow keeps every store you connect available together.
+If you look after a roster of client stores, that means re-approving access every time you switch clients, and never comparing two stores inside the same chat. Shopherd keeps every connected store available together in one conversation.
 
-Shopify's admin still switches between stores without any trouble. The limit is only in the AI connector.
+Shopify's web admin switches between stores without any trouble; that one-store limit sits solely in the AI connector.
 
 ## What you can ask
 
-Once your stores are connected you talk to your assistant normally. For example:
+Once your stores are connected, you ask your assistant questions in plain English. Shopherd asks your connected stores side by side, four at a time. For example:
 
-- "How many orders are still unfulfilled in each store?"
-- "Which products are under 5 in stock at harbour?"
-- "What did each store sell yesterday?"
-- "Show me the shipping settings for tidewater and northpaper side by side."
-- "Draft a discount code for harbour, but check with me before you create it."
+- "How many orders are still waiting to be fulfilled in each store, and which order has been waiting longest in each?"
+- "What did each store sell over the last 7 days? Leave out cancelled and test orders, and give each total in the store's own currency."
+- "Compare SKU HB-BEANS-1KG across all my stores: price, compare-at price and stock in each."
+- "Which active products have no image, in each store?"
+- "Which of my stores sell something with 'linen' in the name, and at what price?"
 
-An answer comes back like this:
+Answers come back labelled by store like this:
 
-```
+```text
 store: harbour (harbour-coffee.myshopify.com)
-14 unfulfilled. The oldest is from Tuesday.
+4 orders waiting to be fulfilled. Longest waiting: #1042.
 
 store: tidewater (tidewater-swim.myshopify.com)
-3 unfulfilled, all from today.
+1 order waiting to be fulfilled. Longest waiting: #2190.
 ```
 
-The store names above are examples. You choose your own short name for each store when you connect it.
+The store names and order numbers above are illustrative examples; you pick your own short nickname for each store when you connect it.
+
+## Ready-made reports and the prompts menu
+
+For routine agency checks, Shopherd includes nine ready-made reports (through its `store_report` tool). Each report runs across every connected store at once and combines the results into one reply, clearly labelled by store.
+
+| Report | What it checks across every store |
+|---|---|
+| **Overview** | Store details and a top-level summary for each connected store. |
+| **Sales** | Order count, total sales and average order value in each store's own currency, with test and cancelled orders left out. |
+| **Unfulfilled orders** | Waiting orders grouped by age; counts partially fulfilled orders as waiting, matching Shopify admin's Unfulfilled view. |
+| **Low stock** | Products running low in each store, alongside which other connected store has stock available to move. |
+| **Find a product** | Matches a product by SKU, handle or name across every store, showing price, compare-at price and stock. |
+| **Catalogue gaps** | Products missing from some stores, plus status mismatches between stores. |
+| **Catalogue health** | Products with no image, missing alt text, empty description, no SEO description, no product type or a zero price. |
+| **Duplicate SKUs** | SKUs used by more than one product or variant inside the same store. |
+| **Recently changed products** | Products updated recently across your stores. |
+
+Apps like Claude Desktop also show seven ready-made prompts in their prompts menu so you don't have to type from scratch: **morning check**, **sales**, **unfulfilled orders**, **low stock**, **compare a product**, **catalogue check** and **connect a store**.
+
+For anything outside those nine reports, your assistant can run read-only Admin GraphQL queries on one store or across every store at once. Shopherd also passes through Shopify's own Dev MCP so your assistant can look up Shopify's API docs and check a query before running it.
+
+## How it compares
+
+Instead of claiming Shopherd handles multi-store questions well, we measured it head to head against the closest open-source alternative, [Shopify Multi-Store MCP](https://github.com/alex-brecher/shopify-multi-store) (`shopify-multi-store-mcp-server` 2.0.3, MIT), and published the test suite so anyone can re-run it.
+
+| Measure | Shopherd 0.3.0 | Shopify Multi-Store MCP 2.0.3 |
+|---|---|---|
+| Questions answered correctly | **30 of 30 (100%)** | 27 of 30 (90%) |
+| Tool calls per question (median) | **1** | 2 |
+| Time per question, end to end (median) | **7.4 s** | 8.8 s |
+| Model cost per question (median) | **2.3¢** | 3.7¢ |
+| Tools in the list sent with every message | 14 (~10k tokens) | 29 (~12k tokens) |
+| One store's details, one call | 526 ms | **5 ms** |
+| Unfulfilled orders across 3 stores | 541 ms | **7 ms** |
+| Unfulfilled orders across 8 stores | 1.1 s | **12 ms** |
+| Installed size | 28 MB, plus 397 MB of Shopify's CLI and Dev MCP on first start | **32 MB** |
+
+On 31 October 2026, both servers ran against the same local mock of Shopify's Admin API, which validates every request against Shopify's published schema (198 requests, 0 rejected) and answers from the same three stores (`harbour`, `tidewater` and `northpaper`). The alternative ran from its published npm package in a sandboxed container, while Shopherd ran through a stand-in for Shopify's CLI that waits the measured 0.47 s per call; neither side paid network time to Shopify. Claude Sonnet 5.5 (in Claude Code, with no other tools) answered the same 10 multi-store questions 3 times per server, graded by script against figures calculated from the data, while speed rows show the median of 7 runs. Asking stores four at a time cut Shopherd's unfulfilled-orders check from 1.6 s to 541 ms across 3 stores (and from 4.2 s to 1.1 s across 8 stores) compared with version 0.2. Note: these results come from mock stores rather than live shops, using one AI model and 10 questions written by the Shopherd team.
+
+Shopify Multi-Store MCP is a good tool that does more than Shopherd in several areas:
+
+- **Faster raw API calls:** It calls Shopify's Admin API directly over HTTPS (5 ms to 12 ms above), whereas Shopherd starts Shopify's CLI on each call (about 0.47 s) so it never touches access tokens itself.
+- **Team hosting and browser chat:** You can host it on Cloudflare Workers or Docker with per-person Shopify staff sign-in, making it usable from ChatGPT and claude.ai in the browser. Shopherd runs strictly on your own computer.
+- **Smaller install:** It installs in 32 MB, without downloading Shopify's CLI and Dev MCP.
+- **More reports and write tools:** It offers 29 tools, 17 ready-made reports, guided write tools and generic tools reaching all 514 Admin mutations (API 2026-04).
+
+Where the two differ in Shopherd's favour: connecting a store there means creating a Shopify app in the Dev Dashboard (setting scopes, releasing a version, installing it and copying client secrets for OAuth) or creating a custom admin app and copying its `shpat_` token into your keychain. It has no MCP prompts or per-store read-only switch, and it pins Admin API 2026-07, where Shopherd follows Shopify CLI onto the newest stable version (2026-10).
+
+Full method, per-question scores and raw logs live in [evals/README.md](evals/README.md) and [evals/results/SUMMARY.md](evals/results/SUMMARY.md).
 
 ## Is it safe?
 
-This section covers what the tool touches and what it leaves alone.
+- **It never reads or copies a Shopify token.** You don't build a custom app or copy `shpat_` tokens. Each store signs in on Shopify's own approval page through Shopify's own CLI, which keeps that store's sign-in in its own folder on your computer. Removing a store deletes that folder.
+- **Questions can't edit a store.** Reading and changing are kept separate. Edits go through a single change tool, one named store at a time. Throttled reads are retried automatically; changes are never retried, so an edit can't be applied twice.
+- **Any store can be locked to read-only.** Turning on read-only for a store refuses every change, whatever your assistant asks for. I reckon read-only is the sensible default for client stores where nobody has signed off on AI edits.
+- **Sensitive account changes are blocked outright.** Even on stores where edits are enabled, changes that would create access tokens, charge the store or alter app access are refused.
+- **Updates to Shopify's tools are verified before use.** Shopherd runs the newest release of Shopify's CLI and Dev MCP, switching over only after three checks pass: npm integrity, registry signatures and a start-up test. If a new release fails a check, the last working version keeps running.
+- **Store figures in answers go to your AI provider.** Data needed to answer your question is sent to your AI app's provider as part of the conversation, as with any AI connector. Nothing goes to fledgeling.
+- **Every line of code is open source.** Anyone on your team can inspect it in this repository under the MIT licence.
 
-- **It never sees your Shopify password or keys.** Each store signs in on Shopify's own approval page, the same kind of page you see when you install any Shopify app. The sign-in is held by Shopify's own command-line tool on your computer, and StoreRow never reads, copies or stores it.
-- **Questions cannot change anything.** Looking things up and changing things are separate. Changes go through one change tool, one store at a time, with the store named.
-- **You can make a store read-only.** A read-only store refuses every change, whatever your assistant asks for. Use this for client stores where nobody has agreed to AI edits.
-- **Your assistant decides when to make a change.** It is good practice to tell it to check with you first, and to keep read-only on for any store you do not want changed.
-- **It always runs Shopify's newest tools.** Every time it starts, it fetches the newest release of Shopify's own tools, checks that the download is intact and signed, tests that it starts, and only then switches over. If a new release fails a check, the last good version keeps working.
-- **What your assistant reads goes to your AI provider.** Store data that answers your question is sent to your AI app's provider (for example Anthropic or OpenAI) as part of the conversation, under their terms. That is true of every AI connector, Shopify's own included.
-- **Every line of code is public.** You or anyone you trust can read it in this repository.
+## What you need
 
-## What you need before you start
-
-- **A Mac, Windows or Linux computer.** It runs on your own computer, not in the cloud.
-- **Node.js 22.12 or newer.** This is a free program that StoreRow runs on. To check whether you have it, open Terminal (Mac) or Command Prompt (Windows) and type `node --version`. If the number is lower than 22.12, or you see "command not found", download the LTS version from [nodejs.org](https://nodejs.org) and install it like any other app.
-- **An AI app that can use MCP servers.** Claude Desktop, Claude Code, Cursor, VS Code or Codex. claude.ai in a web browser cannot run it, because it lives on your computer.
-- **A Shopify account that can approve app access on each store.** If you work on client stores through a collaborator account, check with the store owner that your account can approve apps.
-- **A web browser on the same computer**, for the approval step.
+- **A Mac, Windows or Linux computer.** Shopherd runs locally on your machine, not in the cloud.
+- **Node.js 22.12 or newer.** Open Terminal (Mac) or Command Prompt (Windows) and run `node --version` to check; if it's older than 22.12 or missing, install the LTS version from [nodejs.org](https://nodejs.org).
+- **A supported AI app:** Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex. Browser tabs like claude.ai can't run local tools.
+- **A Shopify login able to approve app access on each store**, plus a web browser on the same computer.
+- **About 400 MB of free disk space** for Shopify's CLI and Dev MCP on initial start.
 
 ## Set it up
 
-### Step 1: add it to your AI app
+Open Terminal (Mac) or Command Prompt (Windows) and run one command:
 
-Pick your app below, do what it says, then fully quit and reopen the app.
+```bash
+npx -y shopherd@latest setup
+```
 
-**Claude Desktop**
+`setup` checks that Node.js is 22.12 or newer, finds the supported AI apps installed on your computer, and adds Shopherd to each one. It backs up every settings file before editing it, and never touches a file it can't read.
 
-1. Open Claude Desktop, go to **Settings → Developer**, and click **Edit Config**. This opens a file called `claude_desktop_config.json`.
-2. Paste the following into it. If the file already has an `"mcpServers"` section, add only the `"shopify"` part inside it.
+Next, `setup` asks for each store's `.myshopify.com` address and opens Shopify's approval page in your browser so you can sign in. Once you reopen your AI app, initial start downloads Shopify's own CLI and Dev MCP (about 400 MB; roughly 30 seconds on our test machine).
+
+You can also connect additional stores later straight from your chat:
+
+> Connect acme.myshopify.com as acme
+
+To lock a store against edits when connecting it from chat, include `read-only`:
+
+> Connect acme.myshopify.com as acme, read-only
+
+### Prefer to set it up by hand?
+
+If you'd rather edit config files yourself instead of running `setup`, add the matching block below and restart your AI app.
+
+**Claude Desktop, Cursor and Windsurf**
 
 ```json
 {
   "mcpServers": {
-    "shopify": {
+    "shopherd": {
       "command": "npx",
-      "args": ["-y", "storerow@latest"]
+      "args": ["-y", "shopherd@latest"]
     }
   }
 }
 ```
 
-3. Save the file and restart Claude Desktop.
-
-**Cursor**
-
-Open **Cursor Settings → MCP**, choose to add a new global MCP server, and paste the same text as for Claude Desktop above.
-
 **VS Code**
-
-Open the Command Palette, run **MCP: Open User Configuration**, and paste:
 
 ```json
 {
   "servers": {
-    "shopify": {
+    "shopherd": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "storerow@latest"]
+      "args": ["-y", "shopherd@latest"]
     }
   }
 }
@@ -108,97 +162,75 @@ Open the Command Palette, run **MCP: Open User Configuration**, and paste:
 
 **Claude Code**
 
-Run this once in a terminal:
-
 ```bash
-claude mcp add shopify -- npx -y storerow@latest
+claude mcp add shopherd -- npx -y shopherd@latest
 ```
 
-**Codex**
-
-Add this to the file `~/.codex/config.toml`:
+**Codex** (`~/.codex/config.toml`)
 
 ```toml
-[mcp_servers.shopify]
+[mcp_servers.shopherd]
 command = "npx"
-args = ["-y", "storerow@latest"]
+args = ["-y", "shopherd@latest"]
 ```
-
-The first time your app starts it, StoreRow downloads Shopify's tools. That took about 30 seconds on our test machine. If your assistant says it is still installing, wait a minute and ask again.
-
-### Step 2: connect each store
-
-Ask your assistant, in your own words, to connect a store. Give it a short name you will remember and the store's `myshopify.com` address:
-
-> Connect acme-au.myshopify.com as au
-
-A browser window opens on Shopify's approval page for that store. Check that it shows the right store, approve it, and go back to your assistant. Repeat for each store.
-
-You can find a store's `myshopify.com` address in its Shopify admin under **Settings → Domains**. It is the one ending in `.myshopify.com`, even if the store uses its own domain for customers.
-
-To connect a store as read-only, say so:
-
-> Connect acme-nz.myshopify.com as nz, read-only
-
-### Step 3: ask
-
-> How many orders are unfulfilled in each store?
-
-If you are not sure which stores are connected, ask "Which stores are connected?"
 
 ## Everyday use
 
-- **Add another store** at any time with the same "connect" request.
-- **Sign in again** when a store's sign-in expires. Your assistant will tell you which store needs it and what to say.
-- **Ask about one store** by naming it ("at harbour"), or **all of them** by saying so ("in each store").
-- **Remove a store** by running `npx -y storerow@latest remove <name>` in a terminal. This forgets the store here. To fully revoke access, uninstall the app in that store's Shopify admin.
-- **Check everything is healthy** by running `npx -y storerow@latest doctor` in a terminal. It reports whether Shopify's tools are installed and checked, and which stores are signed in.
+- **Add another store** whenever you take on a client by saying `"Connect acme.myshopify.com as acme"` in chat, or by running `setup` again.
+- **Sign in again** if a store's session expires; your assistant will name the store that needs re-approval.
+- **Ask one store or all of them** by naming a store (`"at harbour"`) or asking across the lot (`"in each store"`).
+- **Remove a store** by running `npx -y shopherd@latest remove <name>` in your terminal, which deletes that store's sign-in folder from your computer.
+- **Check everything is working** by running `npx -y shopherd@latest doctor` to verify Shopify's tools and store sign-ins.
 
 ## If something goes wrong
 
 | What you see | What to do |
 |---|---|
-| Your assistant doesn't seem to know about Shopify | Fully quit and reopen the AI app after Step 1. Check the pasted text has no missing brackets or commas. |
-| "Shopify CLI is still installing" | Normal on the very first use. Wait a minute and ask again. |
-| "Store … is not signed in, or its session expired" | Ask your assistant to connect that store again, and approve it in the browser. |
-| No browser window opens when connecting | Your assistant may show a link; if it does, open it in your browser. The approval has to happen on the same computer that runs your AI app. |
-| The approval page refuses or shows an error | Your account may not be allowed to approve apps on that store. Ask the store owner. |
+| Your assistant doesn't know about Shopherd or your stores | Fully quit and reopen your AI app after setup. If you edited config by hand, check for missing commas or brackets, or run `npx -y shopherd@latest doctor`. |
+| "Shopify CLI is still installing" | Normal on initial start while Shopify's CLI and Dev MCP finish downloading (about 30 seconds on our test machine). Wait a minute and ask again. |
+| "Store … is not signed in, or its session expired" | Ask your assistant to connect that store again and approve it in your browser. |
+| No browser window opens when connecting | Check whether your assistant printed an approval link and open it in a browser on the same computer. |
+| The approval page refuses or shows an error | Your collaborator or staff login may not have permission to approve apps on that store; check with the store owner. |
 | "Pass store to say which store to use" | You have more than one store connected. Name the store in your question. |
-| "… is read-only, so mutations are refused" | That store is read-only on purpose. Reconnect it without "read-only" if you want changes allowed. |
-| `node: command not found`, or a version error | Install or update Node.js from [nodejs.org](https://nodejs.org), then restart the AI app. |
+| "… is read-only, so mutations are refused" | That store is set to read-only so edits are blocked. Reconnect it without `read-only` if you want changes allowed. |
+| `node: command not found`, or a version error | Install Node.js 22.12 or newer from [nodejs.org](https://nodejs.org), then restart your AI app. |
 
-If none of these help, please [open an issue](https://github.com/fledgeling-co/storerow/issues) with what you asked and what you saw (remove any customer details first).
+If you hit anything else, please [open an issue](https://github.com/fledgeling-co/shopherd/issues) with what you asked and the message that came back (strip out any client or customer details beforehand).
 
 ## Questions
 
 **Is this an official Shopify product?**
-No. It is an independent open-source project from fledgeling. It uses Shopify's own command-line tool and Shopify's Dev MCP to do the work, and every store still signs in on Shopify's own approval page.
+No. Shopherd is an independent open-source tool from fledgeling, and isn't affiliated with or endorsed by Shopify. It uses Shopify's own CLI and Dev MCP underneath, and every store signs in on Shopify's own approval page.
 
 **What does it cost?**
-Nothing. It is free under the MIT licence. Your AI app's own subscription is separate.
+Nothing. Shopherd is free under the MIT licence. Your AI app's own subscription is separate.
 
-**Can it change my store?**
-Only through one change tool, one store at a time, with the store named, and never on a store you have made read-only. Your assistant decides when to use it, so ask it to check with you first.
+**Does it work in claude.ai or ChatGPT in the browser?**
+No. Shopherd runs on your own computer, so it works with desktop and terminal apps (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and Codex). If you want a hosted server for a team that works in browser chat, look at Shopify Multi-Store MCP.
 
-**Does it work in claude.ai in the browser?**
-Not today. It runs on your computer, so it works with desktop and terminal apps that can start it. Shopify's hosted connector only accepts AI apps that Shopify recognises, which is why this one runs on your computer instead.
+**How does it compare with Shopify Multi-Store MCP?**
+Shopherd focuses on zero app or token setup, per-store read-only locks, ready-made prompts and multi-store read accuracy (30 of 30 vs 27 of 30 on our 10-question eval). Shopify Multi-Store MCP is much faster per raw API call, has a smaller install, includes more reports and write tools, and supports cloud hosting for teams.
 
-**How is this different from Matrixify and other multi-store tools?**
-Several tools already connect AI to more than one store, including Matrixify, ShopMCP and an open-source project called shopify-multi-store, and some of them do more, such as bulk imports or a hosted setup for a whole team. This one is free, keeps no keys of its own because it signs in through Shopify's own tool, and always runs Shopify's newest tools.
+**Do I have to create a Shopify app or ask clients for API keys?**
+No. You only need the store's `.myshopify.com` address and a Shopify login that can approve access in your browser.
 
-**Where is my data kept?**
-The list of stores you connect is kept in a small settings file on your computer (`~/.config/storerow/stores.json`). Store sign-ins are kept by Shopify's own command-line tool on your computer. Nothing is sent to fledgeling.
+**Can my assistant change a client store by accident?**
+Questions can't make changes. Edits go through one change tool on one named store at a time, changes never retry, and token, billing and app-access changes are blocked altogether. Keep client stores on read-only unless you actively want edits enabled.
+
+**I used StoreRow or shopify-multi-mcp; will my old setup break?**
+No. Shopherd was called `shopify-multi-mcp` in 0.1 and `StoreRow` in 0.2, and your existing settings keep working.
 
 ## Status
 
-This is an early release, version 0.2.0. Until 0.2.0 it was called shopify-multi-mcp, and links to the old name redirect here. It has been tested end to end against Shopify's own tools, but we have not yet signed in to a real store with it ourselves, so the first store you connect is part of the testing. If anything breaks, please [open an issue](https://github.com/fledgeling-co/storerow/issues).
+Shopherd is an early release at version 0.3.0 (website: [fledgeling-co.github.io/shopherd](https://fledgeling-co.github.io/shopherd/)). We've tested it end to end against Shopify's own tools and against a local mock Admin API built on Shopify's published schema, though nobody has signed in to a real store with it yet; connecting a live store is part of early testing. Earlier versions were named `shopify-multi-mcp` (0.1) and `StoreRow` (0.2); old settings still work and old links redirect here. Please report any rough edges on [GitHub Issues](https://github.com/fledgeling-co/shopherd/issues).
 
 ## For developers
 
-- [docs/TECHNICAL.md](docs/TECHNICAL.md): the technical guide (how it works, configuration, flags, tests).
-- [docs/REVIEW.md](docs/REVIEW.md): the review of Shopify's MCP servers and connectors behind the design.
-- [docs/positioning/](docs/positioning/00-decision.md): who this is for and why, with the research behind it.
-- [design/](design/): the icon, its audit sheet and the marketing site.
+- [docs/TECHNICAL.md](docs/TECHNICAL.md): architecture, configuration, flags and test suite.
+- [docs/REVIEW.md](docs/REVIEW.md): review of Shopify's MCP servers and connectors behind the design.
+- [evals/](evals/): multi-store benchmark and agent eval harness, prompts and raw results.
+- [docs/positioning/00-decision.md](docs/positioning/00-decision.md): audience research and positioning notes.
+- [design/](design/): icon source, audit sheet and marketing assets.
 
 ## Licence
 

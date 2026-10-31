@@ -1,11 +1,13 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { CallToolRequestSchema, GetPromptRequestSchema, ListPromptsRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { CLI_PACKAGE, CliError } from './shopify-cli.js';
 import { DEV_MCP_PACKAGE } from './dev-mcp.js';
 import { setting } from './config.js';
+import { PROMPTS, promptMessages } from './prompts.js';
+import { REPORT_NAMES, ReportError, runReport } from './reports.js';
 import {
-  CURATED_QUERIES, OWN_TOOL_NAMES, ToolError, assertNotMutation, buildTools, connectArgs,
-  errorResult, resolveStore, storeResult, textResult,
+  CURATED_QUERIES, OWN_TOOL_NAMES, ToolError, assertAllowedMutation, assertNotMutation, buildTools, connectArgs,
+  errorResult, resolveStore, resolveStores, storeResult, textResult,
 } from './tools.js';
 
 const FIRST_INSTALL_WAIT_MS = 45_000;
@@ -26,7 +28,8 @@ How to work:
 - Call list_stores when you are unsure which stores exist or whether they are signed in.
 - Name the store on every call, even when the user mentioned it earlier, so each result is tied to the right store.
 - Look ids up in the store you are acting on. An id such as gid://shopify/Product/123 exists in one store only, so an id copied from another store fails or, worse, matches an unrelated record.
-- Reads: get_shop, search_products and list_orders cover common questions; graphql_query covers the rest. To compare stores, use graphql_query_all_stores.
+- Questions about several stores: try store_report first (${REPORT_NAMES.join(', ')}). It asks every store at once and returns one combined answer.
+- Reads on one store: get_shop, search_products and list_orders cover common questions; graphql_query covers the rest. For a custom query on several stores, use graphql_query_all_stores.
 - Writes: graphql_mutation. Confirm the store and the change with the user first, because a mutation changes a live store, then check userErrors in the result.
 - For GraphQL you are unsure of, call learn_shopify_api (api "admin") and Shopify's validation tool (named validate in Dev MCP 1.18) before running it. The conversationId from learn_shopify_api belongs to those Shopify Dev MCP tools only; the store tools take "store" instead.
 - If a store is not signed in or its session expired, call connect_store with its name and tell the user to approve in the browser window that opens.
@@ -51,11 +54,13 @@ export class MultiStoreServer {
     this.pendingAuth = new Map();
     this.devToolNames = new Map(); // exposed name -> Dev MCP name
     this.server = new Server(
-      { name: 'storerow', title: 'StoreRow: several Shopify stores', version },
-      { capabilities: { tools: { listChanged: true } }, instructions: buildInstructions(config.stores()) },
+      { name: 'shopherd', title: 'Shopherd: several Shopify stores in one assistant', version },
+      { capabilities: { tools: { listChanged: true }, prompts: {} }, instructions: buildInstructions(config.stores()) },
     );
     this.server.setRequestHandler(ListToolsRequestSchema, () => this.listTools());
     this.server.setRequestHandler(CallToolRequestSchema, (req) => this.callTool(req.params.name, req.params.arguments || {}));
+    this.server.setRequestHandler(ListPromptsRequestSchema, () => ({ prompts: PROMPTS.map(({ build, ...p }) => p) }));
+    this.server.setRequestHandler(GetPromptRequestSchema, (req) => promptMessages(req.params.name, req.params.arguments || {}, this.config.stores()));
     toolchain.onUpdate = (pkg) => {
       if (pkg === DEV_MCP_PACKAGE) this.devMcp.current().then(() => this.devReady(), () => {});
     };
@@ -65,11 +70,13 @@ export class MultiStoreServer {
     this.server.sendToolListChanged().catch(() => {});
   }
 
-  // Announce Dev MCP's tools once per running version rather than on every start attempt.
+  // Tell the client only when the running Dev MCP's tools differ from the list it was given.
   devReady() {
-    const version = this.devMcp.active?.version;
-    if (version && version !== this.announcedDev) {
-      this.announcedDev = version;
+    const tools = this.devMcp.active?.tools;
+    if (!tools || this.servedDev === undefined) return;
+    const now = signature(tools);
+    if (now !== this.servedDev && now !== this.announcedDev) {
+      this.announcedDev = now;
       this.toolsChanged();
     }
   }
@@ -83,17 +90,16 @@ export class MultiStoreServer {
   async listTools() {
     this.devToolNames.clear();
     const devTools = [];
-    // Only list Dev MCP tools once it is running; a first install can take a minute and a
-    // slow tools/list makes clients give up. toolsChanged() fires when it is ready.
-    if (this.devMcp.active) {
-      for (const t of await this.devMcp.listTools()) {
-        if (this.hiddenTools.has(t.name)) continue;
-        const exposed = OWN_TOOL_NAMES.has(t.name) ? `dev_${t.name}` : t.name;
-        this.devToolNames.set(exposed, t.name);
-        devTools.push({ ...t, name: exposed });
-      }
-    } else {
-      this.devMcp.current().then(() => this.devReady(), () => {});
+    // Never wait for Dev MCP here: a first install can take a minute and a slow tools/list makes
+    // clients give up. Until it runs, serve the list the last run saw (calls wait for it to start).
+    const source = this.devMcp.active?.tools ?? this.devMcp.remembered?.tools ?? [];
+    if (!this.devMcp.active) this.devMcp.current().then(() => this.devReady(), () => {});
+    this.servedDev = signature(source);
+    for (const t of source) {
+      if (this.hiddenTools.has(t.name)) continue;
+      const exposed = OWN_TOOL_NAMES.has(t.name) ? `dev_${t.name}` : t.name;
+      this.devToolNames.set(exposed, t.name);
+      devTools.push({ ...t, name: exposed });
     }
     const validator = devTools.find((t) => /^validate(_graphql\w*)?$/.test(t.name))?.name;
     return { tools: [...buildTools(this.config.stores(), validator ? { validator } : {}), ...devTools] };
@@ -110,14 +116,15 @@ export class MultiStoreServer {
         case 'graphql_query': return await this.graphql(args, false);
         case 'graphql_mutation': return await this.graphql(args, true);
         case 'graphql_query_all_stores': return await this.queryAll(args);
+        case 'store_report': return await this.report(args);
         default: break;
       }
-      if (!this.devToolNames.size && this.devMcp.active) await this.listTools();
+      if (!this.devToolNames.size) await this.listTools();
       const devName = this.devToolNames.get(name);
       if (devName) return await this.devMcp.callTool(devName, args);
       return errorResult(`Unknown tool "${name}". Call list_stores, or list the tools again: the Shopify Dev MCP tools may still be starting.`);
     } catch (err) {
-      if (err instanceof ToolError) return errorResult(err.message);
+      if (err instanceof ToolError || err instanceof ReportError) return errorResult(err.message);
       return errorResult(`${name} failed: ${err.message}`);
     }
   }
@@ -125,7 +132,7 @@ export class MultiStoreServer {
   // The first call after install waits for the CLI; past FIRST_INSTALL_WAIT_MS it returns a
   // message to retry instead of holding the client on an npm install.
   async withCliReady(fn) {
-    if (!this.toolchain.status(CLI_PACKAGE).version) {
+    if (!process.env.SHOPHERD_CLI_ENTRY && !this.toolchain.status(CLI_PACKAGE).version) {
       const ready = this.cli.binary();
       const timedOut = await Promise.race([ready.then(() => false), new Promise((r) => setTimeout(() => r(true), FIRST_INSTALL_WAIT_MS).unref())]);
       if (timedOut) throw new ToolError('Shopify CLI is still installing (first run only, about a minute). Try the same call again shortly.');
@@ -136,7 +143,7 @@ export class MultiStoreServer {
   async run(store, request) {
     return this.withCliReady(async () => {
       try {
-        const { result, cliVersion } = await this.cli.execute(store.domain, request);
+        const { result, cliVersion } = await this.cli.execute(this.config.target(store), request);
         return { ok: true, result, cliVersion };
       } catch (err) {
         return { ok: false, err };
@@ -155,6 +162,7 @@ export class MultiStoreServer {
     if (!args.query) throw new ToolError('"query" is required.');
     if (!mutation) assertNotMutation(args.query);
     if (mutation && store.readOnly) throw new ToolError(`Store "${store.name}" is read-only, so mutations are refused. Reconnect it with read_only false to allow changes.`);
+    if (mutation) assertAllowedMutation(args.query);
     const out = await this.run(store, { query: args.query, variables: args.variables, apiVersion: args.api_version, allowMutations: mutation });
     return out.ok ? storeResult(store, out.result) : cliFailure(out.err, store);
   }
@@ -163,19 +171,31 @@ export class MultiStoreServer {
     const all = this.config.stores();
     if (!args.query) throw new ToolError('"query" is required.');
     assertNotMutation(args.query);
-    const picked = args.stores?.length && !args.stores.includes('all')
-      ? args.stores.map((s) => resolveStore(all, s))
-      : Object.values(all);
-    if (!picked.length) throw new ToolError('No stores are connected yet. Call connect_store first.');
-    const results = [];
-    for (const store of picked) {
+    const picked = resolveStores(all, args.stores);
+    // Every store at once; the CLI layer caps how many run together.
+    const results = await Promise.all(picked.map(async (store) => {
       const out = await this.run(store, { query: args.query, variables: args.variables, apiVersion: args.api_version });
-      results.push(out.ok
+      return out.ok
         ? { store: store.name, domain: store.domain, ...out.result }
-        : { store: store.name, domain: store.domain, error: cliFailure(out.err, store).content[0].text });
-    }
-    const text = results.map((r) => `store: ${r.store} (${r.domain})\n${JSON.stringify(r.error ? { error: r.error } : { data: r.data, extensions: r.extensions }, null, 2)}`).join('\n\n');
+        : { store: store.name, domain: store.domain, error: cliFailure(out.err, store).content[0].text };
+    }));
+    const text = results.map((r) => `store: ${r.store} (${r.domain})\n${JSON.stringify(r.error ? { error: r.error } : { data: r.data })}`).join('\n\n');
     return textResult(text, { results });
+  }
+
+  async report(args) {
+    const all = this.config.stores();
+    if (!REPORT_NAMES.includes(args.report)) throw new ToolError(`"report" must be one of: ${REPORT_NAMES.join(', ')}.`);
+    const picked = resolveStores(all, args.stores);
+    const gqlFor = (name) => async (query, variables) => {
+      const store = all[name];
+      const out = await this.run(store, { query, variables: stripUndefined(variables || {}) });
+      if (!out.ok) throw new Error(cliFailure(out.err, store).content[0].text);
+      if (out.result?.errors?.length && !out.result.data) throw new Error(out.result.errors.map((e) => e.message).join('; '));
+      return out.result?.data ?? out.result;
+    };
+    const { text, structured } = await runReport(args.report, picked, args, gqlFor);
+    return textResult(text, structured);
   }
 
   async listStores() {
@@ -183,7 +203,11 @@ export class MultiStoreServer {
     let sessions = [];
     let sessionError = null;
     try {
-      sessions = await this.withCliReady(() => this.cli.sessions());
+      // One lookup per session folder, side by side.
+      const homes = [...new Set(Object.values(stores).map((s) => this.config.target(s).home))];
+      if (!homes.includes('')) homes.push('');
+      const lists = await this.withCliReady(() => Promise.all(homes.map((h) => this.cli.sessions(h))));
+      sessions = lists.flat();
     } catch (err) {
       sessionError = err.message;
     }
@@ -228,14 +252,14 @@ export class MultiStoreServer {
     const spec = connectArgs(args, existing);
     const clash = Object.values(before).find((s) => s.domain === spec.domain && s.name !== spec.name);
     if (clash) throw new ToolError(`${spec.domain} is already connected as "${clash.name}". Use that name.`);
-    const store = await this.config.upsertStore(spec.name, { domain: spec.domain, label: spec.label, readOnly: spec.readOnly, scopes: spec.scopes });
+    const store = await this.config.upsertStore(spec.name, { domain: spec.domain, label: spec.label, readOnly: spec.readOnly, scopes: spec.scopes, session: 'own' });
     if (!existing || existing.domain !== spec.domain || Boolean(existing.readOnly) !== spec.readOnly) this.toolsChanged();
 
     let handle = this.pendingAuth.get(spec.name);
     const waitMs = handle ? RECONNECT_WAIT_MS : CONNECT_WAIT_MS;
     if (!handle) {
       await this.withCliReady(async () => {});
-      handle = this.cli.startAuth(spec.domain, spec.scopes);
+      handle = this.cli.startAuth(this.config.target(store), spec.scopes);
       this.pendingAuth.set(spec.name, handle);
       handle.done.finally(() => { if (this.pendingAuth.get(spec.name) === handle) this.pendingAuth.delete(spec.name); }).catch(() => {});
     }
@@ -251,6 +275,10 @@ export class MultiStoreServer {
     const link = handle.url ? ` If no browser window appeared, the user can open: ${handle.url}` : '';
     return textResult(`Waiting for the user to approve access to ${store.domain} in the browser window Shopify opened.${link} Call connect_store with store "${store.name}" again to wait for the result; the sign-in stays open for 5 minutes.`, { store: store.name, domain: store.domain, awaitingApproval: true });
   }
+}
+
+function signature(tools) {
+  return JSON.stringify(tools.map((t) => [t.name, t.description, t.inputSchema]));
 }
 
 function stripUndefined(obj) {
