@@ -48,10 +48,16 @@
 
 Gates clean: no failures among the checks that ran. Design sound: yes, within the questions below.
 
-## Open questions
+## Follow-up, same day
 
-- The 0.3 page had a dark theme; this one is light only (`color-scheme: light`). Worth adding back?
-- "Connect your stores" lands on "Set it up with one command", whose first step is a terminal command. The label was kept from 0.3; "Set it up" matches the destination more literally.
+The owner reported that the page looked poor on a smaller screen and that the green gradients made it look old and cheap. Both were right, and both are fixed:
+
+- **Flat.** No gradients, gloss or embossing remain. The rail is a 4px jade wire, the strings are 2px, tags are white with a hairline edge and one soft shadow, the tape is a flat label, and buttons are flat fills.
+- **Tablet widths.** The full nav needed about 1,120px and was wrapping every link onto two lines at 900–1,000px; it now hides below 1,120px. Between 640 and 1,099px the hero tag spans the width (centred, up to 760px), the store tags hang in a row from a second rail, and each setup step is a row with its picture beside it.
+- **Dark theme restored**, answering the first open question: the page goes dark and the tags, screens and tables stay light. One dark-only defect was caught and fixed: the setup command was dark text on the dark terminal.
+- **The button label stays "Connect your stores"**, answering the second: it names the outcome, and the setup's second step is connecting stores.
+
+Re-checked in Chromium: text contrast 0 failures of 230 examined in light and 230 in dark at 1,280px, and 0 of 224 in dark at 375px; no sideways scrolling at 375, 700, 768, 1,000 and 1,280px; the button above the fold at every width checked.
 
 ## Needs verification
 
