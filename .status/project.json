@@ -1,13 +1,13 @@
 {
-  "project": "storerow",
-  "updated": "2026-10-31T07:20:00+11:00",
+  "project": "shopherd-shopify-mcp",
+  "updated": "2026-10-31T17:40:00+11:00",
   "verdict": {
     "token": "blocked",
-    "number": "10 of 12",
+    "number": "13 of 15",
     "unit": "tasks finished",
-    "headline": "Renamed StoreRow and the site is live; npm publish waits on your token approval.",
-    "run_label": "rename, site live, v0.2.0",
-    "head_sha": "1f4db67"
+    "headline": "Shopherd Shopify MCP 0.3.0 beats the closest alternative on accuracy and cost; npm publish waits on you.",
+    "run_label": "0.3.0: reports, side-by-side stores, evals",
+    "head_sha": "afd8ded"
   },
   "tasks": [
     {
@@ -35,7 +35,7 @@
       "stage": "code written",
       "outcome": "done",
       "version": "216506f",
-      "note": "now fledgeling-co/storerow"
+      "note": "now fledgeling-co/shopherd-shopify-mcp"
     },
     {
       "id": "SMM-4",
@@ -93,12 +93,12 @@
     },
     {
       "id": "SMM-10",
-      "title": "Rename to StoreRow, away from the competitor's name",
+      "title": "Rename away from the competitor's name",
       "origin": "planned",
       "stage": "code written",
       "outcome": "done",
       "version": "d6baaf0",
-      "note": "old settings still work"
+      "note": "StoreRow, then Shopherd Shopify MCP"
     },
     {
       "id": "SMM-11",
@@ -106,17 +106,44 @@
       "origin": "planned",
       "stage": "code written",
       "outcome": "done",
-      "version": "d6baaf0",
-      "note": "fledgeling-co.github.io/storerow"
+      "version": "afd8ded",
+      "note": "fledgeling-co.github.io/shopherd-shopify-mcp"
     },
     {
       "id": "SMM-12",
-      "title": "Publish storerow 0.2.0 to npm",
+      "title": "Publish shopherd-shopify-mcp 0.3.0 to npm",
       "origin": "planned",
       "stage": "code written",
       "outcome": "stuck",
-      "blocked_by": "npm token approval in Warden",
+      "blocked_by": "npm token approval in Warden (timed out three times)",
       "waiting_hours": 0
+    },
+    {
+      "id": "SMM-13",
+      "title": "Ready-made reports, stores asked side by side, one-command setup",
+      "origin": "planned",
+      "stage": "code written",
+      "outcome": "done",
+      "version": "5d94b23",
+      "note": "9 reports, 7 prompts, setup for 6 AI apps"
+    },
+    {
+      "id": "SMM-14",
+      "title": "Head-to-head evals against Shopify Multi-Store MCP",
+      "origin": "planned",
+      "stage": "code written",
+      "outcome": "done",
+      "version": "5d94b23",
+      "note": "evals/results/SUMMARY.md"
+    },
+    {
+      "id": "SMM-15",
+      "title": "Rewrite site and README copy with agy (Gemini 4 Argon)",
+      "origin": "planned",
+      "stage": "code written",
+      "outcome": "done",
+      "version": "afd8ded",
+      "note": "voice lint clean on the hard checks"
     }
   ],
   "gates": [
@@ -124,94 +151,39 @@
       "name": "Unit and protocol tests",
       "command": "npm test",
       "exit_code": 0,
+      "counts": "64/64",
+      "state": "done",
+      "kind": "tests"
+    },
+    {
+      "name": "Agent eval: multi-store questions answered correctly",
+      "command": "node evals/agent.mjs --repeats 3",
+      "exit_code": 0,
       "counts": "30/30",
       "state": "done",
       "kind": "tests"
     },
     {
-      "name": "Newest Shopify packages install and start",
-      "command": "shopify-multi-mcp doctor",
+      "name": "Built-in and report queries valid against the newest Admin schema",
+      "command": "shopherd doctor (Shopify validate tool)",
       "exit_code": 0,
-      "counts": "2/2",
-      "state": "done",
-      "kind": "build"
-    },
-    {
-      "name": "Registry signatures verified for both packages",
-      "command": "npm audit signatures (inside doctor)",
-      "exit_code": 0,
-      "counts": "2/2",
-      "state": "done",
-      "kind": "security"
-    },
-    {
-      "name": "Built-in queries valid against the newest Admin schema",
-      "command": "doctor, Shopify validate tool",
-      "exit_code": 0,
-      "counts": "3/3",
+      "counts": "11/11",
       "state": "done",
       "kind": "types"
     },
     {
-      "name": "Full session through npx from GitHub (on 0.1.0)",
-      "command": "MCP client over stdio via npx github:fledgeling-co/shopify-multi-mcp",
+      "name": "Schema check rejects a bad field and a bad argument",
+      "command": "negative control through Dev MCP validate",
       "exit_code": 0,
-      "counts": "7/7",
+      "counts": "3/3",
       "state": "done",
       "kind": "tests"
     },
     {
-      "name": "Sign-in and calls against a real store",
-      "command": "shopify-multi-mcp connect",
-      "counts": "0/0",
-      "state": "unmeasured",
-      "kind": "sign-off"
-    },
-    {
-      "name": "Every review stage done or ruled out, on all 3 surfaces",
-      "command": "design-review worklist.py check",
+      "name": "Setup writes and removes each app's config in a throwaway home",
+      "command": "shopherd setup --yes --client ...",
       "exit_code": 0,
-      "counts": "24/24",
-      "state": "done",
-      "kind": "design"
-    },
-    {
-      "name": "Text contrast on the site",
-      "command": "Obscura probe sweep at 1280",
-      "exit_code": 0,
-      "counts": "117/117",
-      "state": "done",
-      "kind": "design"
-    },
-    {
-      "name": "Text contrast on the positioning report",
-      "command": "Obscura probe sweep at 1280",
-      "exit_code": 0,
-      "counts": "202/202",
-      "state": "done",
-      "kind": "design"
-    },
-    {
-      "name": "No sideways scrolling, 320 to 1440 wide",
-      "command": "Playwright Chromium at 6 widths",
-      "exit_code": 0,
-      "counts": "6/6",
-      "state": "done",
-      "kind": "design"
-    },
-    {
-      "name": "Set-up panels: Copy button clear of the text",
-      "command": "Playwright text-range overlap, 4 panels at 6 widths",
-      "exit_code": 0,
-      "counts": "24/24",
-      "state": "done",
-      "kind": "design"
-    },
-    {
-      "name": "doctor on 0.2.0, installed from GitHub",
-      "command": "npx -y github:fledgeling-co/storerow doctor",
-      "exit_code": 0,
-      "counts": "4/4",
+      "counts": "5/5",
       "state": "done",
       "kind": "build"
     },
@@ -224,11 +196,26 @@
       "kind": "design"
     },
     {
+      "name": "No sideways scrolling, 320 to 1280 wide",
+      "command": "Playwright at 4 widths",
+      "exit_code": 0,
+      "counts": "4/4",
+      "state": "done",
+      "kind": "design"
+    },
+    {
       "name": "Package installs from npm",
-      "command": "npx -y storerow@latest",
+      "command": "npx -y shopherd-shopify-mcp@latest",
       "counts": "0/0",
       "state": "unmeasured",
       "kind": "build"
+    },
+    {
+      "name": "Sign-in and calls against a real store",
+      "command": "shopherd connect",
+      "counts": "0/0",
+      "state": "unmeasured",
+      "kind": "sign-off"
     }
   ],
   "not_checked": [
@@ -237,40 +224,36 @@
       "why_not": "Needs a Shopify store account; none was available."
     },
     {
+      "axis": "Other AI models in the eval",
+      "why_not": "Only Claude Sonnet 5.5 answered the eval questions."
+    },
+    {
       "axis": "Windows and Linux",
       "why_not": "Only run on macOS so far."
     },
     {
-      "axis": "Screen-reader reading of the live demo",
+      "axis": "Screen-reader reading of the site's demo",
       "why_not": "Needs a person with a screen reader."
-    },
-    {
-      "axis": "Copy button in Safari and Firefox",
-      "why_not": "Only Chromium was driven."
-    },
-    {
-      "axis": "Whether a non-developer can finish step 1 alone",
-      "why_not": "Only a real reader trying it can say."
     }
   ],
   "not_done": [
     {
-      "action": "Publish storerow to npm",
-      "reason": "The Warden request for the npm token timed out twice.",
+      "action": "Publish shopherd-shopify-mcp to npm",
+      "reason": "The Warden request for the npm token timed out three times.",
       "what_would_unblock": "Approve it in Warden, or run npm publish yourself.",
       "size": "minutes"
     },
     {
       "action": "Announce anywhere",
-      "reason": "Signing in to a real store is still unproven.",
-      "what_would_unblock": "One real-store sign-in.",
+      "reason": "Not on npm yet, and real-store sign-in is unproven.",
+      "what_would_unblock": "npm publish and one real-store sign-in.",
       "size": "an hour"
     }
   ],
   "roadmap": [
     {
       "round": "Round 1",
-      "goal": "Publish storerow 0.2.0 to npm",
+      "goal": "Publish shopherd-shopify-mcp 0.3.0 to npm",
       "tasks": [
         "SMM-12"
       ],
@@ -317,63 +300,53 @@
     {
       "path": "README.md",
       "kind": "md",
-      "contains": "What it does and how to set it up, for non-developers.",
+      "contains": "What it does, how it compares, and setup, for non-developers.",
       "open_first": true
     },
     {
-      "path": "https://fledgeling-co.github.io/storerow/",
+      "path": "https://fledgeling-co.github.io/shopherd-shopify-mcp/",
       "kind": "html",
       "contains": "The live site."
     },
     {
-      "path": "design/marketing/index.html",
-      "kind": "html",
-      "contains": "The one-page marketing site."
-    },
-    {
-      "path": "design/marketing/design-review.md",
+      "path": "evals/results/SUMMARY.md",
       "kind": "md",
-      "contains": "The 13 problems the review found and how each was fixed."
+      "contains": "The head-to-head numbers, per question."
     },
     {
-      "path": "docs/positioning/positioning-report.html",
-      "kind": "html",
-      "contains": "Who it is for, the shortlist, and the evidence."
-    },
-    {
-      "path": "docs/REVIEW.md",
+      "path": "evals/README.md",
       "kind": "md",
-      "contains": "The review of Shopify's MCP servers and connectors."
+      "contains": "How the evals work and what they do not show."
     },
     {
       "path": "docs/TECHNICAL.md",
       "kind": "md",
-      "contains": "The developer guide: configuration, flags, tests."
+      "contains": "The developer guide: tools, reports, settings, speed."
     },
     {
-      "path": ".github/workflows/pages.yml",
-      "kind": "yml",
-      "contains": "Deploys the site on every change to it."
+      "path": "design/marketing/index.html",
+      "kind": "html",
+      "contains": "The site source."
     }
   ],
   "needs_you": [
     {
-      "ask": "Approve the npm token in Warden",
+      "ask": "Approve the npm token in Warden, or run npm publish",
       "kind": "credential",
       "waiting_since": "2026-10-31T07:20:00+11:00",
-      "one_line": "The site and README already say npx -y storerow@latest, which fails until it is published."
+      "one_line": "Until it is published, the site's and README's npx commands fail."
     },
     {
       "ask": "Connect one of your stores",
       "kind": "credential",
       "waiting_since": "2026-10-31T04:19:03+11:00",
-      "one_line": "Run connect once; it is the only path not yet run against Shopify."
+      "one_line": "The only path not yet run against real Shopify."
     },
     {
       "ask": "Gemini API spending cap reached",
       "kind": "credential",
       "waiting_since": "2026-10-31T09:40:00+11:00",
-      "one_line": "One research member failed on it; raise the cap to use Gemini lanes again."
+      "one_line": "Raise the cap to use Gemini research lanes again."
     }
   ],
   "git": {
@@ -384,107 +357,43 @@
   },
   "findings": [
     {
-      "id": "DR-1",
-      "score": 80,
+      "id": "EV-1",
+      "score": 85,
       "severity": "high",
-      "file_line": "design/marketing/index.html:188",
-      "claim": "on phones the Copy button covered the set-up instructions",
+      "file_line": "src/toolchain.js:185",
+      "claim": "servers starting together each downloaded Shopify's tools; 8.4 GB of half-installs left behind",
       "state": "done"
     },
     {
-      "id": "DR-2",
+      "id": "EV-2",
+      "score": 75,
+      "severity": "high",
+      "file_line": "src/runtime.js:16",
+      "claim": "setup --client was ignored, so every detected app was changed",
+      "state": "done"
+    },
+    {
+      "id": "EV-3",
       "score": 60,
       "severity": "medium",
-      "file_line": "design/marketing/index.html:185",
-      "claim": "set-up tabs wrapped onto three rows on phones",
+      "file_line": "src/server.js:74",
+      "claim": "the tool list changed as Dev MCP started, spoiling the prompt cache (4.8¢ a question)",
       "state": "done"
     },
     {
-      "id": "DR-3",
+      "id": "EV-4",
       "score": 55,
       "severity": "medium",
-      "file_line": "design/marketing/index.html:187",
-      "claim": "set-up commands were cut off at the panel edge on phones",
+      "file_line": "src/setup.js:135",
+      "claim": "Claude Code setup failed: the server name was read as a setting",
       "state": "done"
     },
     {
-      "id": "DR-4",
-      "score": 50,
-      "severity": "medium",
-      "file_line": "design/marketing/index.html:195",
-      "claim": "the Questions section sat off the page's left edge line",
-      "state": "done"
-    },
-    {
-      "id": "DR-5",
-      "score": 58,
-      "severity": "medium",
-      "file_line": "docs/positioning/positioning-report.html:233",
-      "claim": "claims table listed 7 of the 9 claims the page counts",
-      "state": "done"
-    },
-    {
-      "id": "DR-6",
-      "score": 52,
-      "severity": "medium",
-      "file_line": "docs/positioning/positioning-report.html:54",
-      "claim": "wide tables could not be scrolled by keyboard",
-      "state": "done"
-    },
-    {
-      "id": "DR-7",
-      "score": 30,
-      "severity": "low",
-      "file_line": "design/marketing/index.html:161",
-      "claim": "sample sales table scrolled sideways on small phones",
-      "state": "done"
-    },
-    {
-      "id": "DR-8",
-      "score": 25,
-      "severity": "low",
-      "file_line": "design/marketing/index.html:125",
-      "claim": "demo store labels broke inside the web address",
-      "state": "done"
-    },
-    {
-      "id": "DR-9",
-      "score": 28,
-      "severity": "low",
-      "file_line": "design/marketing/index.html:307",
-      "claim": "sample output panels were unnamed for screen readers",
-      "state": "done"
-    },
-    {
-      "id": "DR-10",
+      "id": "EV-5",
       "score": 20,
       "severity": "low",
-      "file_line": "design/marketing/index.html:213",
-      "claim": "footer links were under 24px tall",
-      "state": "done"
-    },
-    {
-      "id": "DR-11",
-      "score": 15,
-      "severity": "low",
-      "file_line": "docs/positioning/positioning-report.html:58",
-      "claim": "text after a table sat on the table's last line",
-      "state": "done"
-    },
-    {
-      "id": "DR-12",
-      "score": 12,
-      "severity": "low",
-      "file_line": "docs/positioning/positioning-report.html:74",
-      "claim": "table headers mixed two typefaces; a label wrapped badly",
-      "state": "done"
-    },
-    {
-      "id": "DR-13",
-      "score": 18,
-      "severity": "low",
-      "file_line": "docs/positioning/positioning-report.html:130",
-      "claim": "preview buttons looked clickable and did nothing",
+      "file_line": "src/reports.js:328",
+      "claim": "catalogue health listed handles where people expect titles",
       "state": "done"
     }
   ]
