@@ -6,7 +6,7 @@
 
 <p align="center">Free and open source (MIT) · works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and Codex · not affiliated with Shopify</p>
 
-![A row of five small shopfronts under one shared rail](design/marketing/assets/banner-shopfront-row.jpg)
+![One question hangs from a jade rail; three store tags below it each carry their own answer, labelled harbour, tidewater and northpaper](design/marketing/assets/banner-tag-line.jpg)
 
 **shopify-multistore-mcp** lets one AI assistant work across several Shopify stores at the same time. Ask a question once and every connected store answers, with each reply starting with the store it came from, such as `store: harbour (harbour-coffee.myshopify.com)`, so a figure never lands on the wrong client. You connect stores through Shopify's own approval page in your browser, without creating custom Shopify apps or handing API keys around.
 

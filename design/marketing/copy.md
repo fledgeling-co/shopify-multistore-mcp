@@ -1,93 +1,126 @@
 # shopify-multistore-mcp site copy
 
-Written with agy (Gemini 4 Argon, medium) under create-luke-content, 31 October 2026; voice lint clean on the hard checks.
+Written with agy (Gemini 4 Argon, medium) under create-luke-content, 31 October 2026, for the "tag line" redesign: a page-wide copy pass, then a second pass for the comparison with alex-brecher/shopify-multi-store. Voice lint clean on the hard checks for both. Two layout edits after the copy came back: step 1 points at the command shown under it instead of repeating it, and the hero proof line comes from the second pass.
 
 ## header
-Nav: How it works · Proof · Safety · Set up · Questions
+Nav: How it works · Why choose it · Safety · Set up · Questions
 Button: Connect your stores
 
 ## hero
-Eyebrow: shopify-multistore-mcp · MIT licence
-Headline: Every client store in one AI chat.
-Subhead: Ask once and every connected store answers, starting with its name. Each store signs in on Shopify's approval page, with no app to create and no API key to copy.
+Eyebrow: shopify-multistore-mcp · Free, MIT licence
+Headline lead: Ask every client store at once,
+Headline continuation: with each answer naming its store.
+Subhead: shopify-multistore-mcp connects your AI app to several Shopify stores. Each store signs in on Shopify's approval page, without creating apps or copying API keys.
 Button: Connect your stores
 Secondary link: View source on GitHub
 Fine print: Works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and Codex. Not affiliated with Shopify.
-Proof line: Answered 30 of 30 multi-store eval questions; runs Shopify's own CLI and Dev MCP.
+Proof line: 30 of 30 right in our mock test, vs 27 for alex-brecher/shopify-multi-store.
+
+## demo
+Question label: Your question
+Chip 1: Unfulfilled orders | How many orders are unfulfilled in each store?
+Chip 2: Low stock | Which products have under 5 in stock?
+Chip 3: Yesterday's sales | What did each store sell yesterday?
+Answers 1: harbour: 14 unfulfilled, oldest from Tuesday. | tidewater: 3 unfulfilled, all from today. | northpaper: 27 unfulfilled, 9 waiting on stock.
+Answers 2: harbour: 2 products, Field cap (1), Linen apron (3). | tidewater: None under 5 in stock. | northpaper: 4 products, led by A5 notebook, ruled (0).
+Answers 3: harbour: A$4,812 across 61 orders. | tidewater: NZ$1,206 across 18 orders. | northpaper: £2,390 across 22 orders.
+Caption: Sample stores and figures shown for illustration.
 
 ## problem
 Headline: Shopify's AI connector holds one store at a time.
-Body: Look after several client stores and you approve access again every time you switch.
-Note: Shopify's admin switches between stores without fuss; it's only the AI connector that holds one store.
+Body: Even when your stores sit in the same organisation, switching stores in Shopify's connector makes you approve access again.
+Note: Shopify's admin switches stores fine; it's only the AI connector that holds one store.
 Quote attribution: Shopify staff, Shopify Developer Community, 7 October 2026
 
 ## outcomes
-Title: Nine ready-made reports across every store.
-Body: Run **store_report** once and four stores at a time answer together: sales in each store's currency (leaving out test and cancelled orders), unfulfilled orders by age, low stock with stock elsewhere to move, SKU lookups, duplicate SKUs and catalogue gaps.
-Example caption: Low-stock report: tidewater is out of coffee beans; harbour has 18.
+Title: Nine reports across every store.
+Body: Ask once and four stores answer together: sales in each store's currency (without test or cancelled orders), unfulfilled orders, low stock to move, and catalogue gaps.
+Sample: Low stock: tidewater is out of coffee beans; harbour has 18.
 
 Title: Every answer names its store.
-Body: Each result starts with a store prefix like `store: harbour (harbour-coffee.myshopify.com)`, so figures don't drift onto the wrong client. For anything outside the reports, your assistant checks its read-only **Admin GraphQL** query via Shopify's Dev MCP and asks every store.
-Example caption: Every store reply starts with its alias and myshopify.com domain.
+Body: Each reply starts with its store name and address, so client numbers don't mix. Outside the nine reports, your assistant checks Shopify's docs and asks every store.
+Sample: store: harbour (harbour-coffee.myshopify.com)
 
-Title: Changes go to one store, on purpose.
-Body: Edits use one change tool on one named store at a time, and never retry so nothing applies twice. Mark any store **read-only** to refuse edits; mutations creating tokens, charging the store or changing app access are blocked outright.
-Example caption: Read-only stores refuse edits; token, billing and access changes are blocked.
+Title: Changes go to one store.
+Body: Edits run on one named store and never retry. Mark any store **read-only**; creating keys, charging a store or changing app access is blocked outright.
+Sample: Read-only stores refuse edits; billing and access changes stay blocked.
 
-Title: Seven starting prompts built into chat.
-Body: Account managers don't need to write GraphQL. Apps like Claude Desktop show seven ready-made prompts: morning check, sales, unfulfilled orders, low stock, compare a product, catalogue check, and connect a store. Pick one and every connected store answers.
-Example caption: Seven built-in prompts cover daily checks without writing a query.
+Title: Seven starting prompts in chat.
+Body: Apps like Claude Desktop show seven ready-made prompts: morning check, sales, unfulfilled orders, low stock, compare a product, catalogue check and connect a store.
+Sample: Pick "morning check" and every connected store answers at once.
 
-## proof
-Headline: Tested head to head against the closest alternative.
-Intro: We ran shopify-multistore-mcp 0.3.0 and alex-brecher/shopify-multi-store 2.0.3 (published as Shopify Multi-Store MCP) against a schema-checked mock Admin API with three stores. Claude Sonnet 5.5 answered 10 multi-store questions three times each, including shopify-multistore-mcp's 0.47 s CLI wait: 30/30 (7.4 s median) vs 27/30 (8.8 s).
-Table caption: 31 October 2026: 10 questions x 3 runs on Claude Sonnet 5.5; speed medians across 7 runs.
-Where they're ahead:
-- Direct HTTPS calls take 5 to 12 ms, against shopify-multistore-mcp's 526 ms to 1.1 s.
-- Runs hosted on Cloudflare Workers or Docker for teams, working in ChatGPT and claude.ai.
-- Installs in 32 MB total; shopify-multistore-mcp takes 28 MB plus 397 MB of Shopify tools.
-- Ships 29 tools, 17 reports, guided writes and access to all 514 Admin mutations.
-Limits: Both servers ran against three local mock stores instead of real ones, with one model (Claude Sonnet 5.5) on 10 questions written by our team. You can read and re-run everything in the repo's `evals/` folder.
-Link text: Read the evals on GitHub
+## why choose it (section id "proof")
+Eyebrow: Compared head to head
+Headline: Built for agencies: connect client stores without creating apps
+Intro: We tested shopify-multistore-mcp against alex-brecher/shopify-multi-store across three mock stores (real-store sign-in isn't tested yet). For agencies, it comes down to browser sign-in without copying keys.
+Win 1 figure: 100%
+Win 1 label: 30/30 answers right, vs 27/30 (90%)
+Win 2 figure: 1
+Win 2 label: median tool call per question, vs 2
+Win 3 figure: 2.3¢
+Win 3 label: median AI cost per question, vs 3.7¢
+Win 4 figure: 7.4 s
+Win 4 label: median time per question, vs 8.8 s
+Table heading: How the two options compare
+Row 1: Connecting a store | Approve on Shopify's browser page; no app created | Create a Shopify app and copy secret keys
+Row 2: Secret keys | Never reads or copies your store keys | Saves app secrets in your computer's keychain
+Row 3: Read-only per store | Yes; any store can refuse all changes | No per-store read-only switch in settings
+Row 4: Starter prompts in chat | Seven ready-made starting prompts in the app | None included
+Row 5: Shopify API version | Follows newest stable release (2026-10) | Pinned to older 2026-07 release
+Row 6: Unfulfilled order counts | Counts partially fulfilled orders as waiting, like admin | Leaves out partially fulfilled orders (0/3 in test)
+Row 7: Team and browser access | Runs on your own computer, not hosted | Hosts for teams; works in ChatGPT and claude.ai
+Row 8: Reports and store edits | 9 reports and one single-store edit tool | 17 reports, guided edits, and 514 admin changes
+Table note: Rows 7 and 8 are where alex-brecher/shopify-multi-store leads, along with raw speed in the timing table below.
+Speed heading: Measured speed, cost, and install size
+Closing line: Pick alex-brecher/shopify-multi-store for team hosting, browser chat, or broad edits; pick shopify-multistore-mcp for desktop sign-in without app keys.
 
 ## safety
 Headline: What it touches, and what it doesn't.
-Point: **No keys in your files.** Each store signs in on Shopify's approval page through Shopify's CLI; shopify-multistore-mcp never reads or copies a token. Store data an answer needs still goes to your AI provider in the chat, like any AI connector.
-Point: **Shopify's newest tools, checked first.** shopify-multistore-mcp runs the newest Shopify CLI and Dev MCP only after three checks pass: npm integrity, registry signatures and a start-up test. If a new release fails, the last working version keeps running.
-Point: **Each store gets its own folder.** Shopify's CLI stores each sign-in in its own folder on your computer, so shopify-multistore-mcp asks four stores side by side without sessions clashing. Removing a store deletes its folder.
-Point: **Open source under MIT.** Every line of code is in `fledgeling-co/shopify-multistore-mcp` on GitHub. If you used `shopify-multi-mcp` (0.1) or `StoreRow` (0.2), your existing settings keep working.
+Point: No keys in your files. Each store signs in on Shopify's approval page; shopify-multistore-mcp never reads or copies access keys. Store data needed for answers still goes to your AI provider.
+Point: Newest Shopify tools, checked first. Updates to Shopify's tools run only after npm integrity, registry signature and start-up checks pass. If a release fails, the last working version keeps running.
+Point: One folder per client store. Each store's sign-in stays in its own folder on your computer, so four stores answer together without clashing. Removing a store deletes its folder.
+Point: Open source under MIT licence. Every line of code is public at fledgeling-co/shopify-multistore-mcp on GitHub. Settings from shopify-multi-mcp (0.1) and StoreRow (0.2) keep working.
+Checks caption: Three checks pass before any Shopify tool update runs.
 
 ## setup
 Headline: Set it up with one command.
-Needs: You'll need **Node.js 22.12 or newer**, an AI app on your computer (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), and permission to approve access on each Shopify store.
+Needs: You'll need **Node.js 22.12 or newer**, a supported AI app (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), and permission to approve apps on each Shopify store.
 Step 1 title: Run the setup command
-Step 1 body: Paste this into Terminal (Mac) or Command Prompt (Windows). It checks Node.js, finds your AI apps, backs up each settings file before adding shopify-multistore-mcp, and never touches a file it can't read.
-Manual toggle: Prefer pasting config blocks manually?
+Step 1 body: Run the command below in Mac Terminal or Windows Command Prompt. It checks Node.js, backs up your AI settings, and adds the connector.
+Step 1 picture caption: Setup finds your AI apps and backs up settings.
 Step 2 title: Approve each client store
-Step 2 body: Enter each store's `myshopify.com` address and approve it on Shopify's browser page. You can also connect stores later from chat: "Connect acme.myshopify.com as acme".
-Step 3 title: Ask your stores
-Step 3 body: Restart your AI app, pick a prompt like morning check, or ask: "How many orders are unfulfilled in each store?"
-Recover: Initial start-up downloads about 400 MB of Shopify's CLI and Dev MCP (about 30 seconds on our test machine). Setup backs up settings files before editing, and failed CLI updates fall back to the last working version.
+Step 2 body: Enter each store's `myshopify.com` address and approve it on Shopify's browser page. You can also connect stores from chat: "Connect acme.myshopify.com as acme".
+Step 2 picture caption: Approve each store on Shopify's page in your browser.
+Step 3 title: Restart and ask
+Step 3 body: Quit and reopen your AI app, then ask your stores. First start downloads Shopify's tools (about 30 seconds).
+Step 3 picture caption: One question returns answers labelled with each store's name.
+Manual toggle: Prefer pasting config blocks yourself?
+Recover heading: If something goes wrong
+Recover:
+- If your AI app doesn't see it: fully quit and reopen the app after setup.
+- If you see "node: command not found": install Node.js 22.12 or newer from nodejs.org, then restart.
+- If a store's session expired: ask your assistant to connect that store again and approve it.
+- If the approval page refuses: check with the store owner that your login can approve apps.
 
 ## questions
 Q: Is this an official Shopify product?
-A: No. shopify-multistore-mcp is an independent open-source tool from fledgeling, and isn't affiliated with or endorsed by Shopify. It runs Shopify's own CLI and Dev MCP underneath, and each store signs in on Shopify's own approval page.
+A: No. shopify-multistore-mcp is an independent open-source tool from fledgeling, and isn't affiliated with or endorsed by Shopify. Each store signs in on Shopify's own approval page using Shopify's published developer tools.
 Q: What does it cost?
 A: Nothing; it's free under the MIT licence. Your AI app's own subscription or usage bill is separate.
 Q: What do I need?
-A: A computer running Node.js 22.12 or newer, a supported AI app (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), a browser to approve each store, and roughly 425 MB of disk space once Shopify's CLI and Dev MCP download.
+A: A computer with Node.js 22.12 or newer, a supported AI app (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), a browser to approve each store, and roughly 425 MB of disk space once Shopify's tools download.
 Q: Can it change my store?
-A: Only through one change tool, on one named store at a time, and changes never retry so nothing runs twice. Mark any store read-only in your config to refuse all edits. Changes that would create access tokens, charge the store or alter app access are blocked outright.
+A: Only one named store at a time, and edits never retry so nothing runs twice. Mark any store read-only in your config to refuse all edits. Changes creating access keys, charging the store or changing app access are blocked outright.
 Q: Does it work in claude.ai in the browser?
-A: No. shopify-multistore-mcp runs on your own computer through Shopify's CLI, so it works with desktop and terminal AI apps, not browser tabs like claude.ai or ChatGPT.
-Q: How does this compare with alex-brecher/shopify-multi-store?
-A: Both are under the MIT licence. Choose that server for hosted team access (Cloudflare Workers or Docker) in claude.ai and ChatGPT, 5 to 12 ms calls, 17 reports or 514 mutations. Choose shopify-multistore-mcp to skip creating apps or storing `shpat_` tokens, lock read-only stores, and get 30/30 in our eval.
+A: No. shopify-multistore-mcp runs on your own computer, so it works with desktop and code apps like Claude Desktop and Cursor, not browser tabs like claude.ai or ChatGPT.
+Q: How does it compare with alex-brecher/shopify-multi-store?
+A: Both carry the MIT licence. alex-brecher/shopify-multi-store offers team hosting (claude.ai and ChatGPT), 5 to 12 ms calls, 17 reports and broader edits. shopify-multistore-mcp skips creating apps or copying keys, locks read-only stores, and scored 30/30 in our test.
 Q: What if I'm upgrading from StoreRow or shopify-multi-mcp?
-A: Your old settings keep working as they are. shopify-multistore-mcp 0.3.0 is the new name for StoreRow (0.2) and shopify-multi-mcp (0.1), and now asks four stores side by side instead of one at a time (cutting 8-store checks from 4.2 s in 0.2 to 1.1 s).
+A: Your old settings keep working as they are. shopify-multistore-mcp is the new name for StoreRow (0.2) and shopify-multi-mcp (0.1), and now asks four stores side by side (checking 8 stores dropped from 4.2 s in 0.2 to 1.1 s).
 
 ## status
-Tag: v0.3.0
-Body: Early release. Tested end to end against Shopify's tools and a schema-checked mock Admin API, though nobody has signed in to a real store with it yet. Report issues at github.com/fledgeling-co/shopify-multistore-mcp/issues.
+Tag: v0.3.1
+Body: Early release. Tested end to end against Shopify's tools and a schema-checked mock API; nobody has signed in to a real store with it yet. Report issues at github.com/fledgeling-co/shopify-multistore-mcp/issues.
 
 ## final
 Headline: Bring every client store into one chat.

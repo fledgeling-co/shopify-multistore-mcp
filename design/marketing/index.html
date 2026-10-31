@@ -1,503 +1,794 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-motion="on">
+<!-- lint-ok: generic-filename - GitHub Pages serves index.html at the site root; .github/workflows/pages.yml copies it by name -->
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>shopify-multistore-mcp: every client store in one AI chat</title>
-<meta name="description" content="A free, open-source MCP server that connects one AI assistant to several Shopify stores at once. Every answer names the store it came from." />
+<title>shopify-multistore-mcp: ask every client store at once</title>
+<meta name="description" content="A free, open-source MCP server that lets one AI assistant ask several Shopify stores at once. Every answer names the store it came from." />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-<meta property="og:title" content="shopify-multistore-mcp: every client store in one AI chat" />
-<meta property="og:description" content="Free and open source. Each store signs in through Shopify's own approval page, and every answer names its store." />
-<meta property="og:image" content="https://fledgeling-co.github.io/shopify-multistore-mcp/assets/banner-shopfront-row.jpg" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
+<meta property="og:title" content="shopify-multistore-mcp: ask every client store at once" />
+<meta property="og:description" content="Free and open source. Each store signs in on Shopify's own approval page, and every answer names its store." />
+<meta property="og:image" content="https://fledgeling-co.github.io/shopify-multistore-mcp/assets/og-tag-line.png" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
 <meta property="og:url" content="https://fledgeling-co.github.io/shopify-multistore-mcp/" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="canonical" href="https://fledgeling-co.github.io/shopify-multistore-mcp/" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
+<meta name="theme-color" content="#F6F6F3" />
+<meta name="color-scheme" content="light" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Gabarito:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
 <!--
-  Design system: docs/positioning/DESIGN.md (porcelain + jade, Archivo + IBM Plex Mono).
-  Copy: design/marketing/copy.md. Reference trawl (Mobbin, 31 Oct 2026):
-    TOOK  install command in the hero area with per-app tabs (Hermes Agent)
-    TOOK  chat beside a list whose active item is lit and the rest faded (GitBook)
-    TOOK  stacked location names, active in ink, others faded (Craft Agency)
-    TOOK  plain caption label under each storefront (SOTF)
-    LEFT  Hermes's engraving and blue drench, Granola's serif headline, all Shopify Editions styling
-  Demo data is synthetic and labelled on the page.
+  Copy: design/marketing/copy.md, written by Gemini 4 Argon (agy, medium) under create-luke-content, 31 Oct 2026.
+  Tokens: porcelain, ink and jade from the tag ring icon (design/icon/icon.svg); see docs/positioning/DESIGN.md.
+
+  AESTHETIC IDEATION
+    tier    --any (two isolated frames, Claude CLI lane)
+    frames  department-store cash railway x wild (a ten-year-old's binder and lunchbox labels)
+    gate    both finalists lost a blind check to the plain page; the hybrid below beat it in both orders
+    TOOK    the line that carries one question out to every store (cash railway)
+    TOOK    embossed label tape, for store names only (wild seat)
+    LEFT    tape as the display face and a wire-handle button (the blind check said both slow the reader)
+
+  MOBBIN TRAWL
+    q1  web  "hero with a full-width demo fanning one input out to result cards"  -> 6, opened 6
+    q2  web  "installation steps with a terminal command and copy button"         -> 5, opened 5
+    q3  web  "comparison table against a competitor"                               -> 5, opened 5
+    q4  ios  "parcel tracking, several items each with its own tag and status"     -> 6, opened 6
+    TOOK  two-tone headline, ink sentence then a grey continuation (Mobbin, q1)
+    TOOK  thin connectors from one rail to each result (Coda, q1)
+    TOOK  each setup step shows what you will see on screen, caption under it (Aside, q2)
+    TOOK  our column carried as a raised mint band through the table (Seed, q3)
+    TOOK  every card headed by its store's name before any figure (Shop, Wonder, q4)
+    LEFT  Hermes's engraving and blue drench, Coda's orange mark, Seed's product photography
+
+  COMP  design/marketing/comps/comp-b-tags-as-columns-615397.png (of three; picked on delegation)
+  session-used: clean-product-utility (the 0.3 page this replaces)
 -->
 <style>
   :root {
-    --bg: #F6F6F3; --surface: #FFFFFF; --ink: #14211C; --ink-2: #4E5A55;
-    --line: #E1E4E0; --jade: #1CB884; --jade-deep: #0A6F5C; --mint: #DDF3E9;
-    --veto: #A33224; --on-accent: #FBFDFC;
-    --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --shadow: 0 1px 2px rgb(20 33 28 / .06), 0 8px 24px rgb(20 33 28 / .06);
-    --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
-    --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
-    --wrap: 1200px;
+    --porcelain: #F6F6F3;
+    --surface: #FDFDFB;
+    --ink: #14211C;
+    --ink-2: #4E5A55;
+    --ink-3: #5F6B66;
+    --line: #DFE3DF;
+    --jade: #1CB884;
+    --jade-lit: #4FDCA5;
+    --jade-deep: #0A6F5C;
+    --jade-ink: #064A3C;
+    --mint: #DDF3E9;
+    --mint-lit: #ECFAF3;
+    --mint-shade: #C8EBDA;
+    --tape: #0B5D4D;
+    --on-deep: #E6F6EE;
+    --on-deep-2: #B9DCCD;
+    --veto: #A33224;
+    --white: #FCFDFB;
+    --amber-ink: #6A4A12;
+    --amber-wash: #F3EBDD;
+
+    --display: "Gabarito", "Atkinson Hyperlegible Next", ui-sans-serif, sans-serif;
+    --body: "Atkinson Hyperlegible Next", ui-sans-serif, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px; --s10: 128px;
+    --wrap: 1240px;
+    --gutter: clamp(16px, 4vw, 40px);
+    --cut: 34px;
+    --radius: 22px;
+    --r-sm: 8px;
+    --r-md: 14px;
+    --pill: 999px;
+    --lift: drop-shadow(0 2px 2px rgb(6 74 60 / .10)) drop-shadow(0 14px 22px rgb(6 74 60 / .12));
+    --ease: cubic-bezier(.2, .7, .2, 1);
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #111614; --surface: #18201D; --ink: #ECF2EF; --ink-2: #A5B2AC;
-      --line: #27312D; --jade: #2FD39A; --jade-deep: #58E0B0; --mint: #1D3A31; --veto: #E0705F; --on-accent: #0D1512;
-      --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .3);
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #111614; --surface: #18201D; --ink: #ECF2EF; --ink-2: #A5B2AC;
-    --line: #27312D; --jade: #2FD39A; --jade-deep: #58E0B0; --mint: #1D3A31; --veto: #E0705F; --on-accent: #0D1512;
-  }
+
   *, *::before, *::after { box-sizing: border-box; }
-  html { background: var(--bg); scroll-padding-top: 80px; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font: 400 17px/1.6 var(--display); font-variation-settings: "wdth" 100;
-    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    margin: 0;
+    background: var(--porcelain);
+    color: var(--ink);
+    font: 400 17px/1.6 var(--body);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
-  ::selection { background: var(--mint); color: var(--ink); }
-  img { max-width: 100%; height: auto; display: block; }
-  figure { margin: 0; }
-  a { color: var(--jade-deep); text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  a:hover { text-decoration-thickness: 2px; }
-  :focus-visible { outline: 2px solid var(--jade-deep); outline-offset: 3px; border-radius: 4px; }
-  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--space-5); }
-  .mono { font-family: var(--mono); }
-  .eyebrow { font: 500 13px/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 var(--space-4); }
-  h1, h2, h3 { color: var(--ink); text-wrap: balance; }
-  h1 {
-    font-size: clamp(2.6rem, 6.2vw, 5.25rem); line-height: .98; margin: 0 0 var(--space-5);
-    font-weight: 780; font-variation-settings: "wdth" 118; letter-spacing: -.025em;
-  }
-  h2 {
-    font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1.04; margin: 0 0 var(--space-4);
-    font-weight: 760; font-variation-settings: "wdth" 116; letter-spacing: -.02em;
-  }
-  h3 { font-size: 1.25rem; line-height: 1.25; margin: 0 0 var(--space-2); font-weight: 700; font-variation-settings: "wdth" 108; }
-  p { margin: 0 0 var(--space-4); text-wrap: pretty; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  ::selection { background: var(--mint-shade); color: var(--ink); }
+  img, svg { display: block; max-width: 100%; }
+  a { color: var(--jade-deep); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--jade-ink); text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--jade-deep); outline-offset: 3px; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; margin: 0; text-wrap: balance; }
+  h2 { font-size: clamp(32px, 4.2vw, 48px); line-height: 1.04; letter-spacing: -0.02em; }
+  h3 { font-size: 20px; line-height: 1.25; letter-spacing: -0.005em; }
+  p { margin: 0; text-wrap: pretty; }
+  code, .mono { font-family: var(--mono); font-size: .88em; }
+  .wrap { width: min(var(--wrap), 100% - 2 * var(--gutter)); margin-inline: auto; }
   .muted { color: var(--ink-2); }
-  section { padding: var(--space-9) 0; }
-  section + section { border-top: 1px solid var(--line); }
+  .eyebrow { font: 500 13px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+  .nobr { white-space: nowrap; }
+  .skip { position: absolute; left: var(--s4); top: -60px; background: var(--ink); color: var(--porcelain); padding: var(--s2) var(--s4); border-radius: var(--r-sm); z-index: 50; }
+  .skip:focus { top: var(--s3); }
 
-  /* Buttons */
+  /* ---------- buttons ---------- */
   .btn {
-    display: inline-flex; align-items: center; gap: var(--space-2); min-height: 48px; padding: 0 var(--space-5);
-    background: var(--jade-deep); color: var(--on-accent); border: 0; border-radius: 10px; cursor: pointer;
-    font: 650 16px/1 var(--display); font-variation-settings: "wdth" 104; text-decoration: none;
-    transition: background-color .2s ease-out, transform .2s ease-out, box-shadow .2s ease-out;
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+    min-height: 52px; padding: 0 var(--s6);
+    border-radius: var(--pill); border: 0;
+    background: var(--jade-deep); color: var(--white);
+    font: 600 17px/1 var(--body); text-decoration: none; cursor: pointer;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .18), 0 1px 2px rgb(6 74 60 / .25), 0 8px 18px rgb(6 74 60 / .18);
+    transition: background-color .2s var(--ease), transform .2s var(--ease), box-shadow .2s var(--ease);
   }
-  .btn:hover { background: color-mix(in oklab, var(--jade-deep) 88%, #000); box-shadow: var(--shadow); text-decoration: none; }
-  .btn:active { transform: translateY(1px); }
-  .btn--small { min-height: 40px; padding: 0 var(--space-4); font-size: 15px; }
+  .btn:hover { background: var(--jade-ink); color: var(--white); text-decoration: none; transform: translateY(-1px); }
+  .btn:active { transform: translateY(1px); box-shadow: inset 0 1px 0 rgb(255 255 255 / .12), 0 1px 1px rgb(6 74 60 / .3); }
+  .btn.small { min-height: 44px; padding: 0 var(--s5); font-size: 15px; }
 
-  /* Header */
-  .top { position: sticky; top: 0; z-index: 20; background: color-mix(in oklab, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-  .top .wrap { display: flex; align-items: center; gap: var(--space-5); min-height: 64px; }
-  .brand { display: inline-flex; align-items: center; gap: var(--space-3); text-decoration: none; color: var(--ink); font: 500 15px/1 var(--mono); }
-  .brand img { width: 32px; height: auto; }
-  .top nav { margin-left: auto; display: flex; gap: var(--space-5); align-items: center; }
-  .top nav a:not(.btn) { color: var(--ink-2); text-decoration: none; font-size: 15px; }
-  .top nav a:not(.btn):hover { color: var(--ink); }
-  @media (max-width: 860px) { .top nav a:not(.btn) { display: none; } }
-  @media (max-width: 480px) { .brand .wordmark { display: none; } .top .btn--small { padding: 0 var(--space-3); font-size: 14px; white-space: nowrap; } }
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky; top: 0; z-index: 20;
+    background: rgb(246 246 243 / .92);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s var(--ease);
+  }
+  .site-head[data-scrolled="true"] { border-bottom-color: var(--line); }
+  .site-head .wrap { display: flex; align-items: center; gap: var(--s5); min-height: 72px; }
+  .brand { display: inline-flex; align-items: center; gap: var(--s3); color: var(--ink); text-decoration: none; font: 700 18px/1 var(--display); letter-spacing: -0.01em; min-height: 44px; }
+  .brand:hover { color: var(--ink); text-decoration: none; }
+  .brand img { width: 36px; height: 36px; }
+  .site-nav { margin-left: auto; display: flex; gap: var(--s1); }
+  .site-nav a { color: var(--ink-2); text-decoration: none; font-size: 15px; padding: var(--s2) var(--s3); border-radius: var(--r-sm); min-height: 40px; display: inline-flex; align-items: center; transition: color .2s var(--ease), background-color .2s var(--ease); }
+  .site-nav a:hover { color: var(--ink); background: rgb(20 33 28 / .05); }
+  @media (max-width: 900px) { .site-nav { display: none; } .site-head .btn { margin-left: auto; } }
+  @media (max-width: 480px) { .site-head .btn.small { display: none; } }
+  @media (max-width: 420px) { .brand span { font-size: 15px; } .brand img { width: 30px; height: 30px; } .site-head .btn.small { padding: 0 var(--s4); font-size: 14px; } }
 
-  /* Hero */
-  .hero { padding: var(--space-8) 0 var(--space-9); border-top: 0; }
-  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: var(--space-8); align-items: start; }
-  .hero .sub { font-size: 1.25rem; line-height: 1.5; max-width: 34ch; color: var(--ink); }
-  .hero .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-5); margin: var(--space-6) 0 var(--space-4); }
-  .hero .fine { font-size: 14px; color: var(--ink-2); margin: 0 0 var(--space-5); }
-  .proof { display: flex; gap: var(--space-3); align-items: flex-start; font: 400 14px/1.5 var(--mono); color: var(--ink-2); max-width: 46ch; border-top: 1px solid var(--line); padding-top: var(--space-4); margin: 0; }
-  .proof::before { content: ""; flex: 0 0 8px; height: 8px; margin-top: 6px; border-radius: 50%; background: var(--jade); }
-  @media (max-width: 960px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: var(--space-7); } .hero { padding-top: var(--space-6); } }
+  /* ---------- the rail and the tags ---------- */
+  .rail {
+    height: 22px; border-radius: 11px;
+    background: linear-gradient(180deg, var(--jade-lit) 0%, var(--jade) 45%, var(--jade-deep) 100%);
+    box-shadow: inset 0 2px 1px rgb(255 255 255 / .45), inset 0 -2px 2px rgb(6 74 60 / .25), 0 6px 14px rgb(6 74 60 / .16);
+  }
+  .tag-wrap { position: relative; filter: var(--lift); transform-origin: 50% 0; }
+  .tag-wrap::before {                                   /* the string from the rail to the hole */
+    content: ""; position: absolute; left: 50%; top: calc(-1 * var(--drop, 40px)); width: 8px; margin-left: -4px;
+    height: calc(var(--drop, 40px) + var(--hole-y, 34px));
+    border-radius: 4px; background: linear-gradient(90deg, var(--jade-deep), var(--jade) 45%, var(--jade-deep));
+    z-index: 2;
+  }
+  .tag {
+    position: relative;
+    clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%, 0 var(--cut));
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: linear-gradient(180deg, var(--mint-lit) 0%, var(--mint) 55%, var(--mint-shade) 100%);
+    box-shadow: inset 0 2px 0 rgb(255 255 255 / .8), inset 0 -10px 18px rgb(10 111 92 / .07);
+    padding: calc(var(--hole-y, 34px) + 34px) var(--s5) var(--s5);
+  }
+  .tag::before {                                        /* the punched hole and its grommet */
+    content: ""; position: absolute; left: 50%; top: var(--hole-y, 34px); width: 30px; height: 30px; margin: -15px 0 0 -15px;
+    border-radius: 50%; background: var(--porcelain);
+    box-shadow: 0 0 0 6px var(--jade), 0 0 0 7px rgb(6 74 60 / .35), inset 0 2px 3px rgb(6 74 60 / .35);
+  }
 
-  /* Demo: store rack + chat */
-  .demo { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
-  .demo__body { display: grid; grid-template-columns: minmax(0, 176px) minmax(0, 1fr); }
-  .rack { list-style: none; margin: 0; padding: var(--space-5) var(--space-4); border-right: 1px solid var(--line); display: grid; gap: var(--space-2); align-content: start; }
-  .rack li { font: 500 1.2rem/1.15 var(--display); font-variation-settings: "wdth" 100; letter-spacing: -.01em; color: var(--ink-2); padding-left: 10px; border-left: 3px solid transparent; transition: color .25s ease-out, border-color .25s ease-out; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .rack li.on { color: var(--ink); font-weight: 760; border-left-color: var(--jade); }
-  .rack li small { display: block; font: 400 11px/1.3 var(--mono); letter-spacing: 0; color: var(--ink-2); margin-top: 2px; }
-  .chat { padding: var(--space-5); min-height: 360px; display: flex; flex-direction: column; gap: var(--space-4); }
-  .ask { align-self: flex-end; max-width: 90%; background: var(--ink); color: var(--bg); padding: var(--space-3) var(--space-4); border-radius: 14px 14px 4px 14px; font-size: 15px; line-height: 1.45; }
-  .answers { display: grid; gap: var(--space-3); }
-  .answer { opacity: 1; transition: opacity .25s ease-out, transform .25s ease-out; }
-  .answer.pending { opacity: 0; transform: translateY(6px); }
-  .label-line .dom { white-space: nowrap; }
-  .label-line { display: inline-block; font: 500 12px/1.4 var(--mono); background: var(--mint); color: var(--ink); padding: 2px 8px; border-radius: 999px; margin-bottom: 4px; }
-  .answer p { margin: 0; font-size: 15px; line-height: 1.5; }
-  .demo__foot { border-top: 1px solid var(--line); padding: var(--space-4) var(--space-5); display: grid; gap: var(--space-3); }
-  .chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-  .chip { font: 400 14px/1.3 var(--display); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: var(--space-2) var(--space-3); min-height: 36px; cursor: pointer; transition: border-color .2s ease-out, background-color .2s ease-out; }
+  /* ---------- hero stage ---------- */
+  .stage { position: relative; padding: 0 0 var(--s8); overflow: hidden; }
+  .stage .rail { position: absolute; left: 0; right: 0; top: 26px; border-radius: 0; }
+  .stage-grid {
+    display: grid; grid-template-columns: minmax(0, 5.4fr) minmax(0, 6.6fr); gap: var(--s6);
+    align-items: start; padding-top: 37px;
+  }
+  .hero-tag { --drop: 30px; --hole-y: 40px; margin-top: 30px; }
+  .hero-tag .tag { padding: 84px var(--s7) var(--s7); }
+  .hero-tag h1 { font-size: clamp(36px, 3.9vw, 54px); line-height: 1.0; letter-spacing: -0.025em; font-weight: 800; }
+  .hero-tag h1 .cont { display: block; color: var(--ink-3); }
+  .hero-tag .sub { margin-top: var(--s5); font-size: 18px; line-height: 1.5; color: var(--ink-2); max-width: 36ch; }
+  .hero-tag .actions { margin-top: var(--s6); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3) var(--s5); }
+  .hero-tag .fine { margin-top: var(--s5); font-size: 14px; line-height: 1.5; color: var(--ink-2); max-width: 44ch; }
+  .proofline { margin-top: var(--s4); display: flex; gap: var(--s2); align-items: flex-start; font: 500 13px/1.5 var(--mono); color: var(--jade-ink); }
+  .proofline svg { flex: none; margin-top: 2px; }
+
+  .stores-area { position: relative; padding-top: 0; }
+  .ask { position: absolute; top: 40px; left: -8px; right: -8px; filter: var(--lift); z-index: 3; }
+  .ask-card { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1) var(--s3); background-color: var(--surface); border-radius: var(--r-md); padding: var(--s3) var(--s5); box-shadow: inset 0 0 0 1px var(--line); }
+  .ask-card .eyebrow { font-size: 12px; }
+  .ask-card p + p { font: 600 18px/1.35 var(--body); }
+  .stores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s5); margin: 0; list-style: none; padding: 0; }
+  .stores > li:nth-child(1) { --drop: 136px; }
+  .stores > li:nth-child(2) { --drop: 176px; }
+  .stores > li:nth-child(3) { --drop: 154px; }
+  .stores > li { margin-top: var(--drop); }
+  .store .tag { min-height: 300px; padding-left: var(--s4); padding-right: var(--s4); }
+  .tape {
+    display: inline-block; margin-left: -6px; padding: 6px 14px 5px;
+    background-color: var(--tape);
+    color: var(--white); font: 700 15px/1.2 var(--display); letter-spacing: .09em; text-transform: uppercase;
+    text-shadow: 0 1px 0 rgb(0 0 0 / .35), 0 -1px 0 rgb(255 255 255 / .12);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 50%, 100% 100%, 0 100%, 6px 50%);
+    transform: rotate(-2deg);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .22), inset 0 -2px 0 rgb(0 0 0 / .18);
+  }
+  .store:nth-child(2) .tape { transform: rotate(1.5deg); }
+  .store:nth-child(3) .tape { transform: rotate(-1deg); }
+  .domain { display: block; margin-top: var(--s2); font: 400 12px/1.4 var(--mono); color: var(--ink-2); }
+  .answer { margin-top: var(--s4); font-size: 17px; line-height: 1.45; color: var(--ink); }
+  .answer .fig { display: block; font: 800 44px/1 var(--display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; color: var(--jade-ink); margin-bottom: var(--s2); }
+  .answer[data-state="pending"] { opacity: .35; }
+
+  .switch { margin-top: var(--s6); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
+  .switch .label { font: 500 12px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-right: var(--s2); }
+  .chip {
+    min-height: 44px; padding: 0 var(--s4); border-radius: var(--pill);
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    font: 600 15px/1 var(--body); cursor: pointer;
+    transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+  }
   .chip:hover { border-color: var(--jade-deep); }
-  .chip[aria-pressed="true"] { background: var(--mint); border-color: var(--jade-deep); }
-  .demo__note { font: 400 12px/1.4 var(--mono); color: var(--ink-2); margin: 0; }
+  .chip:active { background: var(--mint); }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--porcelain); }
+  .demo-cap { margin-top: var(--s3); font: 400 12px/1.4 var(--mono); color: var(--ink-2); }
+
+  @keyframes swing {
+    0% { transform: rotate(0); }
+    25% { transform: rotate(3.2deg); }
+    55% { transform: rotate(-2deg); }
+    80% { transform: rotate(.8deg); }
+    100% { transform: rotate(0); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-motion="on"] .store.swing { animation: swing .9s var(--ease) both; }
+    [data-motion="on"] .store.swing:nth-child(2) { animation-delay: .08s; }
+    [data-motion="on"] .store.swing:nth-child(3) { animation-delay: .16s; }
+    .answer { transition: opacity .25s var(--ease); }
+  }
+
+  /* phones and narrow tablets: the rail turns, the store tags hang sideways from it */
+  @media (max-width: 980px) {
+    .stage-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .hero-tag { margin-inline: auto; width: min(560px, 100%); }
+    .hero-tag .tag { padding: 84px var(--s5) var(--s6); }
+    .stores-area { margin-top: var(--s6); }
+    .ask { position: relative; top: auto; left: auto; right: auto; }
+    .ask::before { display: none; }
+    .stores { grid-template-columns: minmax(0, 1fr); gap: var(--s4); margin-top: var(--s5); padding-left: 44px; position: relative; }
+    .stores::before { content: ""; position: absolute; left: 0; top: -8px; bottom: -8px; width: 18px; border-radius: 9px;
+      background: linear-gradient(90deg, var(--jade-lit), var(--jade) 45%, var(--jade-deep));
+      box-shadow: inset 2px 0 1px rgb(255 255 255 / .45), 0 6px 14px rgb(6 74 60 / .16); }
+    .stores > li { margin-top: 0; }
+    .store { transform-origin: 0 50%; }
+    .store::before { left: -30px; top: 50%; width: 46px; height: 8px; margin: -4px 0 0; }
+    .store .tag {
+      min-height: 0; padding: var(--s4) var(--s4) var(--s4) 64px;
+      clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .store .tag::before { left: 30px; top: 50%; }
+    .answer { margin-top: var(--s2); }
+    .answer .fig { font-size: 32px; display: inline; margin: 0 var(--s2) 0 0; }
+  }
+
+  /* ---------- sections ---------- */
+  section.band { padding: var(--s10) 0; }
+  section.band + section.band { border-top: 1px solid var(--line); }
+  .section-head { max-width: 760px; }
+  .section-head p { margin-top: var(--s4); font-size: 19px; color: var(--ink-2); max-width: 60ch; }
+
+  .problem { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--s8); align-items: center; }
+  .problem .note { margin-top: var(--s5); padding-left: var(--s4); border-left: 3px solid var(--mint-shade); color: var(--ink-2); font-size: 15px; max-width: 52ch; }
+  .quote { margin: 0; }
+  .quote blockquote { margin: 0; font: 600 clamp(22px, 2.4vw, 28px)/1.35 var(--display); letter-spacing: -0.01em; color: var(--ink); }
+  .quote figcaption { margin-top: var(--s4); font: 400 13px/1.5 var(--mono); color: var(--ink-2); }
+
+  .outcomes { margin-top: var(--s9); list-style: none; padding: 0; border-top: 1px solid var(--line); }
+  .outcome { display: grid; grid-template-columns: 96px minmax(0, 5fr) minmax(0, 4fr); gap: var(--s6); align-items: start; padding: var(--s6) 0; border-bottom: 1px solid var(--line); }
+  .num-tag { --cut: 14px; --hole-y: 16px; width: 64px; filter: drop-shadow(0 6px 10px rgb(6 74 60 / .14)); }
+  .num-tag .tag { padding: 32px 0 10px; text-align: center; border-radius: 0 0 var(--r-md) var(--r-md); font: 800 22px/1 var(--display); color: var(--jade-ink); }
+  .num-tag .tag::before { width: 12px; height: 12px; margin: -6px 0 0 -6px; box-shadow: 0 0 0 3px var(--jade), inset 0 1px 2px rgb(6 74 60 / .35); }
+  .outcome p { margin-top: var(--s2); color: var(--ink-2); max-width: 54ch; }
+  .sample { align-self: center; background: var(--surface); border-radius: var(--r-md); padding: var(--s3) var(--s4); box-shadow: inset 0 0 0 1px var(--line); font: 400 13px/1.55 var(--mono); color: var(--ink); }
+  .sample .k { color: var(--jade-deep); }
+  .sample .refuse { color: var(--veto); }
+
+  /* proof: the one drenched band */
+  .proof { background-color: var(--jade-ink); color: var(--on-deep); } /* lint-ok: contrast - the next rule sits on this .proof band (jade-ink #064A3C); rendered-pixel median 10.0:1 (Chromium, 31 Oct 2026) */
+  .proof h2 { color: var(--white); } /* lint-ok: contrast - ground is the .proof band (jade-ink #064A3C), not the page; rendered-pixel median 10.0:1 white, 6.9:1 on-deep-2 (Chromium, 31 Oct 2026) */
+  .proof .section-head p { color: var(--on-deep-2); } /* lint-ok: contrast - ground is the .proof band (jade-ink #064A3C), not the page; rendered-pixel median 10.0:1 white, 6.9:1 on-deep-2 (Chromium, 31 Oct 2026) */
+  .proof a { color: var(--white); } /* lint-ok: contrast - ground is the .proof band (jade-ink #064A3C), not the page; rendered-pixel median 10.0:1 white, 6.9:1 on-deep-2 (Chromium, 31 Oct 2026) */
+  .proof a:hover { color: var(--mint); } /* lint-ok: contrast - ground is the .proof band (jade-ink #064A3C), not the page; rendered-pixel median 10.0:1 white, 6.9:1 on-deep-2 (Chromium, 31 Oct 2026) */
+  .eyebrow.on-deep { color: var(--on-deep-2); margin-bottom: var(--s3); } /* lint-ok: contrast - sits on the .proof band (jade-ink #064A3C); rendered-pixel median 6.9:1 (Chromium, 31 Oct 2026) */
+  .wins { list-style: none; margin: var(--s7) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s5); } /* lint-ok: contrast - sits on the .proof band (jade-ink #064A3C); rendered-pixel median 6.9:1 (Chromium, 31 Oct 2026) */
+  .wins li { border-top: 2px solid var(--jade); padding-top: var(--s4); color: var(--on-deep-2); font-size: 15px; line-height: 1.45; } /* lint-ok: contrast - sits on the .proof band (jade-ink #064A3C); rendered-pixel median 6.9:1 (Chromium, 31 Oct 2026) */
+  .wins .big { display: block; font: 800 clamp(40px, 4.4vw, 56px)/1 var(--display); letter-spacing: -0.02em; color: var(--white); margin-bottom: var(--s2); font-variant-numeric: tabular-nums; } /* lint-ok: contrast - sits on the .proof band (jade-ink #064A3C); rendered-pixel median 10.0:1 (Chromium, 31 Oct 2026) */
+  .table-card h3 { font-size: 22px; margin-bottom: var(--s4); }
+  .compare td .mk { float: left; margin: 2px var(--s2) 0 0; }
+  .compare td span { display: block; overflow: hidden; }
+  .compare td.win .mk { color: var(--jade-deep); }
+  .compare td:not(.win) .mk { color: var(--ink-3); }
+  .compare td.win span { font-weight: 600; color: var(--ink); }
+  .compare td:not(.win) span { color: var(--ink-2); }
+  .compare tbody th { font-weight: 600; width: 24%; }
+  .lead-them { display: inline-block; margin-left: var(--s2); padding: 1px 8px; border-radius: var(--pill); background-color: var(--amber-wash); color: var(--amber-ink); font: 600 12px/1.5 var(--body); letter-spacing: .06em; text-transform: uppercase; vertical-align: 2px; }
+  .note-under { margin-top: var(--s4); font-size: 14px; color: var(--ink-2); }
+  .table-card + .table-card { margin-top: var(--s5); } /* lint-ok: contrast - the next rule (.closing) sits on the .proof band (jade-ink #064A3C); rendered-pixel median 10.0:1 (Chromium, 31 Oct 2026) */
+  .closing { font: 600 clamp(20px, 2vw, 24px)/1.4 var(--display); color: var(--white); max-width: 30ch; } /* lint-ok: contrast - sits on the .proof band (jade-ink #064A3C); rendered-pixel median 10.0:1 (Chromium, 31 Oct 2026) */
+  .table-card { margin-top: var(--s7); background: var(--surface); color: var(--ink); border-radius: var(--radius); padding: var(--s5) var(--s6) var(--s6); overflow-x: auto; }
+  .table-card:focus-visible { outline-color: var(--white); }
+  .table-card .cap { font: 400 13px/1.5 var(--mono); color: var(--ink-2); margin-bottom: var(--s4); }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 14px var(--s4); border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { font: 600 13px/1.3 var(--body); color: var(--ink-2); border-bottom: 2px solid var(--ink); }
+  tbody th { font-weight: 400; color: var(--ink); width: 38%; }
+  td.us, th.us { background: var(--mint); }
+  thead th.us { border-radius: var(--r-md) var(--r-md) 0 0; color: var(--jade-ink); }
+  tbody tr:last-child td.us { border-radius: 0 0 var(--r-md) var(--r-md); }
+  td b { font-weight: 700; }
+  td small { display: block; color: var(--ink-2); font-size: 13px; }
+  .proof-foot .closing { color: var(--white); background-color: var(--jade-ink); }
+  .proof-foot { margin-top: var(--s7); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s8); } /* lint-ok: contrast - the next rule sits on this .proof band (jade-ink #064A3C); rendered-pixel median 10.0:1 (Chromium, 31 Oct 2026) */
+  .proof-foot h3 { color: var(--white); } /* lint-ok: contrast - ground is the .proof band (jade-ink #064A3C), not the page; rendered-pixel median 10.0:1 white, 6.9:1 on-deep-2 (Chromium, 31 Oct 2026) */
+  .proof-foot p { margin-top: var(--s3); color: var(--on-deep-2); } /* lint-ok: contrast - ground is the .proof band (jade-ink #064A3C), not the page; rendered-pixel median 10.0:1 white, 6.9:1 on-deep-2 (Chromium, 31 Oct 2026) */
+  .proof-foot .more { margin-top: var(--s4); display: inline-block; }
+
+  .safety-grid { margin-top: var(--s7); display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--s8); align-items: start; }
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s6) var(--s7); }
+  .facts h3 { font-size: 19px; }
+  .facts p { margin-top: var(--s2); color: var(--ink-2); }
+  .checks-tag { --drop: 0px; --hole-y: 30px; }
+  .checks-tag::before { display: none; }
+  .checks-tag .tag { padding: 66px var(--s5) var(--s5); }
+  .checks { list-style: none; margin: 0; padding: 0; font: 400 13px/1.4 var(--mono); }
+  .checks li { display: flex; justify-content: space-between; gap: var(--s3); padding: 10px 0; border-bottom: 1px dashed rgb(10 111 92 / .3); }
+  .checks li span:last-child { color: var(--jade-ink); font-weight: 500; }
+  .checks-tag .cap-small { margin-top: var(--s3); font: 400 12px/1.5 var(--mono); color: var(--ink-2); }
+
+  .needs { margin-top: var(--s4); font-size: 17px; color: var(--ink-2); max-width: 70ch; }
+  .steps { margin-top: var(--s7); list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s6); counter-reset: step; }
+  .step { display: flex; flex-direction: column; }
+  .step .n { font: 800 15px/1 var(--display); color: var(--jade-deep); letter-spacing: .04em; }
+  .step h3 { margin-top: var(--s2); }
+  .step > p { margin-top: var(--s2); color: var(--ink-2); }
+  .pic { margin: var(--s5) 0 0; }
+  .pic figcaption { margin-top: var(--s2); font: 400 12px/1.5 var(--mono); color: var(--ink-2); }
+  .screen { border-radius: var(--r-md); overflow: hidden; box-shadow: 0 1px 2px rgb(20 33 28 / .08), 0 10px 26px rgb(20 33 28 / .08); }
+  .screen:not(.term) { background-color: var(--surface); }
+  .bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: #ECEEEB; }
+  .bar i { width: 10px; height: 10px; border-radius: 50%; background: #CFD4D0; }
+  .bar .url { margin-left: var(--s2); flex: 1; min-width: 0; padding: 4px 10px; border-radius: var(--r-sm); background: var(--surface); font: 400 12px/1.3 var(--mono); color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .term { background-color: var(--ink); color: #E8EFEB; padding: var(--s4); position: relative; }
+  .term pre { margin: 0; padding-right: 76px; font: 400 14px/1.55 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; } /* lint-ok: contrast - the prompt sits on the .term panel (ink #14211C); rendered-pixel median 9.6:1 (Chromium, 31 Oct 2026) */
+  .term .prompt { color: var(--jade-lit); user-select: none; } /* lint-ok: contrast - ground is the .term panel (ink #14211C), not the page; rendered-pixel median 9.6:1 prompt, 13.0:1 Copy (Chromium, 31 Oct 2026) */
+  .copy { /* lint-ok: contrast - ground is the .term panel (ink #14211C), not the page; rendered-pixel median 9.6:1 prompt, 13.0:1 Copy (Chromium, 31 Oct 2026) */
+    position: absolute; top: var(--s3); right: var(--s3); min-height: 32px; min-width: 64px; padding: 0 var(--s3);
+    border-radius: var(--r-sm); border: 1px solid rgb(255 255 255 / .25); background: rgb(255 255 255 / .08); color: var(--white);
+    font: 600 13px/1 var(--body); cursor: pointer; transition: background-color .2s var(--ease);
+  }
+  .copy:hover { background: rgb(255 255 255 / .18); }
+  .copy:active { background: rgb(255 255 255 / .26); }
+  .copy[data-state="done"] { background: var(--jade-deep); border-color: var(--jade-deep); }
+  .copy[data-state="error"] { background: var(--veto); border-color: var(--veto); }
+  .approve { padding: var(--s5) var(--s5) var(--s5); }
+  .approve .ln { height: 9px; border-radius: 5px; background: #E6E9E6; margin-top: 10px; }
+  .approve .ln.w1 { width: 72%; } .approve .ln.w2 { width: 54%; }
+  .approve .t { font: 700 16px/1.3 var(--body); color: var(--ink); }
+  .approve .fake-btn { margin-top: var(--s4); display: inline-block; padding: 9px 16px; border-radius: var(--r-sm); background: var(--ink); color: var(--white); font: 600 13px/1 var(--body); }
+  .chat { padding: var(--s4); display: grid; gap: var(--s3); background: var(--surface); }
+  .bubble { justify-self: end; max-width: 85%; background: var(--ink); color: var(--white); padding: 10px 14px; border-radius: var(--r-md) var(--r-md) 4px var(--r-md); font-size: 14px; line-height: 1.4; }
+  .reply { font-size: 14px; line-height: 1.45; }
+  .reply .tape { font-size: 12px; padding: 4px 10px 3px; margin: 0 0 6px -4px; }
+  .reply + .reply { margin-top: var(--s1); }
+
+  .manual { margin-top: var(--s7); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+  .manual > summary { cursor: pointer; padding: var(--s4) var(--s5); font-weight: 600; min-height: 52px; display: flex; align-items: center; list-style: none; gap: var(--s2); }
+  .manual > summary::-webkit-details-marker { display: none; }
+  .manual > summary::before { content: "+"; font: 600 18px/1 var(--mono); color: var(--jade-deep); width: 18px; }
+  .manual[open] > summary::before { content: "\2212"; }
+  .manual > summary:hover { color: var(--jade-ink); }
+  .tabs { padding: 0 var(--s5) var(--s5); }
+  .tablist { display: flex; flex-wrap: wrap; gap: var(--s2); }
+  .tablist button {
+    min-height: 40px; padding: 0 var(--s4); border-radius: var(--pill); border: 1px solid var(--line); background: var(--surface);
+    color: var(--ink-2); font: 600 14px/1 var(--body); cursor: pointer; transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  }
+  .tablist button:hover { border-color: var(--jade-deep); color: var(--ink); }
+  .tablist button[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--porcelain); }
+  .panel { margin-top: var(--s4); }
+  .panel .where { color: var(--ink-2); font-size: 15px; margin-bottom: var(--s2); }
+  .panel .term { border-radius: var(--r-md); }
+
+  .recover { margin-top: var(--s7); display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--s6); }
+  .recover ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4) var(--s6); }
+  .recover li { padding-left: var(--s5); position: relative; color: var(--ink-2); font-size: 15px; }
+  .recover li::before { content: ""; position: absolute; left: 0; top: .55em; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 3px var(--jade); }
+  .recover li strong { color: var(--ink); font-weight: 600; }
+
+  .faq { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s8); }
+  .faq-list details { border-bottom: 1px solid var(--line); }
+  .faq-list details:first-child { border-top: 1px solid var(--line); }
+  .faq-list summary {
+    cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: var(--s4); align-items: center;
+    padding: var(--s4) 0; min-height: 60px; font: 600 18px/1.35 var(--body); transition: color .2s var(--ease);
+  }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after { content: "+"; flex: none; font: 500 22px/1 var(--mono); color: var(--jade-deep); }
+  .faq-list details[open] summary::after { content: "\2212"; }
+  .faq-list summary:hover { color: var(--jade-ink); }
+  .faq-list details p { padding: 0 0 var(--s5); color: var(--ink-2); max-width: 64ch; }
+
+  .final { padding: var(--s7) 0 var(--s10); }
+  .status { display: flex; align-items: flex-start; gap: var(--s3); padding: var(--s4) var(--s5); border-radius: var(--r-md); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); max-width: 760px; }
+  .status .ver { flex: none; font: 500 13px/1.6 var(--mono); color: var(--jade-ink); background: var(--mint); padding: 0 var(--s2); border-radius: var(--r-sm); }
+  .status p { font-size: 15px; color: var(--ink-2); }
+  .closer { margin-top: var(--s8); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s7); align-items: center; }
+  .closer img { width: 168px; height: 168px; }
+  .closer p { margin-top: var(--s3); font-size: 19px; color: var(--ink-2); }
+  .closer .btn { margin-top: var(--s5); }
+
+  .site-foot { border-top: 1px solid var(--line); padding: var(--s6) 0 var(--s7); font-size: 14px; color: var(--ink-2); }
+  .site-foot .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3) var(--s5); }
+  .site-foot nav { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); }
+  .site-foot nav a { color: var(--ink-2); display: inline-flex; align-items: center; min-height: 24px; }
+  .site-foot nav a:hover { color: var(--ink); }
+  .site-foot .legal { flex-basis: 100%; }
+
+  @media (max-width: 980px) {
+    section.band { padding: var(--s8) 0; }
+    .wins { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .problem, .safety-grid, .faq, .recover, .proof-foot { grid-template-columns: minmax(0, 1fr); gap: var(--s6); }
+    .outcome { grid-template-columns: 64px minmax(0, 1fr); gap: var(--s4); }
+    .outcome .sample { grid-column: 2; }
+    .steps { grid-template-columns: minmax(0, 1fr); gap: var(--s7); }
+    .facts, .recover ul { grid-template-columns: minmax(0, 1fr); }
+    .checks-tag { max-width: 420px; }
+    .closer { grid-template-columns: minmax(0, 1fr); gap: var(--s5); }
+    .closer img { width: 112px; height: 112px; }
+  }
   @media (max-width: 520px) {
-    .demo__body { grid-template-columns: minmax(0, 1fr); }
-    .rack { border-right: 0; border-bottom: 1px solid var(--line); grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); padding: var(--space-4); }
-    .rack li { font-size: 1rem; padding-left: 8px; }
-    .rack li small { display: none; }
-    .chat { min-height: 0; }
+    .table-card { padding: var(--s4); border-radius: var(--r-md); }
+    th, td { padding: 12px 10px; }
   }
 
-  /* Problem */
-  .problem .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-8); align-items: start; }
-  blockquote { margin: 0 0 var(--space-4); padding: var(--space-5) var(--space-5) var(--space-5) var(--space-6); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; font-size: 1.2rem; line-height: 1.5; color: var(--ink); }
-  blockquote footer { margin-top: var(--space-3); font: 400 13px/1.4 var(--mono); color: var(--ink-2); }
-  .note { font-size: 15px; color: var(--ink-2); padding-left: var(--space-4); border-left: 2px solid var(--line); }
-  .note strong { color: var(--ink); }
-  @media (max-width: 860px) { .problem .wrap { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); } }
+  .step .term { padding: 0; }
+  .term-bar { display: flex; align-items: center; justify-content: space-between; padding: var(--s2) var(--s2) var(--s2) var(--s4); border-bottom: 1px solid rgb(255 255 255 / .08); font: 500 12px/1 var(--mono); color: #A9B8B1; background-color: var(--ink); }
+  .step .term pre { padding: var(--s4); font-size: 13px; }
+  .term-bar .copy { position: static; }
 
-  /* Outcomes: rows, each with a fragment of real product output */
-  .outcomes .row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-7); align-items: center; padding: var(--space-6) 0; }
-  .outcomes .row + .row { border-top: 1px dashed var(--line); }
-  .outcomes .row p { color: var(--ink-2); max-width: 46ch; }
-  .frag { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: var(--space-5); font: 400 14px/1.6 var(--mono); color: var(--ink); overflow-x: auto; }
-  .frag .dim { color: var(--ink-2); }
-  .frag .refuse { color: var(--veto); }
-  .frag table { border-collapse: collapse; width: 100%; min-width: 320px; }
-  .frag th, .frag td { text-align: left; padding: var(--space-2) var(--space-3) var(--space-2) 0; border-bottom: 1px solid var(--line); font-weight: 400; }
-  .frag th { color: var(--ink-2); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-  .frag td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  @media (max-width: 520px) { .frag { padding: var(--space-4); } .frag table { min-width: 0; } }
-  @media (max-width: 860px) { .outcomes .row { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); } }
-
-  /* Measured: the head-to-head table */
-  .measured .intro { max-width: 66ch; color: var(--ink-2); }
-  .compare { margin-top: var(--space-6); }
-  .compare table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; }
-  .compare caption { text-align: left; font: 400 13px/1.5 var(--mono); color: var(--ink-2); padding-bottom: var(--space-3); }
-  .compare th, .compare td { text-align: left; padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
-  .compare thead th { font: 500 12px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
-  .compare { font-family: var(--display); }
-  .compare tbody th { font: 500 15px/1.45 var(--display); text-transform: none; letter-spacing: 0; color: var(--ink); width: 40%; }
-  .compare td { font: 400 15px/1.45 var(--display); font-variant-numeric: tabular-nums; color: var(--ink-2); width: 30%; }
-  .compare td.lead { color: var(--ink); font-weight: 650; }
-  .measured .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-7); margin-top: var(--space-6); }
-  .measured h3 { font-size: 1.1rem; }
-  .measured ul { margin: 0; padding-left: 1.1em; color: var(--ink-2); display: grid; gap: var(--space-2); }
-  @media (max-width: 860px) { .measured .cols { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); } }
-  @media (max-width: 600px) {
-    .compare table { min-width: 0; }
+  /* phones: the capability table becomes one card per row; the measured table loses its minimum width */
+  @media (max-width: 620px) {
+    table { min-width: 0; }
     .compare thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-    .compare tr { display: block; padding: var(--space-3) 0; border-bottom: 1px solid var(--line); }
-    .compare tbody th, .compare td { display: flex; justify-content: space-between; gap: var(--space-4); border: 0; padding: 2px 0; }
-    .compare tbody th { padding-bottom: var(--space-2); }
-    .compare td::before { content: attr(data-label); color: var(--ink-2); font: 400 13px/1.5 var(--mono); flex: 0 0 auto; }
-    .compare td { text-align: right; }
+    .compare table, .compare tbody, .compare tr, .compare th, .compare td { display: block; width: auto; }
+    .compare tr { padding: var(--s4) 0; border-bottom: 1px solid var(--line); }
+    .compare tbody th { padding: 0 0 var(--s2); border: 0; width: auto; }
+    .compare td { padding: var(--s2) var(--s3); border: 0; border-radius: var(--r-sm); }
+    .compare td::before { content: attr(data-label); display: block; margin-bottom: 2px; font: 500 12px/1.4 var(--mono); color: var(--ink-2); }
+    .compare td + td { margin-top: var(--s1); }
+    tbody tr:last-child td.us { border-radius: var(--r-sm); }
+    .table-card:not(.compare) th, .table-card:not(.compare) td { padding: 10px 8px; font-size: 15px; }
+    .table-card:not(.compare) thead th { font-size: 12px; overflow-wrap: anywhere; }
   }
-  @media (max-width: 400px) { .frag { font-size: 12.5px; } .frag th, .frag td { padding-right: var(--space-2); overflow-wrap: anywhere; } }
-
-  /* Setup: one command, with the hand-written configs folded away */
-  .cmd { position: relative; margin-top: var(--space-3); max-width: 760px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
-  .cmd pre { margin: 0; padding: var(--space-5); padding-right: 96px; font: 500 15px/1.6 var(--mono); color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
-  .manual { margin-top: var(--space-4); max-width: 760px; }
-  .manual summary { cursor: pointer; color: var(--jade-deep); font-size: 15px; min-height: 44px; display: inline-flex; align-items: center; }
-  @media (max-width: 420px) { .cmd pre { padding-right: var(--space-5); } .cmd .copy { position: static; margin: 0 var(--space-5) var(--space-4); } }
-
-  /* Safety */
-  .safety .wrap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-8); align-items: start; }
-  .points { display: grid; gap: var(--space-5); margin-top: var(--space-6); }
-  .points p { margin: 0; color: var(--ink-2); }
-  .points p strong { color: var(--ink); font-weight: 650; }
-  .checks { list-style: none; padding: 0; margin: 0; }
-  .checks li { display: flex; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) 0; border-bottom: 1px solid var(--line); font: 400 14px/1.4 var(--mono); }
-  .checks li span:last-child { color: var(--jade-deep); }
-  @media (max-width: 860px) { .safety .wrap { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); } }
-
-  /* Setup */
-  .steps { list-style: none; padding: 0; margin: var(--space-6) 0 0; display: grid; gap: var(--space-6); counter-reset: step; }
-  .steps > li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: var(--space-4); }
-  .steps > li::before { counter-increment: step; content: counter(step); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; font: 500 15px/1 var(--mono); color: var(--ink); background: var(--surface); }
-  .steps h3 { margin-top: 8px; }
-  .steps p { color: var(--ink-2); max-width: 60ch; }
-  .tabs { margin-top: var(--space-3); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; max-width: 760px; }
-  .tablist { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
-  .tablist button { background: none; border: 0; border-bottom: 2px solid transparent; padding: var(--space-3) var(--space-4); min-height: 44px; font: 500 14px/1 var(--display); color: var(--ink-2); cursor: pointer; transition: color .2s ease-out, border-color .2s ease-out; }
-  .tablist button:hover { color: var(--ink); }
-  .tablist button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--jade-deep); }
-  @media (max-width: 560px) { .tablist { display: grid; grid-template-columns: 1fr 1fr; } .tablist button { text-align: left; } }
-  .panel { position: relative; }
-  .panel pre { margin: 0; padding: var(--space-5) var(--space-5) var(--space-5); padding-right: 96px; font: 400 14px/1.6 var(--mono); color: var(--ink); overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
-  .panel .where { padding: var(--space-3) 96px 0 var(--space-5); margin: 0; font-size: 14px; color: var(--ink-2); }
-  .copy { position: absolute; top: var(--space-3); right: var(--space-3); min-height: 36px; padding: 0 var(--space-3); border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: 500 13px/1 var(--display); cursor: pointer; transition: border-color .2s ease-out; }
-  .copy:hover { border-color: var(--jade-deep); }
-  @media (max-width: 420px) { .copy { position: static; margin: 0 var(--space-5) var(--space-4); } .panel .where, .panel pre { padding-right: var(--space-5); } }
-  .recover { margin-top: var(--space-6); max-width: 62ch; }
-
-  /* Questions */
-  .faq details { max-width: 820px; }
-  .faq details { border-bottom: 1px solid var(--line); }
-  .faq summary { cursor: pointer; padding: var(--space-4) 0; font-weight: 650; font-size: 1.1rem; list-style: none; display: flex; justify-content: space-between; gap: var(--space-4); }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "+"; font: 400 1.4rem/1 var(--mono); color: var(--ink-2); transition: transform .2s ease-out; }
-  .faq details[open] summary::after { transform: rotate(45deg); }
-  .faq details p { color: var(--ink-2); padding-bottom: var(--space-4); margin: 0; max-width: 64ch; }
-
-  /* Status + final */
-  .status { display: flex; gap: var(--space-3); align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: var(--space-5); max-width: 820px; }
-  .status .tag { flex: 0 0 auto; font: 500 12px/1.4 var(--mono); background: var(--mint); color: var(--ink); padding: 2px 8px; border-radius: 999px; }
-  .status p { margin: 0; color: var(--ink-2); }
-  .final { text-align: left; }
-  .final .art { margin: var(--space-6) 0 var(--space-6); border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
-  .final .art img { width: 100%; height: auto; aspect-ratio: 1600 / 667; object-fit: cover; }
-  .foot { padding: var(--space-6) 0 var(--space-8); font-size: 14px; color: var(--ink-2); border-top: 1px solid var(--line); }
-  .foot .wrap { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); align-items: baseline; }
-  .foot nav { display: flex; flex-wrap: wrap; gap: var(--space-5); }
-  .foot a { color: var(--ink-2); display: inline-block; padding-block: 2px; }
-  .foot a:hover { color: var(--ink); }
-  .foot .legal { flex-basis: 100%; margin: 0; }
-
-  @media (max-width: 600px) {
-    section { padding: var(--space-8) 0; }
-    .wrap { padding: 0 var(--space-4); }
-    .hero .sub { font-size: 1.1rem; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; }
+  @media (max-width: 980px) { .hero-tag h1 { font-size: clamp(34px, 6vw, 52px); } }
+  @media (max-width: 360px) {
+    .nobr { white-space: normal; }
+    .hero-tag .tag { padding: 76px var(--s4) var(--s5); }
+    .hero-tag h1 { font-size: 31px; }
+    .hero-tag .sub { font-size: 16px; margin-top: var(--s4); }
+    .hero-tag .actions { margin-top: var(--s5); }
   }
 </style>
 </head>
 <body>
-<header class="top">
+<!-- Direction contract
+ THESIS: One question goes out along a jade rail and comes back as tagged answers, one per store. Refuses the split hero
+   with a chat card beside it and the text-beside-code zigzag the 0.3 page used.
+ OWN-WORLD: Porcelain #F6F6F3, ink #14211C, jade #1CB884 rail and grommets, mint #DDF3E9 clay tags with cut top corners,
+   deep-jade #0A6F5C buttons, tape #0B5D4D with white embossed capitals for store names only. Gabarito 700-800 display,
+   Atkinson Hyperlegible Next body, JetBrains Mono for commands and data. Pills for actions, 22px tag radius, one light.
+ STORY: An account manager sees three client stores answer one question, each answer under its own name, believes it
+   because it was tested against the alternative and signs in on Shopify's page, and runs the setup command.
+ FIRST VIEWPORT: Full-bleed rail under the header. The hero copy hangs on the largest tag at left with the button inside it;
+   the question card is clipped to the rail beside it; three store tags hang at different drops; question chips below.
+ FORM: Trawl hybrid (cash railway x label tape) on the plain page's skeleton, comp B of three; beat the plain page both orders.
+ FINISH: unreviewed is unfinished; this build ends with the review, the verdict, and the open items declared.
+-->
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head" data-scrolled="false">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="shopify-multistore-mcp, back to top"><img src="assets/icon-96.png" alt="" width="32" height="32" /><span class="wordmark">shopify-multistore-mcp</span></a>
-    <nav aria-label="Main">
+    <a class="brand" href="#top"><img src="assets/icon-96.png" alt="" width="36" height="36" /><span>shopify-multistore-mcp</span></a>
+    <nav class="site-nav" aria-label="Sections">
       <a href="#how">How it works</a>
-      <a href="#proof">Proof</a>
+      <a href="#proof">Why choose it</a>
       <a href="#safety">Safety</a>
       <a href="#setup">Set up</a>
       <a href="#questions">Questions</a>
-      <a href="https://github.com/fledgeling-co/shopify-multistore-mcp">GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
-      <a class="btn btn--small" href="#setup">Connect your stores</a>
     </nav>
+    <a class="btn small" href="#setup">Connect your stores</a>
   </div>
 </header>
 
-<main id="top">
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow">shopify-multistore-mcp · MIT licence</p>
-        <h1 id="hero-title">Every client store in one AI chat.</h1>
-        <p class="sub">Ask once and every connected store answers, starting with its name. Each store signs in on Shopify's approval page, with no app to create and no API key to copy.</p>
-        <div class="actions">
-          <a class="btn" href="#setup">Connect your stores</a>
-          <a href="https://github.com/fledgeling-co/shopify-multistore-mcp">View source on GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+<main id="main">
+  <section class="stage" id="top" aria-labelledby="hero-title">
+    <div class="rail" aria-hidden="true"></div>
+    <div class="wrap stage-grid">
+      <div class="hero-tag tag-wrap">
+        <div class="tag">
+          <p class="eyebrow">shopify-multistore-mcp · Free, MIT licence</p>
+          <h1 id="hero-title" style="margin-top:14px">Ask every client store at once, <span class="cont">with each answer naming its store.</span></h1>
+          <p class="sub">shopify-multistore-mcp connects your AI app to several Shopify stores. Each store signs in on Shopify's approval page, without creating apps or copying API keys.</p>
+          <div class="actions">
+            <a class="btn" href="#setup">Connect your stores</a>
+            <a href="https://github.com/fledgeling-co/shopify-multistore-mcp">View source on GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+          </div>
+          <p class="fine">Works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and Codex. Not affiliated with Shopify.</p>
+          <p class="proofline"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4.8 8.2l2.1 2.1 4.3-4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>30 of 30 right in our mock test, vs 27 for <span class="nobr">alex-brecher/shopify-multi-store</span>.</span></p>
         </div>
-        <p class="fine">Works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and Codex. Not affiliated with Shopify.</p>
-        <p class="proof">Answered 30 of 30 multi-store eval questions; runs Shopify's own CLI and Dev MCP.</p>
       </div>
 
-      <figure class="demo" id="demo" data-state="ideal" aria-label="Example: one question answered by three stores">
-        <div class="demo__body">
-          <ol class="rack" aria-label="Connected stores">
-            <li data-store="harbour" class="on">harbour<small>harbour-coffee</small></li>
-            <li data-store="tidewater" class="on">tidewater<small>tidewater-swim</small></li>
-            <li data-store="northpaper" class="on">northpaper<small>northpaper</small></li>
-          </ol>
-          <div class="chat">
-            <p class="ask" id="ask">How many orders are still unfulfilled?</p>
-            <div class="answers" id="answers" aria-live="polite">
-              <div class="answer" data-store="harbour"><span class="label-line">store: harbour <span class="dom">(harbour-coffee.myshopify.com)</span></span><p>14 unfulfilled. The oldest is from Tuesday.</p></div>
-              <div class="answer" data-store="tidewater"><span class="label-line">store: tidewater <span class="dom">(tidewater-swim.myshopify.com)</span></span><p>3 unfulfilled, all from today.</p></div>
-              <div class="answer" data-store="northpaper"><span class="label-line">store: northpaper <span class="dom">(northpaper.myshopify.com)</span></span><p>27 unfulfilled; 9 are waiting on stock.</p></div>
+      <div class="stores-area" id="demo" role="region" aria-label="Example: one question, three stores">
+        <div class="ask">
+          <div class="ask-card">
+            <p class="eyebrow">Your question</p>
+            <p id="ask">How many orders are unfulfilled in each store?</p>
+          </div>
+        </div>
+        <ul class="stores" aria-live="polite">
+          <li class="store tag-wrap" data-store="harbour">
+            <div class="tag">
+              <span class="tape">harbour</span>
+              <span class="domain">harbour-coffee<wbr>.myshopify.com</span>
+              <p class="answer"><span class="fig">14</span> unfulfilled, oldest from Tuesday.</p>
             </div>
+          </li>
+          <li class="store tag-wrap" data-store="tidewater">
+            <div class="tag">
+              <span class="tape">tidewater</span>
+              <span class="domain">tidewater-swim<wbr>.myshopify.com</span>
+              <p class="answer"><span class="fig">3</span> unfulfilled, all from today.</p>
+            </div>
+          </li>
+          <li class="store tag-wrap" data-store="northpaper">
+            <div class="tag">
+              <span class="tape">northpaper</span>
+              <span class="domain">northpaper<wbr>.myshopify.com</span>
+              <p class="answer"><span class="fig">27</span> unfulfilled, 9 waiting on stock.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="switch" role="group" aria-label="Try another question">
+          <span class="label" aria-hidden="true">Try</span>
+          <button class="chip" type="button" data-q="0" aria-pressed="true">Unfulfilled orders</button>
+          <button class="chip" type="button" data-q="1" aria-pressed="false">Low stock</button>
+          <button class="chip" type="button" data-q="2" aria-pressed="false">Yesterday's sales</button>
+        </div>
+        <p class="demo-cap">Sample stores and figures shown for illustration.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="how" aria-labelledby="problem-title">
+    <div class="wrap">
+      <div class="problem">
+        <div>
+          <h2 id="problem-title">Shopify's AI connector holds one store at a time.</h2>
+          <p class="muted" style="margin-top:20px;font-size:19px;max-width:44ch">Even when your stores sit in the same organisation, switching stores in Shopify's connector makes you approve access again.</p>
+          <p class="note">Shopify's admin switches stores fine; it's only the AI connector that holds one store.</p>
+        </div>
+        <figure class="quote">
+          <blockquote><p>"The Shopify connector supports one store at a time, even when the stores are in the same organization. Switching stores starts a new authorization."</p></blockquote>
+          <figcaption>Shopify staff, <a href="https://community.shopify.dev/t/shopify-connector-for-claude-allow-several-development-stores-at-the-same-time/38283">Shopify Developer Community</a>, 7 October 2026</figcaption><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+        </figure>
+      </div>
+
+      <h2 class="visually-hidden" id="how-title">How it works</h2>
+      <ol class="outcomes" aria-labelledby="how-title">
+        <li class="outcome">
+          <div class="num-tag" aria-hidden="true"><div class="tag">1</div></div>
+          <div>
+            <h3>Nine reports across every store.</h3>
+            <p>Ask once and four stores answer together: sales in each store's currency (without test or cancelled orders), unfulfilled orders, low stock to move, and catalogue gaps.</p>
           </div>
-        </div>
-        <div class="demo__foot">
-          <div class="chips" role="group" aria-label="Try another question">
-            <button class="chip" type="button" data-q="0" aria-pressed="true">Unfulfilled orders</button>
-            <button class="chip" type="button" data-q="1" aria-pressed="false">Low stock</button>
-            <button class="chip" type="button" data-q="2" aria-pressed="false">Yesterday's sales</button>
+          <p class="sample"><span class="k">low stock</span> · tidewater is out of coffee beans; harbour has 18.</p>
+        </li>
+        <li class="outcome">
+          <div class="num-tag" aria-hidden="true"><div class="tag">2</div></div>
+          <div>
+            <h3>Every answer names its store.</h3>
+            <p>Each reply starts with its store name and address, so client numbers don't mix. Outside the nine reports, your assistant checks Shopify's docs and asks every store.</p>
           </div>
-          <figcaption class="demo__note">Sample stores and numbers, for illustration.</figcaption>
-        </div>
-      </figure>
+          <p class="sample"><span class="k">store: harbour</span> (harbour-coffee.myshopify.com)</p>
+        </li>
+        <li class="outcome">
+          <div class="num-tag" aria-hidden="true"><div class="tag">3</div></div>
+          <div>
+            <h3>Changes go to one store.</h3>
+            <p>Edits run on one named store and never retry. Mark any store <strong>read-only</strong>; creating keys, charging a store or changing app access is blocked outright.</p>
+          </div>
+          <p class="sample"><span class="refuse">refused</span> · Read-only stores refuse edits; billing and access changes stay blocked.</p>
+        </li>
+        <li class="outcome">
+          <div class="num-tag" aria-hidden="true"><div class="tag">4</div></div>
+          <div>
+            <h3>Seven starting prompts in chat.</h3>
+            <p>Apps like Claude Desktop show seven ready-made prompts: morning check, sales, unfulfilled orders, low stock, compare a product, catalogue check and connect a store.</p>
+          </div>
+          <p class="sample"><span class="k">morning check</span> · Pick it and every connected store answers at once.</p>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <section class="problem" id="how" aria-labelledby="problem-title">
+  <section class="band proof" id="proof" aria-labelledby="proof-title">
     <div class="wrap">
-      <div>
-        <h2 id="problem-title">Shopify's AI connector holds one store at a time.</h2>
-        <p class="muted">Look after several client stores and you approve access again every time you switch.</p>
-        <p class="note">Shopify's admin switches between stores without fuss; it's only the AI connector that holds one store.</p>
+      <div class="section-head">
+        <p class="eyebrow on-deep">Compared head to head</p>
+        <h2 id="proof-title">Built for agencies: connect client stores without creating apps</h2>
+        <p>We tested shopify-multistore-mcp against alex-brecher/shopify-multi-store across three mock stores (real-store sign-in isn't tested yet). For agencies, it comes down to browser sign-in without copying keys.</p>
       </div>
-      <blockquote>
-        "The Shopify connector supports one store at a time, even when the stores are in the same organization. Switching stores starts a new authorization."
-        <footer>Shopify staff, <a href="https://community.shopify.dev/t/shopify-connector-for-claude-allow-several-development-stores-at-the-same-time/38283">Shopify Developer Community</a>, 7 October 2026</footer><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
-      </blockquote>
-    </div>
-  </section>
+      <ul class="wins">
+        <li><span class="big">100%</span><span>30/30 answers right, vs 27/30 (90%)</span></li>
+        <li><span class="big">1</span><span>median tool call per question, vs 2</span></li>
+        <li><span class="big">2.3¢</span><span>median AI cost per question, vs 3.7¢</span></li>
+        <li><span class="big">7.4 s</span><span>median time per question, vs 8.8 s</span></li>
+      </ul>
 
-  <section class="outcomes" aria-labelledby="outcomes-title">
-    <div class="wrap">
-      <h2 id="outcomes-title" class="visually-hidden">What changes</h2>
-      <div class="row">
-        <div>
-          <h3 data-copy="outcomes.1.title">Nine ready-made reports across every store.</h3>
-          <p data-copy="outcomes.1.body">Run <strong>store_report</strong> once and four stores at a time answer together: sales in each store's currency (leaving out test and cancelled orders), unfulfilled orders by age, low stock with stock elsewhere to move, SKU lookups, duplicate SKUs and catalogue gaps.</p>
-        </div>
-        <div class="frag" role="figure" aria-label="Low-stock report across three stores">
-          <span class="dim">→ store_report { report: "low_stock" }</span>
-          <table>
-            <thead><tr><th scope="col">store</th><th scope="col">sku</th><th scope="col" class="num">on hand</th><th scope="col">in stock elsewhere</th></tr></thead>
-            <tbody>
-              <tr><td>harbour</td><td>HB-GRINDER</td><td class="num">0</td><td></td></tr>
-              <tr><td>tidewater</td><td>HB-BEANS-1KG</td><td class="num">0</td><td>harbour 18</td></tr>
-              <tr><td>tidewater</td><td>TW-FINS</td><td class="num">1</td><td></td></tr>
-              <tr><td>northpaper</td><td>NP-INK</td><td class="num">3</td><td></td></tr>
-            </tbody>
-          </table>
-          <p class="dim" style="margin:12px 0 0" data-copy="outcomes.1.caption">Low-stock report: tidewater is out of coffee beans; harbour has 18.</p>
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <h3>Every answer names its store.</h3>
-          <p>Each result starts with a store prefix like <code class="mono">store: harbour (harbour-coffee.myshopify.com)</code>, so figures don't drift onto the wrong client. For anything outside the reports, your assistant checks its read-only <strong>Admin GraphQL</strong> query via Shopify's Dev MCP and asks every store.</p>
-        </div>
-        <div class="frag" role="figure" aria-label="Example output when no store is named">
-<span class="dim">→ get_shop {}</span><br />
-Pass "store" to say which store to use. Connected stores: harbour (harbour-coffee.myshopify.com), tidewater (tidewater-swim.myshopify.com), northpaper (northpaper.myshopify.com).
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <h3>Changes go to one store, on purpose.</h3>
-          <p>Edits use one change tool on one named store at a time, and never retry so nothing applies twice. Mark any store <strong>read-only</strong> to refuse edits; mutations creating tokens, charging the store or changing app access are blocked outright.</p>
-        </div>
-        <div class="frag" role="figure" aria-label="Example output when a change is sent to a read-only store">
-<span class="dim">→ graphql_mutation { store: "northpaper", … }</span><br />
-<span class="refuse">Store "northpaper" is read-only, so mutations are refused.</span> Reconnect it with read_only false to allow changes.<br /><br />
-<span class="dim">→ graphql_mutation { store: "harbour", appSubscriptionCreate … }</span><br />
-<span class="refuse">appSubscriptionCreate is blocked: it creates credentials, charges the store or changes app access.</span>
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <h3 data-copy="outcomes.4.title">Seven starting prompts built into chat.</h3>
-          <p data-copy="outcomes.4.body">Account managers don't need to write GraphQL. Apps like Claude Desktop show seven ready-made prompts: morning check, sales, unfulfilled orders, low stock, compare a product, catalogue check, and connect a store. Pick one and every connected store answers.</p>
-        </div>
-        <div class="frag" role="figure" aria-label="The prompts shopify-multistore-mcp offers">
-          <span class="dim">prompts</span><br />
-          morning-check · sales · unfulfilled-orders<br />low-stock · compare-product · catalogue-check<br />connect-store
-          <p class="dim" style="margin:12px 0 0" data-copy="outcomes.4.caption">Seven built-in prompts cover daily checks without writing a query.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="measured" id="proof" aria-labelledby="proof-title">
-    <div class="wrap">
-      <h2 id="proof-title" data-copy="proof.headline">Tested head to head against the closest alternative.</h2>
-      <p class="intro" data-copy="proof.intro">We ran shopify-multistore-mcp 0.3.0 and alex-brecher/shopify-multi-store 2.0.3 (published as Shopify Multi-Store MCP) against a schema-checked mock Admin API with three stores. Claude Sonnet 5.5 answered 10 multi-store questions three times each, including shopify-multistore-mcp's 0.47 s CLI wait: 30/30 (7.4 s median) vs 27/30 (8.8 s).</p>
-      <div class="compare frag">
+      <div class="table-card compare" tabindex="0" role="region" aria-labelledby="compare-title">
+        <h3 id="compare-title">How the two options compare</h3>
         <table>
-          <caption data-copy="proof.caption">31 October 2026: 10 questions x 3 runs on Claude Sonnet 5.5; speed medians across 7 runs.</caption>
-          <!-- COMPARE:START -->
-          <thead><tr><th scope="col">Measure</th><th scope="col">shopify-multistore-mcp 0.3.0</th><th scope="col">alex-brecher/shopify-multi-store 2.0.3</th></tr></thead>
+          <thead>
+            <tr><th scope="col"><span class="visually-hidden">What</span></th><th scope="col" class="us">shopify-multistore-mcp</th><th scope="col">alex-brecher/shopify-multi-store</th></tr>
+          </thead>
           <tbody>
-          <tr><th scope="row">Questions answered correctly</th><td data-label="shopify-multistore-mcp" class="lead">30 of 30 (100%)</td><td data-label="alex-brecher">27 of 30 (90%)</td></tr>
-          <tr><th scope="row">Tool calls per question (median)</th><td data-label="shopify-multistore-mcp" class="lead">1</td><td data-label="alex-brecher">2</td></tr>
-          <tr><th scope="row">Time per question, end to end (median)</th><td data-label="shopify-multistore-mcp" class="lead">7.4 s</td><td data-label="alex-brecher">8.8 s</td></tr>
-          <tr><th scope="row">Model cost per question (median)</th><td data-label="shopify-multistore-mcp" class="lead">2.3¢</td><td data-label="alex-brecher">3.7¢</td></tr>
-          <tr><th scope="row">Tools in the list sent with every message</th><td data-label="shopify-multistore-mcp">14 (~10k tokens)</td><td data-label="alex-brecher">29 (~12k tokens)</td></tr>
-          <tr><th scope="row">One store&#x27;s details, one call</th><td data-label="shopify-multistore-mcp">526 ms</td><td data-label="alex-brecher" class="lead">5 ms</td></tr>
-          <tr><th scope="row">Unfulfilled orders across 3 stores</th><td data-label="shopify-multistore-mcp">541 ms</td><td data-label="alex-brecher" class="lead">7 ms</td></tr>
-          <tr><th scope="row">Unfulfilled orders across 8 stores</th><td data-label="shopify-multistore-mcp">1.1 s</td><td data-label="alex-brecher" class="lead">12 ms</td></tr>
-          <tr><th scope="row">Installed size</th><td data-label="shopify-multistore-mcp">28 MB, plus 397 MB of Shopify&#x27;s CLI and Dev MCP on first start</td><td data-label="alex-brecher" class="lead">32 MB</td></tr>
+            <tr class=""><th scope="row">Connecting a store</th><td class="us win" data-label="shopify-multistore-mcp"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".16"/><path d="M5.2 9.3l2.4 2.4 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Approve on Shopify's browser page; no app created</span></td><td data-label="alex-brecher/shopify-multi-store"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".12"/><path d="M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Create a Shopify app and copy secret keys</span></td></tr>
+            <tr class=""><th scope="row">Secret keys</th><td class="us win" data-label="shopify-multistore-mcp"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".16"/><path d="M5.2 9.3l2.4 2.4 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Never reads or copies your store keys</span></td><td data-label="alex-brecher/shopify-multi-store"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".12"/><path d="M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Saves app secrets in your computer's keychain</span></td></tr>
+            <tr class=""><th scope="row">Read-only per store</th><td class="us win" data-label="shopify-multistore-mcp"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".16"/><path d="M5.2 9.3l2.4 2.4 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Yes; any store can refuse all changes</span></td><td data-label="alex-brecher/shopify-multi-store"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".12"/><path d="M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>No per-store read-only switch in settings</span></td></tr>
+            <tr class=""><th scope="row">Starter prompts in chat</th><td class="us win" data-label="shopify-multistore-mcp"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".16"/><path d="M5.2 9.3l2.4 2.4 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Seven ready-made starting prompts in the app</span></td><td data-label="alex-brecher/shopify-multi-store"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".12"/><path d="M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>None included</span></td></tr>
+            <tr class=""><th scope="row">Shopify API version</th><td class="us win" data-label="shopify-multistore-mcp"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".16"/><path d="M5.2 9.3l2.4 2.4 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Follows newest stable release (2026-10)</span></td><td data-label="alex-brecher/shopify-multi-store"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".12"/><path d="M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Pinned to older 2026-07 release</span></td></tr>
+            <tr class=""><th scope="row">Unfulfilled order counts</th><td class="us win" data-label="shopify-multistore-mcp"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".16"/><path d="M5.2 9.3l2.4 2.4 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Counts partially fulfilled orders as waiting, like admin</span></td><td data-label="alex-brecher/shopify-multi-store"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".12"/><path d="M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Leaves out partially fulfilled orders (0/3 in test)</span></td></tr>
+            <tr class="theirs"><th scope="row">Team and browser access <span class="lead-them">Their lead</span></th><td class="us" data-label="shopify-multistore-mcp"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".12"/><path d="M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Runs on your own computer, not hosted</span></td><td class="win" data-label="alex-brecher/shopify-multi-store"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".16"/><path d="M5.2 9.3l2.4 2.4 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Hosts for teams; works in ChatGPT and claude.ai</span></td></tr>
+            <tr class="theirs"><th scope="row">Reports and store edits <span class="lead-them">Their lead</span></th><td class="us" data-label="shopify-multistore-mcp"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".12"/><path d="M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>9 reports and one single-store edit tool</span></td><td class="win" data-label="alex-brecher/shopify-multi-store"><svg class="mk" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="currentColor" opacity=".16"/><path d="M5.2 9.3l2.4 2.4 5-5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>17 reports, guided edits, and 514 admin changes</span></td></tr>
           </tbody>
-          <!-- COMPARE:END -->
+        </table>
+        <p class="note-under">Rows 7 and 8 are where alex-brecher/shopify-multi-store leads, along with raw speed in the timing table below.</p>
+      </div>
+
+      <div class="table-card" tabindex="0" role="region" aria-labelledby="speed-title">
+        <h3 id="speed-title">Measured speed, cost, and install size</h3>
+        <p class="cap">31 October 2026: 10 questions x 3 runs (Claude Sonnet 5.5); speed medians across 7 runs.</p>
+        <table>
+          <thead>
+            <tr><th scope="col">Measure</th><th scope="col" class="us">shopify-multistore-mcp 0.3.0</th><th scope="col">alex-brecher/shopify-multi-store 2.0.3</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Questions answered correctly</th><td class="us" data-label="shopify-multistore-mcp"><b>30 of 30 (100%)</b></td><td data-label="alex-brecher/shopify-multi-store">27 of 30 (90%)</td></tr>
+            <tr><th scope="row">Tool calls per question (median)</th><td class="us" data-label="shopify-multistore-mcp"><b>1</b></td><td data-label="alex-brecher/shopify-multi-store">2</td></tr>
+            <tr><th scope="row">Time per question, end to end (median)</th><td class="us" data-label="shopify-multistore-mcp"><b>7.4 s</b></td><td data-label="alex-brecher/shopify-multi-store">8.8 s</td></tr>
+            <tr><th scope="row">Model cost per question (median)</th><td class="us" data-label="shopify-multistore-mcp"><b>2.3¢</b></td><td data-label="alex-brecher/shopify-multi-store">3.7¢</td></tr>
+            <tr><th scope="row">Tools in the list sent with every message</th><td class="us" data-label="shopify-multistore-mcp">14 (~10k tokens)</td><td data-label="alex-brecher/shopify-multi-store">29 (~12k tokens)</td></tr>
+            <tr><th scope="row">One store's details, one call</th><td class="us" data-label="shopify-multistore-mcp">526 ms</td><td data-label="alex-brecher/shopify-multi-store"><b>5 ms</b></td></tr>
+            <tr><th scope="row">Unfulfilled orders across 3 stores</th><td class="us" data-label="shopify-multistore-mcp">541 ms</td><td data-label="alex-brecher/shopify-multi-store"><b>7 ms</b></td></tr>
+            <tr><th scope="row">Unfulfilled orders across 8 stores</th><td class="us" data-label="shopify-multistore-mcp">1.1 s</td><td data-label="alex-brecher/shopify-multi-store"><b>12 ms</b></td></tr>
+            <tr><th scope="row">Installed size</th><td class="us" data-label="shopify-multistore-mcp">28 MB<small>plus 397 MB of Shopify's CLI and Dev MCP on first start</small></td><td data-label="alex-brecher/shopify-multi-store"><b>32 MB</b></td></tr>
+          </tbody>
         </table>
       </div>
-      <div class="cols">
+      <div class="proof-foot">
+        <p class="closing">Pick alex-brecher/shopify-multi-store for team hosting, browser chat, or broad edits; pick shopify-multistore-mcp for desktop sign-in without app keys.</p>
         <div>
-          <h3 data-copy="proof.ahead.title">Where alex-brecher/shopify-multi-store is ahead</h3>
-          <ul data-copy="proof.ahead">
-            <li>Direct HTTPS calls take 5 to 12 ms, against shopify-multistore-mcp's 526 ms to 1.1 s.</li>
-            <li>Runs hosted on Cloudflare Workers or Docker for teams, working in ChatGPT and claude.ai.</li>
-            <li>Installs in 32 MB total; shopify-multistore-mcp takes 28 MB plus 397 MB of Shopify tools.</li>
-            <li>Ships 29 tools, 17 reports, guided writes and access to all 514 Admin mutations.</li>
-          </ul>
-        </div>
-        <div>
-          <h3 data-copy="proof.limits.title">What this does not show</h3>
-          <p class="muted" data-copy="proof.limits">Both servers ran against three local mock stores instead of real ones, with one model (Claude Sonnet 5.5) on 10 questions written by our team. You can read and re-run everything in the repo's <code class="mono">evals/</code> folder.</p>
-          <p><a href="https://github.com/fledgeling-co/shopify-multistore-mcp/tree/main/evals" data-copy="proof.link">Read the evals on GitHub</a></p><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+          <h3>What this does not show</h3>
+          <p>Both servers ran against three local mock stores instead of live ones, with one model (Claude Sonnet 5.5) on 10 questions our team wrote. You can inspect and re-run everything in <code>evals/</code>.</p>
+          <a class="more" href="https://github.com/fledgeling-co/shopify-multistore-mcp/tree/main/evals">Read the evals on GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
         </div>
       </div>
     </div>
   </section>
 
-  <section class="safety" id="safety" aria-labelledby="safety-title">
+  <section class="band" id="safety" aria-labelledby="safety-title">
     <div class="wrap">
-      <div>
-        <h2 id="safety-title">What it touches, and what it doesn't.</h2>
-        <div class="points">
-          <p><strong>No keys in your files.</strong> Each store signs in on Shopify's approval page through Shopify's CLI; shopify-multistore-mcp never reads or copies a token. Store data an answer needs still goes to your AI provider in the chat, like any AI connector.</p>
-          <p><strong>Shopify's newest tools, checked first.</strong> shopify-multistore-mcp runs the newest Shopify CLI and Dev MCP only after three checks pass: npm integrity, registry signatures and a start-up test. If a new release fails, the last working version keeps running.</p>
-          <p><strong>Each store gets its own folder.</strong> Shopify's CLI stores each sign-in in its own folder on your computer, so shopify-multistore-mcp asks four stores side by side without sessions clashing. Removing a store deletes its folder.</p>
-          <p><strong>Open source under MIT.</strong> Every line of code is in <a href="https://github.com/fledgeling-co/shopify-multistore-mcp">fledgeling-co/shopify-multistore-mcp</a> on GitHub.<!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource --> If you used <code class="mono">shopify-multi-mcp</code> (0.1) or <code class="mono">StoreRow</code> (0.2), your existing settings keep working.</p>
+      <div class="section-head"><h2 id="safety-title">What it touches, and what it doesn't.</h2></div>
+      <div class="safety-grid">
+        <div class="facts">
+          <div><h3>No keys in your files.</h3><p>Each store signs in on Shopify's approval page; shopify-multistore-mcp never reads or copies access keys. Store data needed for answers still goes to your AI provider.</p></div>
+          <div><h3>Newest Shopify tools, checked first.</h3><p>Updates to Shopify's tools run only after npm integrity, registry signature and start-up checks pass. If a release fails, the last working version keeps running.</p></div>
+          <div><h3>One folder per client store.</h3><p>Each store's sign-in stays in its own folder on your computer, so four stores answer together without clashing. Removing a store deletes its folder.</p></div>
+          <div><h3>Open source under MIT licence.</h3><p>Every line of code is public at <a href="https://github.com/fledgeling-co/shopify-multistore-mcp">fledgeling-co/shopify-multistore-mcp</a> on GitHub. Settings from shopify-multi-mcp (0.1) and StoreRow (0.2) keep working.</p></div><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+        </div>
+        <div class="checks-tag tag-wrap" role="group" aria-labelledby="checks-cap">
+          <div class="tag">
+            <ul class="checks">
+              <li><span>@shopify/cli 5.0.0</span><span>newest</span></li>
+              <li><span>@shopify/dev-mcp 1.18.0</span><span>newest</span></li>
+              <li><span>npm integrity</span><span>passed</span></li>
+              <li><span>registry signatures</span><span>verified</span></li>
+              <li><span>start-up test</span><span>passed</span></li>
+            </ul>
+            <p class="cap-small" id="checks-cap">Three checks pass before any Shopify tool update runs.</p>
+          </div>
         </div>
       </div>
-      <figure class="frag" aria-labelledby="checks-cap">
-        <ul class="checks">
-          <li><span>@shopify/cli 5.0.0</span><span>newest</span></li>
-          <li><span>@shopify/dev-mcp 1.18.0</span><span>newest</span></li>
-          <li><span>npm integrity</span><span>passed</span></li>
-          <li><span>registry signatures</span><span>verified</span></li>
-          <li><span>start-up test</span><span>passed</span></li>
-        </ul>
-        <figcaption id="checks-cap" class="dim" style="margin-top:12px">The checks as they ran on 31 October 2026.</figcaption>
-      </figure>
     </div>
   </section>
 
-  <section id="setup" aria-labelledby="setup-title">
+  <section class="band" id="setup" aria-labelledby="setup-title">
     <div class="wrap">
-      <h2 id="setup-title">Set it up with one command.</h2>
-      <p class="muted" style="max-width:66ch">You'll need <strong>Node.js 22.12 or newer</strong>, an AI app on your computer (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), and permission to approve access on each Shopify store.</p>
+      <div class="section-head">
+        <h2 id="setup-title">Set it up with one command.</h2>
+        <p class="needs">You'll need <strong>Node.js 22.12 or newer</strong>, a supported AI app (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), and permission to approve apps on each Shopify store.</p>
+      </div>
       <ol class="steps">
-        <li>
-          <div>
-            <h3 data-copy="setup.step1.title">Run the setup command</h3>
-            <p data-copy="setup.step1.body">Paste this into Terminal (Mac) or Command Prompt (Windows). It checks Node.js, finds your AI apps, backs up each settings file before adding shopify-multistore-mcp, and never touches a file it can't read.</p>
-            <div class="cmd">
-              <pre><code>npx -y shopify-multistore-mcp@latest setup</code></pre>
-              <button class="copy" type="button" data-state="idle">Copy</button>
+        <li class="step">
+          <span class="n">Step 1</span>
+          <h3>Run the setup command</h3>
+          <p>Run the command below in Mac Terminal or Windows Command Prompt. It checks Node.js, backs up your AI settings, and adds the connector.</p>
+          <figure class="pic">
+            <div class="screen term">
+              <div class="term-bar"><span aria-hidden="true">Terminal</span><button class="copy" type="button" data-state="idle" aria-label="Copy the setup command">Copy</button></div>
+              <pre><code><span class="prompt" aria-hidden="true">$ </span>npx -y shopify-multistore-mcp@latest setup</code></pre>
             </div>
-            <details class="manual">
-              <summary data-copy="setup.manual">Prefer pasting config blocks manually?</summary>
-            <div class="tabs" data-tabs>
-              <div class="tablist" role="tablist" aria-label="AI app">
-                <button role="tab" id="t-code" aria-controls="p-code" aria-selected="true" tabindex="0">Claude Code</button>
-                <button role="tab" id="t-json" aria-controls="p-json" aria-selected="false" tabindex="-1">Claude Desktop, Cursor</button>
-                <button role="tab" id="t-vscode" aria-controls="p-vscode" aria-selected="false" tabindex="-1">VS Code</button>
-                <button role="tab" id="t-codex" aria-controls="p-codex" aria-selected="false" tabindex="-1">Codex</button>
+            <figcaption>Setup finds your AI apps and backs up settings.</figcaption>
+          </figure>
+        </li>
+        <li class="step">
+          <span class="n">Step 2</span>
+          <h3>Approve each client store</h3>
+          <p>Enter each store's <code>myshopify.com</code> address and approve it on Shopify's browser page. You can also connect stores from chat: "Connect acme.myshopify.com as acme".</p>
+          <figure class="pic">
+            <div class="screen" aria-hidden="true">
+              <div class="bar"><i></i><i></i><i></i><span class="url">acme.myshopify.com</span></div>
+              <div class="approve">
+                <p class="t">Approve access for Shopify CLI</p>
+                <div class="ln w1"></div><div class="ln w2"></div>
+                <span class="fake-btn">Approve</span>
               </div>
-              <div class="panel" role="tabpanel" id="p-code" aria-labelledby="t-code">
-                <p class="where">Run this once in a terminal.</p>
-                <pre><code>claude mcp add shopify-multistore-mcp -- npx -y shopify-multistore-mcp@latest</code></pre>
-                <button class="copy" type="button" data-state="idle">Copy</button>
-              </div>
-              <div class="panel" role="tabpanel" id="p-json" aria-labelledby="t-json" hidden>
-                <p class="where">Add this to the app's MCP settings file.</p>
-                <pre><code>{
+            </div>
+            <figcaption>Approve each store on Shopify's page in your browser.</figcaption>
+          </figure>
+        </li>
+        <li class="step">
+          <span class="n">Step 3</span>
+          <h3>Restart and ask</h3>
+          <p>Quit and reopen your AI app, then ask your stores. First start downloads Shopify's tools (about 30 seconds).</p>
+          <figure class="pic">
+            <div class="screen chat" aria-hidden="true">
+              <p class="bubble">How many orders are unfulfilled in each store?</p>
+              <div class="reply"><span class="tape">harbour</span><p>14 unfulfilled, oldest from Tuesday.</p></div>
+              <div class="reply"><span class="tape">tidewater</span><p>3 unfulfilled, all from today.</p></div>
+            </div>
+            <figcaption>One question returns answers labelled with each store's name.</figcaption>
+          </figure>
+        </li>
+      </ol>
+
+      <details class="manual">
+        <summary>Prefer pasting config blocks yourself?</summary>
+        <div class="tabs" data-tabs>
+          <div class="tablist" role="tablist" aria-label="AI app">
+            <button role="tab" type="button" id="t-code" aria-controls="p-code" aria-selected="true" tabindex="0">Claude Code</button>
+            <button role="tab" type="button" id="t-json" aria-controls="p-json" aria-selected="false" tabindex="-1">Claude Desktop, Cursor</button>
+            <button role="tab" type="button" id="t-vscode" aria-controls="p-vscode" aria-selected="false" tabindex="-1">VS Code</button>
+            <button role="tab" type="button" id="t-codex" aria-controls="p-codex" aria-selected="false" tabindex="-1">Codex</button>
+          </div>
+          <div class="panel" role="tabpanel" id="p-code" aria-labelledby="t-code">
+            <p class="where">Run this once in a terminal.</p>
+            <div class="term"><pre><code>claude mcp add shopify-multistore-mcp -- npx -y shopify-multistore-mcp@latest</code></pre><button class="copy" type="button" data-state="idle">Copy</button></div>
+          </div>
+          <div class="panel" role="tabpanel" id="p-json" aria-labelledby="t-json" hidden>
+            <p class="where">Add this to the app's MCP settings file.</p>
+            <div class="term"><pre><code>{
   "mcpServers": {
     "shopify-multistore-mcp": {
       "command": "npx",
       "args": ["-y", "shopify-multistore-mcp@latest"]
     }
   }
-}</code></pre>
-                <button class="copy" type="button" data-state="idle">Copy</button>
-              </div>
-              <div class="panel" role="tabpanel" id="p-vscode" aria-labelledby="t-vscode" hidden>
-                <p class="where">Run <strong>MCP: Open User Configuration</strong> and add this.</p>
-                <pre><code>{
+}</code></pre><button class="copy" type="button" data-state="idle">Copy</button></div>
+          </div>
+          <div class="panel" role="tabpanel" id="p-vscode" aria-labelledby="t-vscode" hidden>
+            <p class="where">Run <strong>MCP: Open User Configuration</strong> and add this.</p>
+            <div class="term"><pre><code>{
   "servers": {
     "shopify-multistore-mcp": {
       "type": "stdio",
@@ -505,62 +796,60 @@ Pass "store" to say which store to use. Connected stores: harbour (harbour-coffe
       "args": ["-y", "shopify-multistore-mcp@latest"]
     }
   }
-}</code></pre>
-                <button class="copy" type="button" data-state="idle">Copy</button>
-              </div>
-              <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="t-codex" hidden>
-                <p class="where">Add this to <code class="mono">~/.codex/config.toml</code>.</p>
-                <pre><code>[mcp_servers.shopify-multistore-mcp]
+}</code></pre><button class="copy" type="button" data-state="idle">Copy</button></div>
+          </div>
+          <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="t-codex" hidden>
+            <p class="where">Add this to <code>~/.codex/config.toml</code>.</p>
+            <div class="term"><pre><code>[mcp_servers.shopify-multistore-mcp]
 command = "npx"
-args = ["-y", "shopify-multistore-mcp@latest"]</code></pre>
-                <button class="copy" type="button" data-state="idle">Copy</button>
-              </div>
-            </div>
-            </details>
+args = ["-y", "shopify-multistore-mcp@latest"]</code></pre><button class="copy" type="button" data-state="idle">Copy</button></div>
           </div>
-        </li>
-        <li>
-          <div>
-            <h3>Approve each client store</h3>
-            <p>Enter each store's <code class="mono">myshopify.com</code> address and approve it on Shopify's browser page. You can also connect stores later from chat: "Connect acme.myshopify.com as acme".</p>
-          </div>
-        </li>
-        <li>
-          <div>
-            <h3>Ask your stores</h3>
-            <p>Restart your AI app, pick a prompt like morning check, or ask: "How many orders are unfulfilled in each store?"</p>
-          </div>
-        </li>
-      </ol>
-      <p class="note recover">Initial start-up downloads about 400 MB of Shopify's CLI and Dev MCP (about 30 seconds on our test machine). Setup backs up settings files before editing, and failed CLI updates fall back to the last working version.</p>
+        </div>
+      </details>
+
+      <div class="recover">
+        <h3>If something goes wrong</h3>
+        <ul>
+          <li><strong>If your AI app doesn't see it:</strong> fully quit and reopen the app after setup.</li>
+          <li><strong>If you see "node: command not found":</strong> install Node.js 22.12 or newer from <a href="https://nodejs.org">nodejs.org</a>, then restart.</li><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+          <li><strong>If a store's session expired:</strong> ask your assistant to connect that store again and approve it.</li>
+          <li><strong>If the approval page refuses:</strong> check with the store owner that your login can approve apps.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
-  <section id="questions" aria-labelledby="faq-title">
+  <section class="band" id="questions" aria-labelledby="faq-title">
     <div class="wrap faq">
       <h2 id="faq-title">Questions</h2>
-      <details><summary>Is this an official Shopify product?</summary><p>No. shopify-multistore-mcp is an independent open-source tool from fledgeling, and isn't affiliated with or endorsed by Shopify. It runs Shopify's own CLI and Dev MCP underneath, and each store signs in on Shopify's own approval page.</p></details>
-      <details><summary>What does it cost?</summary><p>Nothing; it's free under the MIT licence. Your AI app's own subscription or usage bill is separate.</p></details>
-      <details><summary>What do I need?</summary><p>A computer running Node.js 22.12 or newer, a supported AI app (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), a browser to approve each store, and roughly 425 MB of disk space once Shopify's CLI and Dev MCP download.</p></details>
-      <details><summary>Can it change my store?</summary><p>Only through one change tool, on one named store at a time, and changes never retry so nothing runs twice. Mark any store read-only in your config to refuse all edits. Changes that would create access tokens, charge the store or alter app access are blocked outright.</p></details>
-      <details><summary>Does it work in claude.ai in the browser?</summary><p>No. shopify-multistore-mcp runs on your own computer through Shopify's CLI, so it works with desktop and terminal AI apps, not browser tabs like claude.ai or ChatGPT.</p></details>
-      <details><summary>How does this compare with alex-brecher/shopify-multi-store?</summary><p>Both are under the MIT licence. Choose that server for hosted team access (Cloudflare Workers or Docker) in claude.ai and ChatGPT, 5 to 12 ms calls, 17 reports or 514 mutations. Choose shopify-multistore-mcp to skip creating apps or storing <code class="mono">shpat_</code> tokens, lock read-only stores, and get 30/30 in our eval.</p></details>
-      <details><summary>What if I'm upgrading from StoreRow or shopify-multi-mcp?</summary><p>Your old settings keep working as they are. shopify-multistore-mcp 0.3.0 is the new name for StoreRow (0.2) and shopify-multi-mcp (0.1), and now asks four stores side by side instead of one at a time (cutting 8-store checks from 4.2 s in 0.2 to 1.1 s).</p></details>
+      <div class="faq-list">
+        <details><summary>Is this an official Shopify product?</summary><p>No. shopify-multistore-mcp is an independent open-source tool from fledgeling, and isn't affiliated with or endorsed by Shopify. Each store signs in on Shopify's own approval page using Shopify's published developer tools.</p></details>
+        <details><summary>What does it cost?</summary><p>Nothing; it's free under the MIT licence. Your AI app's own subscription or usage bill is separate.</p></details>
+        <details><summary>What do I need?</summary><p>A computer with Node.js 22.12 or newer, a supported AI app (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), a browser to approve each store, and roughly 425 MB of disk space once Shopify's tools download.</p></details>
+        <details><summary>Can it change my store?</summary><p>Only one named store at a time, and edits never retry so nothing runs twice. Mark any store read-only in your config to refuse all edits. Changes creating access keys, charging the store or changing app access are blocked outright.</p></details>
+        <details><summary>Does it work in claude.ai in the browser?</summary><p>No. shopify-multistore-mcp runs on your own computer, so it works with desktop and code apps like Claude Desktop and Cursor, not browser tabs like claude.ai or ChatGPT.</p></details>
+        <details><summary>How does it compare with alex-brecher/shopify-multi-store?</summary><p>Both carry the MIT licence. alex-brecher/shopify-multi-store offers team hosting (claude.ai and ChatGPT), 5 to 12 ms calls, 17 reports and broader edits. shopify-multistore-mcp skips creating apps or copying keys, locks read-only stores, and scored 30/30 in our test.</p></details>
+        <details><summary>What if I'm upgrading from StoreRow or shopify-multi-mcp?</summary><p>Your old settings keep working as they are. shopify-multistore-mcp is the new name for StoreRow (0.2) and shopify-multi-mcp (0.1), and now asks four stores side by side (checking 8 stores dropped from 4.2 s in 0.2 to 1.1 s).</p></details>
+      </div>
     </div>
   </section>
 
   <section class="final" aria-labelledby="final-title">
     <div class="wrap">
-      <div class="status"><span class="tag">v0.3.1</span><p>Early release. Tested end to end against Shopify's tools and a schema-checked mock Admin API, though nobody has signed in to a real store with it yet. Report issues at <a href="https://github.com/fledgeling-co/shopify-multistore-mcp/issues">GitHub</a>.</p></div><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
-      <div class="art"><img src="assets/banner-shopfront-row.webp" alt="" width="1600" height="667" loading="lazy" decoding="async" /></div>
-      <h2 id="final-title">Bring every client store into one chat.</h2>
-      <p class="muted">Free, open source, and set up with one command.</p>
-      <a class="btn" href="#setup">Connect your stores</a>
+      <div class="status"><span class="ver">v0.3.1</span><p>Early release. Tested end to end against Shopify's tools and a schema-checked mock API; nobody has signed in to a real store with it yet. Report issues at <a href="https://github.com/fledgeling-co/shopify-multistore-mcp/issues">github.com/fledgeling-co/shopify-multistore-mcp/issues</a>.</p></div><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+      <div class="closer">
+        <img src="assets/icon-512.png" alt="" width="168" height="168" loading="lazy" decoding="async" />
+        <div>
+          <h2 id="final-title">Bring every client store into one chat.</h2>
+          <p>Free, open source, and set up with one command.</p>
+          <a class="btn" href="#setup">Connect your stores</a>
+        </div>
+      </div>
     </div>
   </section>
 </main>
 
-<footer class="foot">
+<footer class="site-foot">
   <div class="wrap">
     <span class="mono">shopify-multistore-mcp</span>
     <nav aria-label="Footer">
@@ -572,53 +861,51 @@ args = ["-y", "shopify-multistore-mcp@latest"]</code></pre>
   </div>
 </footer>
 
-<style>.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}</style>
 <script>
 (function () {
+  var root = document.documentElement;
+  var motionOff = /[?&]motion=off\b/.test(location.search) || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  root.dataset.motion = motionOff ? 'off' : 'on';
+
+  // Header gains a rule once the page scrolls.
+  var head = document.querySelector('.site-head');
+  var onScroll = function () { head.dataset.scrolled = String(window.scrollY > 8); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
   // Demo data: synthetic, labelled on the page.
-  var STORES = { harbour: 'harbour-coffee.myshopify.com', tidewater: 'tidewater-swim.myshopify.com', northpaper: 'northpaper.myshopify.com' };
   var Q = [
-    { ask: 'How many orders are still unfulfilled?', a: ['14 unfulfilled. The oldest is from Tuesday.', '3 unfulfilled, all from today.', '27 unfulfilled; 9 are waiting on stock.'] },
-    { ask: 'Which products are under 5 in stock?', a: ['2 products: Field cap (1) and Linen apron (3).', 'None under 5.', '4 products, led by A5 notebook, ruled (0).'] },
+    { ask: 'How many orders are unfulfilled in each store?', a: ['14 unfulfilled, oldest from Tuesday.', '3 unfulfilled, all from today.', '27 unfulfilled, 9 waiting on stock.'] },
+    { ask: 'Which products have under 5 in stock?', a: ['2 products, Field cap (1), Linen apron (3).', 'None under 5 in stock.', '4 products, led by A5 notebook, ruled (0).'] },
     { ask: 'What did each store sell yesterday?', a: ['A$4,812 across 61 orders.', 'NZ$1,206 across 18 orders.', '£2,390 across 22 orders.'] }
   ];
-  var names = Object.keys(STORES);
-  var motionOff = /[?&]motion=off\b/.test(location.search) || matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.documentElement.dataset.motion = motionOff ? 'off' : 'on';
-  var demo = document.getElementById('demo'), ask = document.getElementById('ask'), answers = document.getElementById('answers');
-  var rack = document.querySelectorAll('.rack li'), chips = document.querySelectorAll('.chip');
-  var timers = [];
-  function render(i, animate) {
-    timers.forEach(clearTimeout); timers = [];
-    demo.dataset.state = animate ? 'loading' : 'ideal';
+  var ask = document.getElementById('ask');
+  var stores = document.querySelectorAll('.store');
+  var chips = document.querySelectorAll('.chip');
+  var FIG = /^(None|[A-Z]{0,2}\$[\d,.]+|£[\d,.]+|\d[\d,.]*)\s+(.*)$/;
+
+  function answerHTML(text) {
+    var m = text.match(FIG);
+    var esc = function (s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+    return m ? '<span class="fig">' + esc(m[1]) + '</span> ' + esc(m[2]) : esc(text);
+  }
+  function swing() {
+    if (motionOff) return;
+    stores.forEach(function (s) { s.classList.remove('swing'); void s.offsetWidth; s.classList.add('swing'); });
+  }
+  function show(i) {
     ask.textContent = Q[i].ask;
-    answers.innerHTML = names.map(function (n, k) {
-      return '<div class="answer' + (animate ? ' pending' : '') + '" data-store="' + n + '"><span class="label-line">store: ' + n + ' <span class="dom">(' + STORES[n] + ')</span></span><p>' + Q[i].a[k] + '</p></div>';
-    }).join('');
-    rack.forEach(function (li) { li.classList.toggle('on', !animate); });
-    if (!animate) return;
-    names.forEach(function (n, k) {
-      timers.push(setTimeout(function () {
-        answers.children[k].classList.remove('pending');
-        rack.forEach(function (li) { li.classList.toggle('on', li.dataset.store === n); });
-        if (k === names.length - 1) timers.push(setTimeout(function () { rack.forEach(function (li) { li.classList.add('on'); }); demo.dataset.state = 'ideal'; }, 700));
-      }, 450 + k * 650));
-    });
+    stores.forEach(function (s, k) { s.querySelector('.answer').innerHTML = answerHTML(Q[i].a[k]); });
+    swing();
   }
   chips.forEach(function (c) {
     c.addEventListener('click', function () {
       chips.forEach(function (o) { o.setAttribute('aria-pressed', String(o === c)); });
-      render(+c.dataset.q, !motionOff);
+      show(+c.dataset.q);
     });
   });
-  // The one authored moment: the first question plays through once, when the demo first scrolls into view.
-  if (!motionOff && 'IntersectionObserver' in window) {
-    var played = false;
-    var io = new IntersectionObserver(function (es) {
-      if (!played && es[0].isIntersecting) { played = true; render(0, true); io.disconnect(); }
-    }, { threshold: .4 });
-    io.observe(document.getElementById('demo'));
-  }
+  // The one authored moment: the tags settle on their strings once, on load.
+  swing();
 
   // Tabs (WAI-ARIA tabs pattern with arrow keys).
   document.querySelectorAll('[data-tabs]').forEach(function (box) {
@@ -639,10 +926,12 @@ args = ["-y", "shopify-multistore-mcp@latest"]</code></pre>
     });
   });
 
-  // Copy buttons.
+  // Copy buttons copy the command, not the prompt sign.
   document.querySelectorAll('.copy').forEach(function (b) {
     b.addEventListener('click', function () {
-      var text = b.parentElement.querySelector('code').textContent;
+      var code = (b.closest('.term') || b.parentElement).querySelector('code').cloneNode(true);
+      code.querySelectorAll('.prompt').forEach(function (p) { p.remove(); });
+      var text = code.textContent;
       var done = function () { b.textContent = 'Copied'; b.dataset.state = 'done'; setTimeout(function () { b.textContent = 'Copy'; b.dataset.state = 'idle'; }, 2000); };
       var fail = function () { b.textContent = 'Select and copy'; b.dataset.state = 'error'; };
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, fail);

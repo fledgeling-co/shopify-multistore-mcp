@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "artifact": "design/marketing/index.html",
+      "date": "2026-10-31",
+      "display_face": "Archivo Expanded",
+      "family": "clean-product-utility",
+      "kind": "visual",
+      "motion": "question chips swap the demo answer",
+      "note": "recorded retroactively: the 0.3 page this redesign replaces",
+      "palette_family": "porcelain-jade",
+      "signature": "store rack beside a chat with labelled answers",
+      "topology": "split hero with demo card, then alternating text/code rows"
+    },
+    {
+      "artifact": "design/marketing/index.html",
+      "date": "2026-10-31",
+      "display_face": "Gabarito",
+      "family": "tactile-object",
+      "kind": "visual",
+      "motion": "tags swing on their strings when the question changes",
+      "note": "palette repeats deliberately: it is the tag ring icon's own porcelain and jade",
+      "palette_family": "porcelain-jade",
+      "signature": "hero copy on the largest hanging tag; store answers on tags headed by label tape",
+      "topology": "tags as columns hanging from a full-bleed rail"
+    }
+  ],
+  "max_entries": 5,
+  "schema_version": 1
+}
