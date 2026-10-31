@@ -1,13 +1,13 @@
 {
   "project": "shopify-multistore-mcp",
-  "updated": "2026-10-31T18:10:00+11:00",
+  "updated": "2026-10-31T19:10:00+11:00",
   "verdict": {
     "token": "blocked",
-    "number": "17 of 19",
+    "number": "18 of 19",
     "unit": "tasks finished",
-    "headline": "shopify-multistore-mcp 0.3.1 has its tag ring icon and a redesigned site; npm publish still waits on you.",
-    "run_label": "0.3.1: new name, tag ring icon, site redesign",
-    "head_sha": "a79cbbe"
+    "headline": "shopify-multistore-mcp 0.3.1 is on npm and the site's setup command works; a real-store sign-in is the last open check.",
+    "run_label": "0.3.1 published to npm",
+    "head_sha": "23e0fb9"
   },
   "tasks": [
     {
@@ -114,9 +114,9 @@
       "title": "Publish shopify-multistore-mcp 0.3.1 to npm",
       "origin": "planned",
       "stage": "code written",
-      "outcome": "stuck",
-      "blocked_by": "npm token approval in Warden (timed out three times)",
-      "waiting_hours": 0
+      "outcome": "done",
+      "version": "0.3.1",
+      "note": "published 31 Oct with security-key 2FA"
     },
     {
       "id": "SMM-13",
@@ -241,10 +241,11 @@
     },
     {
       "name": "Package installs from npm",
-      "command": "npx -y shopify-multistore-mcp@latest",
-      "counts": "0/0",
-      "state": "unmeasured",
-      "kind": "build"
+      "command": "npx -y shopify-multistore-mcp@latest --help in an empty folder",
+      "counts": "1/1",
+      "state": "done",
+      "kind": "build",
+      "exit_code": 0
     },
     {
       "name": "Sign-in and calls against a real store",
@@ -302,36 +303,15 @@
   ],
   "not_done": [
     {
-      "action": "Publish shopify-multistore-mcp to npm",
-      "reason": "The Warden request for the npm token timed out three times.",
-      "what_would_unblock": "Approve it in Warden, or run npm publish yourself.",
-      "size": "minutes"
-    },
-    {
       "action": "Announce anywhere",
-      "reason": "Not on npm yet, and real-store sign-in is unproven.",
-      "what_would_unblock": "npm publish and one real-store sign-in.",
+      "reason": "Real-store sign-in is unproven; a LinkedIn post is drafted.",
+      "what_would_unblock": "One real-store sign-in, or your call to post now.",
       "size": "an hour"
     }
   ],
   "roadmap": [
     {
       "round": "Round 1",
-      "goal": "Publish shopify-multistore-mcp 0.3.1 to npm",
-      "tasks": [
-        "SMM-12"
-      ],
-      "tier": "S",
-      "status": "blocked",
-      "waits_on": "your npm token approval",
-      "estimate_min": [
-        3,
-        25
-      ],
-      "median_min": 8
-    },
-    {
-      "round": "Round 2",
       "goal": "Sign in to a real store and run each store tool",
       "tasks": [
         "SMM-4"
@@ -348,17 +328,17 @@
   ],
   "estimate_remaining": {
     "serial_min": [
-      6,
-      50
+      3,
+      25
     ],
     "parallel_min": [
       3,
-      45
+      25
     ],
-    "median_min": 9,
-    "lanes": 2,
+    "median_min": 8,
+    "lanes": 1,
     "basis": "measured rates (reckon 1,842-agent benchmark)",
-    "tasks_remaining": 2
+    "tasks_remaining": 1
   },
   "artifacts": [
     {
@@ -395,10 +375,10 @@
   ],
   "needs_you": [
     {
-      "ask": "Approve the npm token in Warden, or run npm publish",
+      "ask": "Replace the dead npm token in Warden",
       "kind": "credential",
-      "waiting_since": "2026-10-31T07:20:00+11:00",
-      "one_line": "Until it is published, the site's and README's npx commands fail."
+      "waiting_since": "2026-10-31T19:00:00+11:00",
+      "one_line": "npm rejects it (401); and its value was shown in a session log, so revoke it too."
     },
     {
       "ask": "Connect one of your stores",
