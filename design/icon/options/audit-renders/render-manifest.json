@@ -1,0 +1,162 @@
+{
+  "takes": {
+    "engineA-fanned": {
+      "source": "icon-engineA-fanned.svg",
+      "kind": "svg",
+      "source_sha256": "3c834e0c51772f41e9d4834ac0f091f09269dcf3dc08ac4d1dd3fbcaf9d5083f",
+      "source_mtime": 1793427882.1965706,
+      "rendered_at": 1793428084.805176
+    },
+    "engineA-labelled": {
+      "source": "icon-engineA-labelled.svg",
+      "kind": "svg",
+      "source_sha256": "67bf24af651e7bc13ce4815737ec7d64aa97ac53d4b409aa859ffcaa072b361a",
+      "source_mtime": 1793427882.1963062,
+      "rendered_at": 1793428084.962966
+    },
+    "engineA-monogram": {
+      "source": "icon-engineA-monogram.svg",
+      "kind": "svg",
+      "source_sha256": "db9497c589867fd191fb6ea84434928b7cc36f8ac823866353a284612cde0bee",
+      "source_mtime": 1793427882.1969233,
+      "rendered_at": 1793428085.1178792
+    },
+    "engineA-switchboard": {
+      "source": "icon-engineA-switchboard.svg",
+      "kind": "svg",
+      "source_sha256": "f4b3d34832d4c8fcec912012e07eb2df8f0573d99dca2cf9a1cf0a299405a491",
+      "source_mtime": 1793427882.1964436,
+      "rendered_at": 1793428085.305312
+    },
+    "engineA-tagring": {
+      "source": "icon-engineA-tagring.svg",
+      "kind": "svg",
+      "source_sha256": "3573c53e2e4c1e111ef0070d47afa5ce247beffc8e4cfe8830924e32316b0cea",
+      "source_mtime": 1793427882.1966965,
+      "rendered_at": 1793428085.496187,
+      "small_source": "icon-engineA-tagring-small.svg",
+      "small_below": 96,
+      "small_source_sha256": "efab4bb76689bf44fcc74c35db3d2fe9ce6a535dc02c6ad6807e079fd7141839"
+    },
+    "engineB-fanned-8d4926": {
+      "source": "icon-engineB-fanned-8d4926.svg",
+      "kind": "svg",
+      "source_sha256": "d24669e52475c96cf82182d44d2fcfc9a71112a3f832c98868d68accec66828a",
+      "source_mtime": 1793427139.5260305,
+      "rendered_at": 1793428085.6348531
+    },
+    "engineB-fanned2-82408e": {
+      "source": "icon-engineB-fanned2-82408e.svg",
+      "kind": "svg",
+      "source_sha256": "2603cd780c376902c4ddecc888a97fb98da6271d29e3732fef40b1d8d164ab06",
+      "source_mtime": 1793426971.9612114,
+      "rendered_at": 1793428085.8002539
+    },
+    "engineB-labelled-3f597a": {
+      "source": "icon-engineB-labelled-3f597a.svg",
+      "kind": "svg",
+      "source_sha256": "7feb49b754c4b645135a924c6bd9f1b1c324512507843606717b7df2989bc049",
+      "source_mtime": 1793426870.0250096,
+      "rendered_at": 1793428085.9538429
+    },
+    "engineB-labelled2-5ac308": {
+      "source": "icon-engineB-labelled2-5ac308.svg",
+      "kind": "svg",
+      "source_sha256": "23b58d7907f3f7600460cdc0e963e2e5aedd7079a72bd8e01cebd93c7801061c",
+      "source_mtime": 1793426754.9247327,
+      "rendered_at": 1793428086.108906
+    },
+    "engineB-monogram-2bdc41": {
+      "source": "icon-engineB-monogram-2bdc41.svg",
+      "kind": "svg",
+      "source_sha256": "9263028914d5342c433bdb98d02c9215319016506f29c4faab676ad9a1ab31c8",
+      "source_mtime": 1793427054.1310873,
+      "rendered_at": 1793428086.225054
+    },
+    "engineB-shopfront-b9b0db": {
+      "source": "icon-engineB-shopfront-b9b0db.svg",
+      "kind": "svg",
+      "source_sha256": "301e3ef3f7f45feae3d89af2df9545d2548b3063757f48c5f82528e2f050bb4c",
+      "source_mtime": 1793427332.5033877,
+      "rendered_at": 1793428086.3936021
+    },
+    "engineB-switchboard-2b52e5": {
+      "source": "icon-engineB-switchboard-2b52e5.svg",
+      "kind": "svg",
+      "source_sha256": "824be3651d146ce43890b60cf736e8e4b7cf5cb78dcbd4c25bb78e27d676abff",
+      "source_mtime": 1793426910.9810143,
+      "rendered_at": 1793428086.535109
+    },
+    "engineB-tagring-6f6d21": {
+      "source": "icon-engineB-tagring-6f6d21.svg",
+      "kind": "svg",
+      "source_sha256": "173dbd4b0903952e7856ce2c8348aeeae394af44aa4ef1660b343575035c9108",
+      "source_mtime": 1793427018.329276,
+      "rendered_at": 1793428086.68693
+    },
+    "engineC-fanned-a6eaa6-masked": {
+      "source": "icon-engineC-fanned-a6eaa6-masked.png",
+      "kind": "png",
+      "source_sha256": "9119f26c1903694910f3dd1b1e29a36556005f6e1deeab96e1fdba1d395808e4",
+      "source_mtime": 1793427332.712397,
+      "rendered_at": 1793428086.852944
+    },
+    "engineC-labelled-50157c-masked": {
+      "source": "icon-engineC-labelled-50157c-masked.png",
+      "kind": "png",
+      "source_sha256": "087739faa292c3738d002720794354b6697a591eb43be58705ccb4cc01460498",
+      "source_mtime": 1793427332.8118038,
+      "rendered_at": 1793428087.014064
+    },
+    "engineC-monogram-812b2f-masked": {
+      "source": "icon-engineC-monogram-812b2f-masked.png",
+      "kind": "png",
+      "source_sha256": "8ba3876e456768deada2e77be28378b109b1ff27aa8c54801f36cb8a7e9d9b95",
+      "source_mtime": 1793427332.9130952,
+      "rendered_at": 1793428087.173603
+    },
+    "engineC-shopfront-9fb7f0-masked": {
+      "source": "icon-engineC-shopfront-9fb7f0-masked.png",
+      "kind": "png",
+      "source_sha256": "2519a3174f44852d0b181d79a988d01e5c1d11b1de53f67c14e19e76e510d763",
+      "source_mtime": 1793427332.5096385,
+      "rendered_at": 1793428087.336412
+    },
+    "engineC-switchboard-6edb40-masked": {
+      "source": "icon-engineC-switchboard-6edb40-masked.png",
+      "kind": "png",
+      "source_sha256": "016f56a52566d77b375810d5320f4ceba9fbb77087ba8be900a786d73a66fe91",
+      "source_mtime": 1793427333.0164802,
+      "rendered_at": 1793428087.5104
+    },
+    "engineC-tagring-1dc36a-masked": {
+      "source": "icon-engineC-tagring-1dc36a-masked.png",
+      "kind": "png",
+      "source_sha256": "c543fb749bb472711c3f11f076246b5513b4f256ff55f666f5601d319f152e4e",
+      "source_mtime": 1793427333.1145093,
+      "rendered_at": 1793428087.677409
+    },
+    "master": {
+      "source": "icon.svg",
+      "kind": "svg",
+      "source_sha256": "c834355b3b2af29c8b03c3b54b1acd7e96143c914176e858ebeb2e5d5fad23a3",
+      "source_mtime": 1793428084.5305738,
+      "rendered_at": 1793428087.907924
+    }
+  },
+  "sizes": [
+    1024,
+    256,
+    128,
+    96,
+    64,
+    32
+  ],
+  "display": {
+    "256": 128,
+    "128": 64,
+    "96": 48,
+    "64": 32,
+    "32": 16
+  }
+}

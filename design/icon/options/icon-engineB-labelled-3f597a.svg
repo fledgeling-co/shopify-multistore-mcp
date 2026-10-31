@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" fill="none" viewBox="0 0 1024 1024">
+<!-- SVG created with Arrow, by QuiverAI (https://quiver.ai) -->
+  <defs>
+    <linearGradient id="paint0_linear_12688_54414" x1="40" x2="40" y2="80" gradientTransform="scale(12.8)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5EDDAF" offset="0"/>
+      <stop stop-color="#36BC96" offset=".3385"/>
+      <stop stop-color="#199F7D" offset=".6771"/>
+      <stop stop-color="#058769" offset="1"/>
+    </linearGradient>
+    <radialGradient id="paint1_radial_12688_54414" cx="0" cy="0" r="1" gradientTransform="matrix(2.613e-15 42.67 -266.7 1.633e-14 512 785.1)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#04765A" offset="0"/>
+      <stop stop-color="#04765A" stop-opacity="0" offset="1"/>
+    </radialGradient>
+    <radialGradient id="paint2_radial_12688_54414" cx="0" cy="0" r="1" gradientTransform="matrix(1.698e-14 277.3 -290.1 1.777e-14 503.5 490.7)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#088365" offset="0"/>
+      <stop stop-color="#0A8A6A" stop-opacity=".5625" offset=".6719"/>
+      <stop stop-color="#0B8F6E" stop-opacity="0" offset="1"/>
+    </radialGradient>
+    <radialGradient id="paint3_radial_12688_54414" cx="0" cy="0" r="1" gradientTransform="matrix(1.763e-14 288 -277.3 1.698e-14 509.9 471.5)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FBFD" offset="0"/>
+      <stop stop-color="#F6F9FC" offset=".7396"/>
+      <stop stop-color="#F0F6F9" offset=".9375"/>
+      <stop stop-color="#E6F1F5" offset="1"/>
+    </radialGradient>
+    <linearGradient id="paint4_linear_12688_54414" x1="39.83" x2="39.83" y1="17.25" y2="24.58" gradientTransform="scale(12.8)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff" offset="0"/>
+      <stop stop-color="#fff" stop-opacity="0" offset="1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#paint0_linear_12688_54414)"/>
+  <ellipse cx="512" cy="785.1" rx="266.7" ry="42.67" fill="url(#paint1_radial_12688_54414)" opacity=".6"/>
+  <circle cx="503.5" cy="490.7" r="290.1" fill="url(#paint2_radial_12688_54414)" opacity=".6"/>
+  <path d="m511.5 208.9c-153 0-275.2 120.1-275.2 273.8 0 69.25 24.7 132.4 64.64 176 1.152 1.408 1.152 2.816 0.896 4.864-4.224 28.42-22.4 57.22-35.84 72.58-8.32 9.984-1.28 23.94 11.65 23.68 41.22-0.64 80-20.1 103.4-34.56 2.432-1.408 4.608-1.408 6.784-0.256 37.38 17.92 80.77 28.03 123.6 28.03 153.9 0 277.8-116.6 277.8-270.3 0-153.7-122-273.8-277.8-273.8z" fill="url(#paint3_radial_12688_54414)"/>
+  <path d="m509.8 220.8c-139.4 0-235.6 101.1-235.6 171.8 48.64-94.21 134.4-147.2 235.6-147.2 101.4 0 196.6 54.4 241.2 147.2-20.35-90.24-119.2-171.8-241.2-171.8z" fill="url(#paint4_linear_12688_54414)" fill-opacity=".7"/>
+  <rect x="329.7" y="368.6" width="105.5" height="47.52" rx="23.76" fill="#028265"/>
+  <rect x="329.7" y="462" width="105.5" height="47.52" rx="23.76" fill="#07BE8F"/>
+  <rect x="329.7" y="555.2" width="105.5" height="48.17" rx="24.09" fill="#42DCA9"/>
+  <rect x="458.3" y="380.6" width="236.5" height="24" rx="12" fill="#C9D8DF"/>
+  <rect x="458.3" y="473.3" width="236.5" height="24.65" rx="12.33" fill="#C9D8DF"/>
+  <rect x="458.3" y="567.2" width="236.5" height="24.25" rx="12.13" fill="#C9D8DF"/>
+</svg>

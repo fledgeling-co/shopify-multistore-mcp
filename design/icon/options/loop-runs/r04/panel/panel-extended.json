@@ -1,0 +1,30 @@
+{
+  "candidate": "r04",
+  "baseline": "r00",
+  "decisive_families": [
+    "xai (grok CLI, grok-4.6 xhigh)",
+    "openai (codex exec, gpt-5.6-sol high)"
+  ],
+  "excluded": "claude (generator family)",
+  "note": "cursor-agent lane exited 1; the grok CLI and codex were run on the same blind bundles in both orders",
+  "votes": {
+    "grok-cli": {
+      "overall": "candidate",
+      "material": "candidate",
+      "silhouette": "candidate",
+      "smallsize": "candidate"
+    },
+    "codex": {
+      "overall": "candidate",
+      "material": "candidate",
+      "silhouette": "candidate",
+      "smallsize": "tie (swap-flip)"
+    }
+  },
+  "winner": {
+    "overall": "candidate",
+    "material": "candidate",
+    "silhouette": "candidate",
+    "smallsize": "mixed"
+  }
+}

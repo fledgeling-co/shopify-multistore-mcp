@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shopify-multistore-mcp icon — contact sheet &amp; audit</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 40px; background: #0b1418; color: #d7e3e7; font: 14px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; }
+  h1 { font-size: 22px; font-weight: 650; margin: 0 0 4px; }
+  .sub { color: #7fa0aa; margin-bottom: 32px; }
+  .sheet { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 1320px; }
+  th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid #1c2d33; vertical-align: middle; }
+  th { color: #7fa0aa; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .take { font-weight: 650; width: 230px; overflow-wrap: anywhere; }
+  .take small { display: block; font-weight: 400; color: #7fa0aa; }
+  /* The flex lives on an inner div, never on the <td>. Two independent
+     commissions hit this: the scoring browser computes display:flex on a table
+     cell and still lays its children out as blocks, so all seven renders stack
+     into a column and every row reads as one tall strip. The sheet looks broken
+     and nothing errors. */
+  .renders { display: flex; align-items: center; gap: 18px; }
+  .renders figure { margin: 0; text-align: center; }
+  .renders img { display: block; background: #08252e; border-radius: 8px; }
+  .renders img.zoom { image-rendering: pixelated; border: 1px solid #1c2d33; }
+  .renders figcaption { color: #7fa0aa; font-size: 11px; margin-top: 4px; }
+  .score { font-variant-numeric: tabular-nums; font-weight: 650; white-space: nowrap; }
+  .ship { color: #ffd98f; }
+  .fail { color: #e0826a; }
+  .verdict { min-width: 340px; max-width: 460px; color: #a9bec5; }
+  .rec { margin-top: 28px; padding: 18px 20px; border: 1px solid #2a4a54; border-radius: 12px; background: #0e1c22; max-width: 900px; }
+  .rec strong { color: #ffd98f; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .rubric { margin-top: 28px; color: #7fa0aa; font-size: 12px; max-width: 900px; }
+</style>
+</head>
+<body>
+<h1>shopify-multistore-mcp icon — contact sheet &amp; audit</h1>
+<div class="sub">Direction "Tag ring (chosen), against Labelled answers, Switchboard, Fanned shopfronts, Shopfront M and the incumbent shopfront row" · one shared spec, three engines per direction (hand-built SVG, vector generator, raster generator) · every take audited on real renders at 1024 / 128 / 64 / 48 / 32 / 16.</div>
+
+<div class="sheet"><table>
+  <caption class="visually-hidden">Icon variation takes with renders, rubric scores and verdicts</caption>
+  <tr><th scope="col">Take</th><th scope="col">Hero at 1024, then renders at 128 / 64 / 48 / 32 / 16 css px (2&times; retina sources), plus the 16px squint magnified</th><th scope="col">Rubric</th><th scope="col">Verdict</th></tr>
+
+    <tr>
+    <td class="take ship">engineA-tagring · icon-engineA-tagring.svg<small>Engine A, hand-built layered SVG, ships. Below 96px it ships from icon-engineA-tagring-small.svg</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineA-tagring-1024.png" width="160" height="160" alt="engineA-tagring hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineA-tagring-256.png" width="128" height="128" alt="engineA-tagring at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineA-tagring-128.png" width="64" height="64" alt="engineA-tagring at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineA-tagring-96.png" width="48" height="48" alt="engineA-tagring at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineA-tagring-64.png" width="32" height="32" alt="engineA-tagring at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineA-tagring-32.png" width="16" height="16" alt="engineA-tagring at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineA-tagring-32.png" width="96" height="96" alt="engineA-tagring 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score ship">11 / 12</td>
+    <td class="verdict">Passes checks 1-4 on real renders: the shared squircle, one ring with three tags that says &#x27;several stores on one key ring&#x27;, and the small-size file keeps a two-pixel ring hole and three separate tags at 16px. Four refinement rounds against the raster take moved it closer each time (the tags fan out so every shop symbol shows; tube ring; clay depth; cast shadows), and two outside judges, shown both orders blind, preferred it to the starting version. Misses variant robustness: the pale right tag is the weakest figure on the porcelain ground and no dark or tinted variant has been drawn yet.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineC-tagring-1dc36a-masked · icon-engineC-tagring-1dc36a-masked.png<small>Engine C raster, corpus-referenced. The material target for the master</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineC-tagring-1dc36a-masked-1024.png" width="160" height="160" alt="engineC-tagring-1dc36a-masked hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineC-tagring-1dc36a-masked-256.png" width="128" height="128" alt="engineC-tagring-1dc36a-masked at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineC-tagring-1dc36a-masked-128.png" width="64" height="64" alt="engineC-tagring-1dc36a-masked at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineC-tagring-1dc36a-masked-96.png" width="48" height="48" alt="engineC-tagring-1dc36a-masked at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineC-tagring-1dc36a-masked-64.png" width="32" height="32" alt="engineC-tagring-1dc36a-masked at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineC-tagring-1dc36a-masked-32.png" width="16" height="16" alt="engineC-tagring-1dc36a-masked at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineC-tagring-1dc36a-masked-32.png" width="96" height="96" alt="engineC-tagring-1dc36a-masked 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">9 / 12</td>
+    <td class="verdict">The best material in the set (soft clay tags, a real tube ring, links that loop through each tag&#x27;s hole) and it set the bar the master was scored against. Fails check 4: at 16px the three tags merge into one green mass under the ring. A raster cannot ship as the layered master, so it stays the reference.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineB-tagring-6f6d21 · icon-engineB-tagring-6f6d21.svg<small>Engine B vector take</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-tagring-6f6d21-1024.png" width="160" height="160" alt="engineB-tagring-6f6d21 hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-tagring-6f6d21-256.png" width="128" height="128" alt="engineB-tagring-6f6d21 at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-tagring-6f6d21-128.png" width="64" height="64" alt="engineB-tagring-6f6d21 at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-tagring-6f6d21-96.png" width="48" height="48" alt="engineB-tagring-6f6d21 at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-tagring-6f6d21-64.png" width="32" height="32" alt="engineB-tagring-6f6d21 at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-tagring-6f6d21-32.png" width="16" height="16" alt="engineB-tagring-6f6d21 at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-tagring-6f6d21-32.png" width="96" height="96" alt="engineB-tagring-6f6d21 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">7 / 12</td>
+    <td class="verdict">Fails check 1: the artwork is a non-square full-bleed picture with no squircle, so it renders as a white rectangle beside squircle siblings. The holes, rings and shop symbols are drawn at a size that turns to noise below 64px. Its ring-and-links arrangement was salvaged into the master.</td>
+  </tr>
+  <tr>
+    <td class="take ">master · icon.svg<small>The incumbent master: a row of three shopfronts (what ships today)</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/master-1024.png" width="160" height="160" alt="master hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/master-256.png" width="128" height="128" alt="master at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/master-128.png" width="64" height="64" alt="master at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/master-96.png" width="48" height="48" alt="master at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/master-64.png" width="32" height="32" alt="master at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/master-32.png" width="16" height="16" alt="master at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/master-32.png" width="96" height="96" alt="master 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score ">10 / 12</td>
+    <td class="verdict">Clears the bar: correct squircle, a readable row of awnings at 16px, one light. Lost to the tag ring on depth coherence (a flat front elevation) and era fit: it reads as a generic shop icon and says nothing about holding several stores together.</td>
+  </tr>
+  <tr>
+    <td class="take ">engineC-shopfront-9fb7f0-masked · icon-engineC-shopfront-9fb7f0-masked.png<small>Engine C raster, the incumbent&#x27;s material reference</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineC-shopfront-9fb7f0-masked-1024.png" width="160" height="160" alt="engineC-shopfront-9fb7f0-masked hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineC-shopfront-9fb7f0-masked-256.png" width="128" height="128" alt="engineC-shopfront-9fb7f0-masked at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineC-shopfront-9fb7f0-masked-128.png" width="64" height="64" alt="engineC-shopfront-9fb7f0-masked at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineC-shopfront-9fb7f0-masked-96.png" width="48" height="48" alt="engineC-shopfront-9fb7f0-masked at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineC-shopfront-9fb7f0-masked-64.png" width="32" height="32" alt="engineC-shopfront-9fb7f0-masked at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineC-shopfront-9fb7f0-masked-32.png" width="16" height="16" alt="engineC-shopfront-9fb7f0-masked at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineC-shopfront-9fb7f0-masked-32.png" width="96" height="96" alt="engineC-shopfront-9fb7f0-masked 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score ">10 / 12</td>
+    <td class="verdict">Good clay material and a clean 16px row of awnings. Misses focal sizing (a wide, short strip leaves the top third of the tile empty) and figure-ground (pale facade on a pale ground). Same weakness as the incumbent: a shop, not several shops held together.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineB-shopfront-b9b0db · icon-engineB-shopfront-b9b0db.svg<small>Engine B vector take</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-shopfront-b9b0db-1024.png" width="160" height="160" alt="engineB-shopfront-b9b0db hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-shopfront-b9b0db-256.png" width="128" height="128" alt="engineB-shopfront-b9b0db at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-shopfront-b9b0db-128.png" width="64" height="64" alt="engineB-shopfront-b9b0db at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-shopfront-b9b0db-96.png" width="48" height="48" alt="engineB-shopfront-b9b0db at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-shopfront-b9b0db-64.png" width="32" height="32" alt="engineB-shopfront-b9b0db at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-shopfront-b9b0db-32.png" width="16" height="16" alt="engineB-shopfront-b9b0db at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-shopfront-b9b0db-32.png" width="96" height="96" alt="engineB-shopfront-b9b0db 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">7 / 12</td>
+    <td class="verdict">Fails check 1: full-bleed square with no squircle. The strip of shopfronts sits small in the middle of the tile and the doors disappear at 32px.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineA-fanned · icon-engineA-fanned.svg<small>Engine A, hand-built layered SVG</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineA-fanned-1024.png" width="160" height="160" alt="engineA-fanned hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineA-fanned-256.png" width="128" height="128" alt="engineA-fanned at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineA-fanned-128.png" width="64" height="64" alt="engineA-fanned at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineA-fanned-96.png" width="48" height="48" alt="engineA-fanned at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineA-fanned-64.png" width="32" height="32" alt="engineA-fanned at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineA-fanned-32.png" width="16" height="16" alt="engineA-fanned at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineA-fanned-32.png" width="96" height="96" alt="engineA-fanned 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">9 / 12</td>
+    <td class="verdict">Three translucent shopfront cards fanned on porcelain. Fails check 4: at 16px the cards fuse into one pale green bar, and the glass-on-porcelain contrast is too low to rescue it. Misses focal sizing too.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineC-fanned-a6eaa6-masked · icon-engineC-fanned-a6eaa6-masked.png<small>Engine C raster, corpus-referenced</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineC-fanned-a6eaa6-masked-1024.png" width="160" height="160" alt="engineC-fanned-a6eaa6-masked hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineC-fanned-a6eaa6-masked-256.png" width="128" height="128" alt="engineC-fanned-a6eaa6-masked at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineC-fanned-a6eaa6-masked-128.png" width="64" height="64" alt="engineC-fanned-a6eaa6-masked at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineC-fanned-a6eaa6-masked-96.png" width="48" height="48" alt="engineC-fanned-a6eaa6-masked at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineC-fanned-a6eaa6-masked-64.png" width="32" height="32" alt="engineC-fanned-a6eaa6-masked at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineC-fanned-a6eaa6-masked-32.png" width="16" height="16" alt="engineC-fanned-a6eaa6-masked at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineC-fanned-a6eaa6-masked-32.png" width="96" height="96" alt="engineC-fanned-a6eaa6-masked 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">9 / 12</td>
+    <td class="verdict">Convincing glass cards with real depth. Fails check 4: at 16px the fanned cards read as a crown. Misses texture restraint (busy highlights on every card edge).</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineB-fanned-8d4926 · icon-engineB-fanned-8d4926.svg<small>Engine B vector take</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-fanned-8d4926-1024.png" width="160" height="160" alt="engineB-fanned-8d4926 hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned-8d4926-256.png" width="128" height="128" alt="engineB-fanned-8d4926 at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned-8d4926-128.png" width="64" height="64" alt="engineB-fanned-8d4926 at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned-8d4926-96.png" width="48" height="48" alt="engineB-fanned-8d4926 at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned-8d4926-64.png" width="32" height="32" alt="engineB-fanned-8d4926 at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned-8d4926-32.png" width="16" height="16" alt="engineB-fanned-8d4926 at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-fanned-8d4926-32.png" width="96" height="96" alt="engineB-fanned-8d4926 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">7 / 12</td>
+    <td class="verdict">Fails check 1: full-bleed square. The cards crop at the tile edge and blur together at 32px.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineB-fanned2-82408e · icon-engineB-fanned2-82408e.svg<small>Engine B vector take (second run)</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-fanned2-82408e-1024.png" width="160" height="160" alt="engineB-fanned2-82408e hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned2-82408e-256.png" width="128" height="128" alt="engineB-fanned2-82408e at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned2-82408e-128.png" width="64" height="64" alt="engineB-fanned2-82408e at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned2-82408e-96.png" width="48" height="48" alt="engineB-fanned2-82408e at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned2-82408e-64.png" width="32" height="32" alt="engineB-fanned2-82408e at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-fanned2-82408e-32.png" width="16" height="16" alt="engineB-fanned2-82408e at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-fanned2-82408e-32.png" width="96" height="96" alt="engineB-fanned2-82408e 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">7 / 12</td>
+    <td class="verdict">Fails check 1 for the same reason as the first run, and adds a white ground that leaves the cards floating with no contact shadow.</td>
+  </tr>
+  <tr>
+    <td class="take ">engineA-labelled · icon-engineA-labelled.svg<small>Engine A, hand-built layered SVG</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineA-labelled-1024.png" width="160" height="160" alt="engineA-labelled hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineA-labelled-256.png" width="128" height="128" alt="engineA-labelled at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineA-labelled-128.png" width="64" height="64" alt="engineA-labelled at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineA-labelled-96.png" width="48" height="48" alt="engineA-labelled at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineA-labelled-64.png" width="32" height="32" alt="engineA-labelled at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineA-labelled-32.png" width="16" height="16" alt="engineA-labelled at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineA-labelled-32.png" width="96" height="96" alt="engineA-labelled 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score ">10 / 12</td>
+    <td class="verdict">A chat bubble whose three coloured pills stand for store labels; it reads cleanly at 16px. Clears the bar but lost on distinctiveness: a chat bubble on green is the default mark for any messaging or AI app, and the store idea lives only in three small pills. Misses depth coherence and variant robustness.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineC-labelled-50157c-masked · icon-engineC-labelled-50157c-masked.png<small>Engine C raster, corpus-referenced</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineC-labelled-50157c-masked-1024.png" width="160" height="160" alt="engineC-labelled-50157c-masked hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineC-labelled-50157c-masked-256.png" width="128" height="128" alt="engineC-labelled-50157c-masked at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineC-labelled-50157c-masked-128.png" width="64" height="64" alt="engineC-labelled-50157c-masked at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineC-labelled-50157c-masked-96.png" width="48" height="48" alt="engineC-labelled-50157c-masked at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineC-labelled-50157c-masked-64.png" width="32" height="32" alt="engineC-labelled-50157c-masked at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineC-labelled-50157c-masked-32.png" width="16" height="16" alt="engineC-labelled-50157c-masked at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineC-labelled-50157c-masked-32.png" width="96" height="96" alt="engineC-labelled-50157c-masked 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">8 / 12</td>
+    <td class="verdict">Fails check 1: the image generator painted its own rounded tile inside the squircle, so a tile sits inside a tile. Good bubble material otherwise.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineB-labelled-3f597a · icon-engineB-labelled-3f597a.svg<small>Engine B vector take</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-labelled-3f597a-1024.png" width="160" height="160" alt="engineB-labelled-3f597a hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled-3f597a-256.png" width="128" height="128" alt="engineB-labelled-3f597a at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled-3f597a-128.png" width="64" height="64" alt="engineB-labelled-3f597a at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled-3f597a-96.png" width="48" height="48" alt="engineB-labelled-3f597a at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled-3f597a-64.png" width="32" height="32" alt="engineB-labelled-3f597a at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled-3f597a-32.png" width="16" height="16" alt="engineB-labelled-3f597a at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-labelled-3f597a-32.png" width="96" height="96" alt="engineB-labelled-3f597a 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">8 / 12</td>
+    <td class="verdict">Fails check 1: full-bleed square. The bubble itself holds up at 16px.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineB-labelled2-5ac308 · icon-engineB-labelled2-5ac308.svg<small>Engine B vector take (second run)</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-labelled2-5ac308-1024.png" width="160" height="160" alt="engineB-labelled2-5ac308 hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled2-5ac308-256.png" width="128" height="128" alt="engineB-labelled2-5ac308 at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled2-5ac308-128.png" width="64" height="64" alt="engineB-labelled2-5ac308 at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled2-5ac308-96.png" width="48" height="48" alt="engineB-labelled2-5ac308 at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled2-5ac308-64.png" width="32" height="32" alt="engineB-labelled2-5ac308 at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-labelled2-5ac308-32.png" width="16" height="16" alt="engineB-labelled2-5ac308 at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-labelled2-5ac308-32.png" width="96" height="96" alt="engineB-labelled2-5ac308 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">8 / 12</td>
+    <td class="verdict">Fails check 1: full-bleed square. Nearly identical to the first run; the bubble is a little larger.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineA-switchboard · icon-engineA-switchboard.svg<small>Engine A, hand-built layered SVG</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineA-switchboard-1024.png" width="160" height="160" alt="engineA-switchboard hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineA-switchboard-256.png" width="128" height="128" alt="engineA-switchboard at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineA-switchboard-128.png" width="64" height="64" alt="engineA-switchboard at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineA-switchboard-96.png" width="48" height="48" alt="engineA-switchboard at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineA-switchboard-64.png" width="32" height="32" alt="engineA-switchboard at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineA-switchboard-32.png" width="16" height="16" alt="engineA-switchboard at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineA-switchboard-32.png" width="96" height="96" alt="engineA-switchboard 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">9 / 12</td>
+    <td class="verdict">Three glowing store nodes joining one plug. Fails check 3: the silhouette reads as a git branch or network diagram before it reads as stores. The dark stem also loses to the dark ground at 32px.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineC-switchboard-6edb40-masked · icon-engineC-switchboard-6edb40-masked.png<small>Engine C raster, corpus-referenced</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineC-switchboard-6edb40-masked-1024.png" width="160" height="160" alt="engineC-switchboard-6edb40-masked hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineC-switchboard-6edb40-masked-256.png" width="128" height="128" alt="engineC-switchboard-6edb40-masked at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineC-switchboard-6edb40-masked-128.png" width="64" height="64" alt="engineC-switchboard-6edb40-masked at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineC-switchboard-6edb40-masked-96.png" width="48" height="48" alt="engineC-switchboard-6edb40-masked at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineC-switchboard-6edb40-masked-64.png" width="32" height="32" alt="engineC-switchboard-6edb40-masked at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineC-switchboard-6edb40-masked-32.png" width="16" height="16" alt="engineC-switchboard-6edb40-masked at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineC-switchboard-6edb40-masked-32.png" width="96" height="96" alt="engineC-switchboard-6edb40-masked 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">9 / 12</td>
+    <td class="verdict">Fails check 3 like the vector version, and misses texture restraint: the glow halos fill the tile.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineB-switchboard-2b52e5 · icon-engineB-switchboard-2b52e5.svg<small>Engine B vector take</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-switchboard-2b52e5-1024.png" width="160" height="160" alt="engineB-switchboard-2b52e5 hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-switchboard-2b52e5-256.png" width="128" height="128" alt="engineB-switchboard-2b52e5 at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-switchboard-2b52e5-128.png" width="64" height="64" alt="engineB-switchboard-2b52e5 at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-switchboard-2b52e5-96.png" width="48" height="48" alt="engineB-switchboard-2b52e5 at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-switchboard-2b52e5-64.png" width="32" height="32" alt="engineB-switchboard-2b52e5 at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-switchboard-2b52e5-32.png" width="16" height="16" alt="engineB-switchboard-2b52e5 at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-switchboard-2b52e5-32.png" width="96" height="96" alt="engineB-switchboard-2b52e5 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">6 / 12</td>
+    <td class="verdict">Fails checks 1 and 4: full-bleed square, and the thin stems vanish below 64px, leaving three dots.</td>
+  </tr>
+  <tr>
+    <td class="take ">engineA-monogram · icon-engineA-monogram.svg<small>Engine A, hand-built layered SVG</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineA-monogram-1024.png" width="160" height="160" alt="engineA-monogram hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineA-monogram-256.png" width="128" height="128" alt="engineA-monogram at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineA-monogram-128.png" width="64" height="64" alt="engineA-monogram at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineA-monogram-96.png" width="48" height="48" alt="engineA-monogram at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineA-monogram-64.png" width="32" height="32" alt="engineA-monogram at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineA-monogram-32.png" width="16" height="16" alt="engineA-monogram at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineA-monogram-32.png" width="96" height="96" alt="engineA-monogram 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score ">10 / 12</td>
+    <td class="verdict">A shopfront awning over a bold M on ink green; the strongest 16px read in the set. Clears the bar but lost on meaning: a letter mark only works once people know the name, and the name leads with &#x27;shopify&#x27;, not M. Misses depth coherence and single light model (the awning and letter are lit differently).</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineC-monogram-812b2f-masked · icon-engineC-monogram-812b2f-masked.png<small>Engine C raster, corpus-referenced</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineC-monogram-812b2f-masked-1024.png" width="160" height="160" alt="engineC-monogram-812b2f-masked hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineC-monogram-812b2f-masked-256.png" width="128" height="128" alt="engineC-monogram-812b2f-masked at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineC-monogram-812b2f-masked-128.png" width="64" height="64" alt="engineC-monogram-812b2f-masked at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineC-monogram-812b2f-masked-96.png" width="48" height="48" alt="engineC-monogram-812b2f-masked at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineC-monogram-812b2f-masked-64.png" width="32" height="32" alt="engineC-monogram-812b2f-masked at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineC-monogram-812b2f-masked-32.png" width="16" height="16" alt="engineC-monogram-812b2f-masked at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineC-monogram-812b2f-masked-32.png" width="96" height="96" alt="engineC-monogram-812b2f-masked 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">8 / 12</td>
+    <td class="verdict">Fails check 1: a painted inner tile sits inside the squircle. The frosted M has lovely material but reads as &#x27;M&#x27; with a hat.</td>
+  </tr>
+  <tr>
+    <td class="take fail">engineB-monogram-2bdc41 · icon-engineB-monogram-2bdc41.svg<small>Engine B vector take</small></td>
+    <td><div class="renders">
+      <figure><img src="audit-renders/engineB-monogram-2bdc41-1024.png" width="160" height="160" alt="engineB-monogram-2bdc41 hero at 1024px source"><figcaption>hero 1024</figcaption></figure>
+      <figure><img src="audit-renders/engineB-monogram-2bdc41-256.png" width="128" height="128" alt="engineB-monogram-2bdc41 at 128px"><figcaption>128</figcaption></figure>
+      <figure><img src="audit-renders/engineB-monogram-2bdc41-128.png" width="64" height="64" alt="engineB-monogram-2bdc41 at 64px"><figcaption>64</figcaption></figure>
+      <figure><img src="audit-renders/engineB-monogram-2bdc41-96.png" width="48" height="48" alt="engineB-monogram-2bdc41 at 48px"><figcaption>48</figcaption></figure>
+      <figure><img src="audit-renders/engineB-monogram-2bdc41-64.png" width="32" height="32" alt="engineB-monogram-2bdc41 at 32px"><figcaption>32</figcaption></figure>
+      <figure><img src="audit-renders/engineB-monogram-2bdc41-32.png" width="16" height="16" alt="engineB-monogram-2bdc41 at 16px"><figcaption>16</figcaption></figure>
+      <figure><img class="zoom" src="audit-renders/engineB-monogram-2bdc41-32.png" width="96" height="96" alt="engineB-monogram-2bdc41 16px render magnified"><figcaption>16 &times;6</figcaption></figure>
+    </div></td>
+    <td class="score fail">7 / 12</td>
+    <td class="verdict">Fails check 1: full-bleed square. The notch cut into the M makes it read as a V at 32px.</td>
+  </tr>
+
+</table></div>
+
+<div class="rec"><strong>Recommendation: ship engineA-tagring (icon-engineA-tagring.svg, with icon-engineA-tagring-small.svg below 96px).</strong> It is the only take that says "several stores held together" in its outline and still survives 16px, which it does through its own small-size file rather than by shrinking the master. It passes checks 1-4 on the renders above, is a layered SVG (bg / mid / fg / highlight) built from named constants in build_options.py, and its material was matched to the raster take over four measured rounds; the round history and the blind judge verdicts are in loop-runs/ (best-promoted/ is what ships). Known liabilities to revisit: the pale right-hand tag is the weakest figure against porcelain and fades further in a tinted or clear macOS icon mode; no dark-mode variant exists yet; the 48px size still comes from the detailed master, where the shop symbols are already below legibility; and the master's straight links are simpler than the reference's looped ones.</div>
+
+<div class="rubric">Rubric: the 12-point icon audit from icon-directions.md (mask discipline, grid, silhouette, 16px identity, single light model, palette discipline, figure-ground, depth coherence, focal sizing, variant robustness, texture restraint, era fit). Checks 1-4 are non-negotiable and the delivery bar is 10/12. Raster takes are audited on their squircle-masked 1024 versions. Renders produced by <code>audit_sheet.py render</code> (1024 / 256 / 128 / 96 / 64 / 32 sources) and verified by its <code>check</code> subcommand.</div>
+</body>
+</html>

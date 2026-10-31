@@ -1,0 +1,71 @@
+{
+  "runs": {
+    "bundle": {
+      "verdict": {
+        "overall": "A",
+        "material": "A",
+        "silhouette": "A",
+        "smallsize": "A",
+        "rationale": {
+          "overall": "A sits closer to the reference: a thick ring, chunky colored connectors and tags with soft rounded corners, all filling the frame, while B looks flatter, smaller and more diagrammatic with thin wire links.",
+          "material": "A has softer gradients, a glossy rim highlight on the ring, tonal storefront embossing and a diffuse ground shadow that suggest the reference's soft volume, while B's thin gray outlines and high-contrast white storefronts read as flat vector art.",
+          "silhouette": "A has the reference's large ring above three fanned tags with rounded corners and thick links, while B has a smaller ring, thin spindly connectors, sharper chamfered tags and storefronts cut off by the overlaps.",
+          "smallsize": "At 32px and 16px, A keeps a recognizable ring and three-tag cluster with a clear dark-to-light green progression, while B's contents shrink into a smeared, low-contrast green blob."
+        }
+      },
+      "resolved": {
+        "overall": "candidate",
+        "material": "candidate",
+        "silhouette": "candidate",
+        "smallsize": "candidate"
+      },
+      "meta": {
+        "exit": 0,
+        "harness": "claude -p (opus)"
+      },
+      "order": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    "bundle-swapped": {
+      "verdict": {
+        "overall": "B",
+        "material": "B",
+        "silhouette": "B",
+        "smallsize": "B",
+        "rationale": {
+          "overall": "B is closer to the reference's soft, chunky, tactile look: a thick shaded ring, tubular links, larger tags with soft drop shadows and recessed storefronts, where A reads as a flatter vector diagram.",
+          "material": "B's ring has a specular highlight and real thickness, its links are rendered as shaded rods, and the tags cast soft shadows, so it gets nearer the reference's volumetric plastic than A's thin flat connector lines and flatter fills.",
+          "silhouette": "B's dominant ring sits above three large, splayed tags in proportions close to the reference, while A's smaller ring, hairline connectors and more compact tags weaken the keyring read.",
+          "smallsize": "At 32px and 16px, B keeps a legible ring over a solid three-tone mass of tags, whereas A's thin connectors vanish and its smaller ring and tags blur into a less distinct blob."
+        }
+      },
+      "resolved": {
+        "overall": "candidate",
+        "material": "candidate",
+        "silhouette": "candidate",
+        "smallsize": "candidate"
+      },
+      "meta": {
+        "exit": 0,
+        "harness": "claude -p (opus)"
+      },
+      "order": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    }
+  },
+  "resolved": {
+    "overall": "candidate",
+    "material": "candidate",
+    "silhouette": "candidate",
+    "smallsize": "candidate"
+  },
+  "passes_ran": 2,
+  "passes_asked": 2,
+  "swap_flipped": [],
+  "swap_consistent": true,
+  "status": "ok"
+}

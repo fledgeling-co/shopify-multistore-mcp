@@ -1,0 +1,5 @@
+# Regenerable by fidelity.py score; each round keeps its score, gate and candidate render
+loop-runs/*/edges-*.png
+loop-runs/*/reference-1024.png
+loop-runs/*/residual-1024.png
+*.err

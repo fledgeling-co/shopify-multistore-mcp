@@ -1,0 +1,57 @@
+{
+  "candidate": "icon-engineA-tagring.svg",
+  "reference": "icon-engineC-tagring-1dc36a-masked.png",
+  "tier": "full (lpips)",
+  "metric_version": 2,
+  "label": "r00 baseline",
+  "sizes": {
+    "1024": {
+      "lum_delta": 0.0749,
+      "ssim": 0.827,
+      "edge_f1": 0.1183,
+      "mask_iou": 0.9999,
+      "self_contrast": 0.4039,
+      "ref_self_contrast": 0.4863,
+      "lpips": 0.3643,
+      "composite": 0.5962
+    },
+    "256": {
+      "lum_delta": 0.0742,
+      "ssim": 0.6852,
+      "edge_f1": 0.4074,
+      "mask_iou": 0.9997,
+      "self_contrast": 0.3905,
+      "ref_self_contrast": 0.4863,
+      "lpips": 0.3391,
+      "composite": 0.6269
+    },
+    "128": {
+      "lum_delta": 0.0738,
+      "ssim": 0.6003,
+      "edge_f1": 0.5996,
+      "mask_iou": 0.9996,
+      "self_contrast": 0.3678,
+      "ref_self_contrast": 0.4843,
+      "composite": 0.6367
+    },
+    "32": {
+      "lum_delta": 0.0697,
+      "ssim": 0.5392,
+      "edge_f1": 0.8212,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3045,
+      "ref_self_contrast": 0.4137,
+      "composite": 0.7804
+    },
+    "16": {
+      "lum_delta": 0.0634,
+      "ssim": 0.5887,
+      "edge_f1": 0.9512,
+      "mask_iou": 1.0,
+      "self_contrast": 0.3118,
+      "ref_self_contrast": 0.3868,
+      "composite": 0.8421
+    }
+  },
+  "render_hash": "8994bc1ac121dbb3"
+}
