@@ -2,7 +2,7 @@ import { DEFAULT_SCOPES, normalizeDomain, normalizeName, readOnlyScopes } from '
 import { REPORTS, REPORT_NAMES } from './reports.js';
 
 // Curated reads use fields checked against the Admin API 2026-10 schema bundled in
-// @shopify/dev-mcp 1.18.0; `shopherd doctor` re-checks them against the schema in
+// @shopify/dev-mcp 1.18.0; `shopify-multistore-mcp doctor` re-checks them against the schema in
 // whatever Dev MCP release is newest.
 export const CURATED_QUERIES = {
   get_shop: `query Shop {

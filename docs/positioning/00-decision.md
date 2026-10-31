@@ -36,7 +36,7 @@
 1. Run test 1 on two stores you control. *(reversible)*
 2. Rewrite the README for non-technical readers around Territory A, keeping the technical guide separate. *(reversible)*
 3. Build the marketing page with the hero above and one action, "Connect your stores", which opens the three set-up steps. *(reversible)*
-4. Decide the name before announcing anywhere: it sits beside "Shopify Multi-Store MCP". *Done 31 October 2026: renamed StoreRow in 0.2.0, then Shopherd in 0.3.0 after the owner found StoreRow underwhelming (Codex and Fable both picked Shopherd from six finalists; Grok preferred "Shoprail"). The owner then asked for "shopify" and "mcp" in the name, so it ships as Shopherd Shopify MCP (npm `shopherd-shopify-mcp`), accepting the trademark exposure the earlier rule avoided; every page says it is not affiliated with Shopify.*
+4. Decide the name before announcing anywhere: it sits beside "Shopify Multi-Store MCP". *Done 31 October 2026: renamed StoreRow in 0.2.0, then Shopherd in 0.3.0 after the owner found StoreRow underwhelming (Codex and Fable both picked Shopherd from six finalists; Grok preferred "Shoprail"). The owner then asked for "shopify" and "mcp" in the name, and on seeing Shopherd Shopify MCP settled it as `shopify-multistore-mcp` (0.3.1), accepting both the trademark exposure the earlier rule avoided and the closeness to Shopify Multi-Store MCP; comparisons name that project by its repo, alex-brecher/shopify-multi-store, and every page says it is not affiliated with Shopify.*
 5. Post in the community.shopify.dev multi-store thread only after test 1 passes.
 
 ## Guardrails

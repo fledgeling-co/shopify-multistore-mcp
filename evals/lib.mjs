@@ -11,7 +11,7 @@ import { startMock } from './mock/server.js';
 
 export const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const REPO = path.dirname(HERE);
-export const COMPETITOR_IMAGE = 'shopherd-eval/competitor:2.0.3';
+export const COMPETITOR_IMAGE = 'shopify-multistore-mcp-eval/competitor:2.0.3';
 
 export async function startWorld({ bench = 0, names } = {}) {
   const fixtures = buildFixtures({ bench });
@@ -28,14 +28,14 @@ export function serverSpecs({ mock, stores, startupMs = 470, concurrency, readOn
   }));
   const shopherd = {
     command: process.execPath,
-    args: [path.join(REPO, 'bin', 'shopherd.js')],
+    args: [path.join(REPO, 'bin', 'shopify-multistore-mcp.js')],
     env: {
-      SHOPHERD_HOME: home,
-      SHOPHERD_CLI_ENTRY: path.join(HERE, 'fake-shopify-cli.mjs'),
+      SHOPIFY_MULTISTORE_MCP_HOME: home,
+      SHOPIFY_MULTISTORE_MCP_CLI_ENTRY: path.join(HERE, 'fake-shopify-cli.mjs'),
       MOCK_SHOPIFY_URL: mock.url,
       MOCK_SHOPIFY_TOKENS: JSON.stringify(Object.fromEntries(stores.map((s) => [s.domain, s.token]))),
       FAKE_CLI_STARTUP_MS: String(startupMs),
-      ...(concurrency ? { SHOPHERD_CONCURRENCY: String(concurrency) } : {}),
+      ...(concurrency ? { SHOPIFY_MULTISTORE_MCP_CONCURRENCY: String(concurrency) } : {}),
     },
   };
   const dockerUrl = mock.url.replace('127.0.0.1', 'host.docker.internal');
@@ -54,7 +54,7 @@ export function serverSpecs({ mock, stores, startupMs = 470, concurrency, readOn
 
 export async function connect(spec) {
   const transport = new StdioClientTransport({ command: spec.command, args: spec.args, env: { ...process.env, ...spec.env }, stderr: 'ignore' });
-  const client = new Client({ name: 'shopherd-evals', version: '1' });
+  const client = new Client({ name: 'shopify-multistore-mcp-evals', version: '1' });
   await client.connect(transport);
   return client;
 }

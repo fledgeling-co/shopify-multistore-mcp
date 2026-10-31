@@ -24,7 +24,7 @@ export async function runSetup({ flags, connect, input = process.stdin, output =
         : 'No supported AI app was found on this computer (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex). Install one, then run this again.');
       return;
     }
-    say(`${remove ? 'Remove Shopherd from' : 'Add Shopherd to'}: ${found.map((t) => t.name).join(', ')}`);
+    say(`${remove ? 'Remove shopify-multistore-mcp from' : 'Add shopify-multistore-mcp to'}: ${found.map((t) => t.name).join(', ')}`);
     if (rl && !/^(|y|yes)$/i.test(await ask('Go ahead? [Y/n] '))) { say('Nothing changed.'); return; }
 
     const entry = serverEntry();
@@ -52,7 +52,7 @@ export async function runSetup({ flags, connect, input = process.stdin, output =
         }
       }
     } else {
-      say('To connect stores, run: npx -y shopherd-shopify-mcp@latest connect <name> <store>.myshopify.com');
+      say('To connect stores, run: npx -y shopify-multistore-mcp@latest connect <name> <store>.myshopify.com');
     }
     say('');
     say(changed.length ? `Done. Fully quit and reopen ${changed.join(', ')}, then ask: "How many orders are unfulfilled in each store?"`

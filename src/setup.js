@@ -7,10 +7,10 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-export const SERVER_KEY = 'shopherd-shopify-mcp';
-export const PACKAGE_SPEC = 'shopherd-shopify-mcp@latest';
-// Entries written for the project's earlier names: shopify-multi-mcp, StoreRow, and plain shopherd.
-const LEGACY = /shopify-multi-mcp|fledgeling-co\/storerow|(^|[\s/"'])(storerow|shopherd)(@|$|[\s"'])/;
+export const SERVER_KEY = 'shopify-multistore-mcp';
+export const PACKAGE_SPEC = 'shopify-multistore-mcp@latest';
+// Entries written under the project's earlier names: shopify-multi-mcp, StoreRow and Shopherd.
+const LEGACY = /shopify-multi-mcp|shopherd-shopify-mcp|fledgeling-co\/storerow|(^|[\s/"'])(storerow|shopherd)(@|$|[\s"'])/;
 
 // The command written into each app. Desktop apps started from the Dock or Start menu often do not
 // see the PATH a terminal sees, so the entry names the npx next to the Node running setup and puts
@@ -130,7 +130,7 @@ export function applyClaudeCode(entry, { remove = false, spawn = spawnSync } = {
     const r = spawn('claude', ['mcp', 'remove', '--scope', 'user', SERVER_KEY], opts);
     return r.status === 0 ? { status: 'removed', detail: 'claude mcp remove' } : { status: 'skipped', detail: (r.stderr || r.stdout || '').trim().slice(0, 300) };
   }
-  if (present) return { status: 'unchanged', detail: 'already set up (claude mcp get shopherd)' };
+  if (present) return { status: 'unchanged', detail: `already set up (claude mcp get ${SERVER_KEY})` };
   // --env takes several values, so it goes after the name, and -- ends it before the command.
   const args = ['mcp', 'add', '--scope', 'user', SERVER_KEY];
   for (const [k, v] of Object.entries(entry.env || {})) args.push('--env', `${k}=${v}`);

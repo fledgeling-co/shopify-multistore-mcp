@@ -8,7 +8,7 @@ import { Toolchain } from './toolchain.js';
 export const VERSION = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
 
 export function log(message) {
-  process.stderr.write(`[shopherd] ${message}\n`);
+  process.stderr.write(`[shopify-multistore-mcp] ${message}\n`);
 }
 
 // Stores can come from the config file, repeated --store name=domain flags, or
@@ -46,7 +46,7 @@ export async function createRuntime({ stores = [], readOnly = [] } = {}) {
     log,
   });
   const cli = new ShopifyCli({ toolchain, log, concurrency: Number(setting('CONCURRENCY')) || 4 });
-  const devMcp = new DevMcp({ toolchain, log, clientInfo: { name: 'shopherd-shopify-mcp', version: VERSION }, toolsFile: path.join(cacheDir(), 'dev-mcp-tools.json') });
+  const devMcp = new DevMcp({ toolchain, log, clientInfo: { name: 'shopify-multistore-mcp', version: VERSION }, toolsFile: path.join(cacheDir(), 'dev-mcp-tools.json') });
   return { config, toolchain, cli, devMcp };
 }
 

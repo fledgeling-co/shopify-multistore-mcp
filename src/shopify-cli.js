@@ -115,7 +115,7 @@ export class ShopifyCli {
 
   async binary() {
     // Evals point this at a stand-in CLI that answers from a local mock store.
-    if (process.env.SHOPHERD_CLI_ENTRY) return { entry: process.env.SHOPHERD_CLI_ENTRY, version: 'eval' };
+    if (process.env.SHOPIFY_MULTISTORE_MCP_CLI_ENTRY) return { entry: process.env.SHOPIFY_MULTISTORE_MCP_CLI_ENTRY, version: 'eval' };
     return this.toolchain.ensure(CLI_PACKAGE, { binName: 'shopify' });
   }
 

@@ -10,7 +10,7 @@ import path from 'node:path';
 import { COMPETITOR_IMAGE, HERE, REPO, connect, median, serverSpecs, startWorld, text } from './lib.mjs';
 
 const RUNS = Number(process.argv[process.argv.indexOf('--runs') + 1] || 5) || 5;
-const out = { date: new Date().toISOString(), runs: RUNS, note: 'Shopherd calls go through a stand-in for Shopify CLI that waits 470 ms per call, the start-up time measured for Shopify CLI 5.0.0; neither server pays network latency to Shopify here.' };
+const out = { date: new Date().toISOString(), runs: RUNS, note: 'shopify-multistore-mcp calls go through a stand-in for Shopify CLI that waits 470 ms per call, the start-up time measured for Shopify CLI 5.0.0; neither server pays network latency to Shopify here.' };
 
 async function timed(client, name, args) {
   const ms = [];

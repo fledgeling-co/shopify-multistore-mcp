@@ -34,17 +34,20 @@ test('parseStoreSpec and parseArgs read stores from flags and env', () => {
 });
 
 test('settings and the config folder still honour the earlier names', async () => {
-  assert.equal(setting('UPDATES', { SHOPHERD_UPDATES: 'session', STOREROW_UPDATES: 'off', SHOPIFY_MULTI_MCP_UPDATES: 'off' }), 'session');
+  assert.equal(setting('UPDATES', { SHOPIFY_MULTISTORE_MCP_UPDATES: 'session', SHOPHERD_UPDATES: 'off', STOREROW_UPDATES: 'off', SHOPIFY_MULTI_MCP_UPDATES: 'off' }), 'session');
+  assert.equal(setting('UPDATES', { SHOPHERD_UPDATES: 'session' }), 'session');
   assert.equal(setting('UPDATES', { STOREROW_UPDATES: 'session' }), 'session');
   assert.equal(setting('UPDATES', { SHOPIFY_MULTI_MCP_UPDATES: 'session' }), 'session');
-  const base = await fs.mkdtemp(path.join(os.tmpdir(), 'shopherd-cfg-'));
-  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopherd'));
+  const base = await fs.mkdtemp(path.join(os.tmpdir(), 'smm-cfg-'));
+  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopify-multistore-mcp'));
   await fs.mkdir(path.join(base, 'shopify-multi-mcp'));
   assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopify-multi-mcp'));
   await fs.mkdir(path.join(base, 'storerow'));
   assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'storerow'));
   await fs.mkdir(path.join(base, 'shopherd'));
   assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopherd'));
+  await fs.mkdir(path.join(base, 'shopify-multistore-mcp'));
+  assert.equal(configDir({ XDG_CONFIG_HOME: base }), path.join(base, 'shopify-multistore-mcp'));
   await fs.rm(base, { recursive: true });
 });
 

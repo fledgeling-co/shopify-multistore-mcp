@@ -54,7 +54,7 @@ export class MultiStoreServer {
     this.pendingAuth = new Map();
     this.devToolNames = new Map(); // exposed name -> Dev MCP name
     this.server = new Server(
-      { name: 'shopherd-shopify-mcp', title: 'Shopherd Shopify MCP: several Shopify stores in one assistant', version },
+      { name: 'shopify-multistore-mcp', title: 'shopify-multistore-mcp: several Shopify stores in one assistant', version },
       { capabilities: { tools: { listChanged: true }, prompts: {} }, instructions: buildInstructions(config.stores()) },
     );
     this.server.setRequestHandler(ListToolsRequestSchema, () => this.listTools());
@@ -132,7 +132,7 @@ export class MultiStoreServer {
   // The first call after install waits for the CLI; past FIRST_INSTALL_WAIT_MS it returns a
   // message to retry instead of holding the client on an npm install.
   async withCliReady(fn) {
-    if (!process.env.SHOPHERD_CLI_ENTRY && !this.toolchain.status(CLI_PACKAGE).version) {
+    if (!process.env.SHOPIFY_MULTISTORE_MCP_CLI_ENTRY && !this.toolchain.status(CLI_PACKAGE).version) {
       const ready = this.cli.binary();
       const timedOut = await Promise.race([ready.then(() => false), new Promise((r) => setTimeout(() => r(true), FIRST_INSTALL_WAIT_MS).unref())]);
       if (timedOut) throw new ToolError('Shopify CLI is still installing (first run only, about a minute). Try the same call again shortly.');

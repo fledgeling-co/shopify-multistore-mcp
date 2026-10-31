@@ -9,6 +9,7 @@ const dir = path.join(HERE, 'results');
 const newest = (prefix) => fs.readdirSync(dir).filter((f) => f.startsWith(prefix) && f.endsWith('.json') && !/-run\d/.test(f)).sort().pop();
 const agent = JSON.parse(fs.readFileSync(path.join(dir, newest('agent-')), 'utf8'));
 const bench = JSON.parse(fs.readFileSync(path.join(dir, newest('bench-')), 'utf8'));
+// Arm ids are the ones the results files recorded: `shopherd` is this project under its 0.3.0 name.
 const A = agent.summary.shopherd;
 const B = agent.summary['shopify-multi-store'];
 const pct = (x) => `${Math.round((x.passed / x.runs) * 100)}%`;
@@ -26,7 +27,7 @@ const lines = [
   '',
   `Agent eval ${agent.date.slice(0, 10)}: ${agent.tasks.length} questions x ${agent.repeats} runs per server, model ${agent.model}. Benchmarks ${bench.date.slice(0, 10)}, median of ${bench.runs} runs.`,
   '',
-  '| Measure | Shopherd 0.3.0 | Shopify Multi-Store MCP 2.0.3 |',
+  '| Measure | shopify-multistore-mcp 0.3.0 | alex-brecher/shopify-multi-store 2.0.3 |',
   '|---|---|---|',
   `| Questions answered correctly | **${A.passed} of ${A.runs} (${pct(A)})** | ${B.passed} of ${B.runs} (${pct(B)}) |`,
   `| Tool calls per question (median) | **${A.medianToolCalls}** | ${B.medianToolCalls} |`,
@@ -38,11 +39,11 @@ const lines = [
   `| Unfulfilled orders across 8 stores | ${ms(sp['8 stores'].shopherd.medianMs)} | **${ms(sp['8 stores']['shopify-multi-store'].medianMs)}** |`,
   `| Installed size | ${mb(bench.install.shopherd.installedBytes)}, plus ${mb(bench.install.shopherd.firstRunDownloadBytes)} of Shopify's CLI and Dev MCP on first start | **${mb(bench.install['shopify-multi-store'].installedBytes)}** |`,
   '',
-  `Shopherd 0.2 asked stores one at a time: ${ms(sp['3 stores']['shopherd, one store at a time (0.2 behaviour)'].medianMs)} for 3 stores and ${ms(sp['8 stores']['shopherd, one store at a time (0.2 behaviour)'].medianMs)} for 8.`,
+  `Version 0.2 asked stores one at a time: ${ms(sp['3 stores']['shopherd, one store at a time (0.2 behaviour)'].medianMs)} for 3 stores and ${ms(sp['8 stores']['shopherd, one store at a time (0.2 behaviour)'].medianMs)} for 8.`,
   '',
   '## Per question',
   '',
-  '| Question | Shopherd | Shopify Multi-Store MCP |',
+  '| Question | shopify-multistore-mcp | alex-brecher/shopify-multi-store |',
   '|---|---|---|',
   ...agent.tasks.map((t) => `| ${t.prompt} | ${A.byTask[t.id]} | ${B.byTask[t.id]} |`),
   '',

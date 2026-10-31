@@ -2,7 +2,7 @@
 
 Agent eval 2026-10-31: 10 questions x 3 runs per server, model claude-sonnet-5-5. Benchmarks 2026-10-31, median of 7 runs.
 
-| Measure | Shopherd 0.3.0 | Shopify Multi-Store MCP 2.0.3 |
+| Measure | shopify-multistore-mcp 0.3.0 | alex-brecher/shopify-multi-store 2.0.3 |
 |---|---|---|
 | Questions answered correctly | **30 of 30 (100%)** | 27 of 30 (90%) |
 | Tool calls per question (median) | **1** | 2 |
@@ -14,11 +14,11 @@ Agent eval 2026-10-31: 10 questions x 3 runs per server, model claude-sonnet-5-5
 | Unfulfilled orders across 8 stores | 1.1 s | **12 ms** |
 | Installed size | 28 MB, plus 397 MB of Shopify's CLI and Dev MCP on first start | **32 MB** |
 
-Shopherd 0.2 asked stores one at a time: 1.6 s for 3 stores and 4.2 s for 8.
+Version 0.2 asked stores one at a time: 1.6 s for 3 stores and 4.2 s for 8.
 
 ## Per question
 
-| Question | Shopherd | Shopify Multi-Store MCP |
+| Question | shopify-multistore-mcp | alex-brecher/shopify-multi-store |
 |---|---|---|
 | How many orders are still waiting to be fulfilled in each store, and which order has been waiting longest in each? | 3/3 | 0/3 |
 | What did each store sell over the last 7 days? Leave out cancelled and test orders, and give each total in the store's own currency. | 3/3 | 3/3 |

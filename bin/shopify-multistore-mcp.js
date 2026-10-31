@@ -7,27 +7,27 @@ import { CLI_PACKAGE } from '../src/shopify-cli.js';
 import { MultiStoreServer } from '../src/server.js';
 import { VERSION, createRuntime, log, parseArgs } from '../src/runtime.js';
 
-const HELP = `Shopherd Shopify MCP ${VERSION} (npx -y shopherd-shopify-mcp@latest <command>, or shopherd <command> once installed)
+const HELP = `shopify-multistore-mcp ${VERSION} (run as npx -y shopify-multistore-mcp@latest <command>)
 Several Shopify stores in one AI assistant, always on the newest Shopify CLI and Dev MCP.
 
 Usage:
-  shopherd setup                            Add this server to your AI apps and connect stores (start here)
+  shopify-multistore-mcp setup                            Add this server to your AI apps and connect stores (start here)
         [--yes] [--client claude-desktop,cursor,vscode,windsurf,codex,claude-code] [--remove]
-  shopherd                                  Start the MCP server on stdio (what your MCP client runs)
-  shopherd connect <name> <domain>          Sign in to a store and add it, e.g. connect acme acme.myshopify.com
+  shopify-multistore-mcp                    Start the MCP server on stdio (what your MCP client runs)
+  shopify-multistore-mcp connect <name> <domain>          Sign in to a store and add it, e.g. connect acme acme.myshopify.com
         [--label "AU retail"] [--read-only] [--scopes read_products,write_products]
-  shopherd list                             Show stores and their sign-in status
-  shopherd remove <name>                    Forget a store (Shopify access stays until you uninstall it in admin)
-  shopherd doctor                           Install the newest Shopify packages and check everything works
+  shopify-multistore-mcp list                             Show stores and their sign-in status
+  shopify-multistore-mcp remove <name>                    Forget a store (Shopify access stays until you uninstall it in admin)
+  shopify-multistore-mcp doctor                           Install the newest Shopify packages and check everything works
 
 Server flags (also usable in your MCP client config):
   --store name=domain       Add a store for this run (repeatable); or SHOPIFY_STORES="a=a.myshopify.com,b=b.myshopify.com"
   --read-only name          Refuse mutations for that store (repeatable)
 
 Environment:
-  SHOPHERD_UPDATE_MINUTES           How often to look for new Shopify releases while running (default 15)
-  SHOPHERD_UPDATES=session          Resolve versions once per server start instead
-  SHOPHERD_CONCURRENCY              How many stores to query at once (default 4)
+  SHOPIFY_MULTISTORE_MCP_UPDATE_MINUTES           How often to look for new Shopify releases while running (default 15)
+  SHOPIFY_MULTISTORE_MCP_UPDATES=session          Resolve versions once per server start instead
+  SHOPIFY_MULTISTORE_MCP_CONCURRENCY              How many stores to query at once (default 4)
   SHOPIFY_CLI_VERSION / SHOPIFY_DEV_MCP_VERSION  Pin an exact version instead of the newest`;
 
 async function main() {
@@ -65,7 +65,7 @@ async function main() {
     const all = Object.values(runtime.config.stores());
     const sessions = await allSessions(runtime).catch((err) => { console.error(`Could not read Shopify CLI sessions: ${err.message}`); return []; });
     const byDomain = new Map(sessions.map((s) => [String(s.store).toLowerCase(), s]));
-    if (!all.length) console.log('No stores yet. Add one with: shopherd connect <name> <domain>');
+    if (!all.length) console.log('No stores yet. Add one with: shopify-multistore-mcp connect <name> <domain>');
     for (const s of all) {
       const session = byDomain.get(s.domain);
       console.log(`${s.name.padEnd(16)} ${s.domain.padEnd(32)} ${session ? 'signed in' : 'not signed in'}${s.readOnly ? ', read-only' : ''}${s.label ? `  ${s.label}` : ''}`);
@@ -134,7 +134,7 @@ async function doctor({ cli, devMcp, toolchain, config }) {
     const configured = Object.values(config.stores());
     const signed = new Set(sessions.map((s) => String(s.store).toLowerCase()));
     const missing = configured.filter((s) => !signed.has(s.domain)).map((s) => s.name);
-    if (missing.length) throw new Error(`not signed in: ${missing.join(', ')} (run: shopherd connect <name> <domain>)`);
+    if (missing.length) throw new Error(`not signed in: ${missing.join(', ')} (run: shopify-multistore-mcp connect <name> <domain>)`);
     return `${configured.length} configured, ${sessions.length} signed in with Shopify CLI`;
   });
   await devMcp.close();

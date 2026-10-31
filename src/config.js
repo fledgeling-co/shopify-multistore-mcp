@@ -27,29 +27,33 @@ export function readOnlyScopes(scopes) {
   return [...new Set(scopes.map((s) => s.replace(/^write_/, 'read_')))];
 }
 
-// Settings are read as SHOPHERD_<NAME>. The project was called shopify-multi-mcp until 0.2.0 and
-// StoreRow in 0.2.0, so those spellings still work.
+// Settings are read as SHOPIFY_MULTISTORE_MCP_<NAME>. The spellings from the project's earlier
+// names (shopify-multi-mcp, StoreRow, Shopherd) still work.
+const PREFIXES = ['SHOPIFY_MULTISTORE_MCP_', 'SHOPHERD_', 'STOREROW_', 'SHOPIFY_MULTI_MCP_'];
 export function setting(name, env = process.env) {
-  return env[`SHOPHERD_${name}`] ?? env[`STOREROW_${name}`] ?? env[`SHOPIFY_MULTI_MCP_${name}`];
+  for (const p of PREFIXES) if (env[`${p}${name}`] !== undefined) return env[`${p}${name}`];
+  return undefined;
 }
+
+const EARLIER_NAMES = ['shopherd', 'storerow', 'shopify-multi-mcp'];
 
 export function configDir(env = process.env) {
   const override = setting('HOME', env);
   if (override) return override;
   const base = env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config');
-  const current = path.join(base, 'shopherd');
+  const current = path.join(base, 'shopify-multistore-mcp');
   if (existsSync(current)) return current;
-  return ['storerow', 'shopify-multi-mcp'].map((n) => path.join(base, n)).find((d) => existsSync(d)) ?? current;
+  return EARLIER_NAMES.map((n) => path.join(base, n)).find((d) => existsSync(d)) ?? current;
 }
 
 export function cacheDir(env = process.env) {
   const override = setting('CACHE', env);
   if (override) return override;
   const base = env.XDG_CACHE_HOME || path.join(os.homedir(), '.cache');
-  const current = path.join(base, 'shopherd');
+  const current = path.join(base, 'shopify-multistore-mcp');
   if (existsSync(current)) return current;
   // Reuse the verified packages an earlier name downloaded rather than fetching them again.
-  return ['storerow', 'shopify-multi-mcp'].map((n) => path.join(base, n)).find((d) => existsSync(d)) ?? current;
+  return EARLIER_NAMES.map((n) => path.join(base, n)).find((d) => existsSync(d)) ?? current;
 }
 
 // "acme", "acme.myshopify.com", "https://acme.myshopify.com/admin" all become

@@ -1,7 +1,7 @@
 {
-  "name": "shopherd-shopify-mcp",
-  "version": "0.3.0",
-  "description": "Shopherd Shopify MCP: several Shopify stores in one AI assistant. Ask once, every store answers, each answer names its store. Signs in through Shopify's own CLI; no keys stored.",
+  "name": "shopify-multistore-mcp",
+  "version": "0.3.1",
+  "description": "shopify-multistore-mcp: several Shopify stores in one AI assistant. Ask once, every store answers, each answer names its store. Signs in through Shopify's own CLI; no keys stored.",
   "keywords": [
     "agency",
     "claude",
@@ -11,24 +11,23 @@
     "mcp-server",
     "model-context-protocol",
     "multi-store",
-    "shopherd",
     "shopify",
     "shopify-cli",
-    "shopify-mcp"
+    "shopify-mcp",
+    "shopify-multistore"
   ],
-  "homepage": "https://fledgeling-co.github.io/shopherd-shopify-mcp/",
+  "homepage": "https://fledgeling-co.github.io/shopify-multistore-mcp/",
   "bugs": {
-    "url": "https://github.com/fledgeling-co/shopherd-shopify-mcp/issues"
+    "url": "https://github.com/fledgeling-co/shopify-multistore-mcp/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fledgeling-co/shopherd-shopify-mcp.git"
+    "url": "git+https://github.com/fledgeling-co/shopify-multistore-mcp.git"
   },
   "license": "MIT",
   "type": "module",
   "bin": {
-    "shopherd-shopify-mcp": "bin/shopherd.js",
-    "shopherd": "bin/shopherd.js"
+    "shopify-multistore-mcp": "bin/shopify-multistore-mcp.js"
   },
   "files": [
     "bin",
@@ -37,7 +36,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "start": "node bin/shopherd.js",
+    "start": "node bin/shopify-multistore-mcp.js",
     "test": "node --test test/*.test.js",
     "eval": "node evals/run.mjs"
   },

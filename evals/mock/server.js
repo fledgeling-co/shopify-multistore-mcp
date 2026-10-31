@@ -17,7 +17,7 @@ export function schemaDir() {
   const base = process.env.SCHEMA_DIR;
   if (base) return base;
   const cache = path.join(process.env.HOME, '.cache');
-  for (const app of ['shopherd', 'storerow']) {
+  for (const app of ['shopify-multistore-mcp', 'shopherd', 'storerow']) {
     const root = path.join(cache, app, 'packages', '@shopify__dev-mcp');
     if (!fs.existsSync(root)) continue;
     for (const v of fs.readdirSync(root).sort().reverse()) {
@@ -25,7 +25,7 @@ export function schemaDir() {
       if (fs.existsSync(dir)) return dir;
     }
   }
-  throw new Error('Admin schema not found. Run `npx shopherd doctor` once (it downloads Shopify Dev MCP), or set SCHEMA_DIR.');
+  throw new Error('Admin schema not found. Run `npx shopify-multistore-mcp doctor` once (it downloads Shopify Dev MCP), or set SCHEMA_DIR.');
 }
 
 function schemaFor(version) {

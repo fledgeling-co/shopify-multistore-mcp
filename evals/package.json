@@ -1,8 +1,8 @@
 {
-  "name": "shopherd-evals",
+  "name": "shopify-multistore-mcp-evals",
   "private": true,
   "type": "module",
-  "description": "Head-to-head evals for Shopherd and Shopify Multi-Store MCP against one local mock Admin API.",
+  "description": "Head-to-head evals for shopify-multistore-mcp and alex-brecher/shopify-multi-store against one local mock Admin API.",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
     "graphql": "^16.11.0"
