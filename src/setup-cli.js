@@ -52,7 +52,7 @@ export async function runSetup({ flags, connect, input = process.stdin, output =
         }
       }
     } else {
-      say('To connect stores, run: npx -y shopherd@latest connect <name> <store>.myshopify.com');
+      say('To connect stores, run: npx -y shopherd-shopify-mcp@latest connect <name> <store>.myshopify.com');
     }
     say('');
     say(changed.length ? `Done. Fully quit and reopen ${changed.join(', ')}, then ask: "How many orders are unfulfilled in each store?"`

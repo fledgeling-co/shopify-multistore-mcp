@@ -6,11 +6,11 @@ import { test } from 'node:test';
 import { applyClaudeCode, applyJson, applyToml, clientTargets, detect, nodeVersionOk, serverEntry } from '../src/setup.js';
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'shopherd-setup-'));
-const entry = { command: '/opt/node/bin/npx', args: ['-y', 'shopherd@latest'], env: { PATH: '/opt/node/bin:/usr/bin:/bin' } };
+const entry = { command: '/opt/node/bin/npx', args: ['-y', 'shopherd-shopify-mcp@latest'], env: { PATH: '/opt/node/bin:/usr/bin:/bin' } };
 
 test('serverEntry names the npx beside the running Node and puts that Node on PATH', () => {
   const e = serverEntry({ platform: 'darwin', execPath: '/opt/node/bin/node', exists: () => true });
-  assert.deepEqual(e, { command: '/opt/node/bin/npx', args: ['-y', 'shopherd@latest'], env: { PATH: '/opt/node/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin' } });
+  assert.deepEqual(e, { command: '/opt/node/bin/npx', args: ['-y', 'shopherd-shopify-mcp@latest'], env: { PATH: '/opt/node/bin:/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin' } });
   assert.equal(serverEntry({ platform: 'linux', execPath: '/x/node', exists: () => false }).command, 'npx');
   const win = serverEntry({ platform: 'win32', execPath: 'C:\\node\\node.exe', exists: () => true });
   assert.equal(win.command, 'cmd');
@@ -37,7 +37,7 @@ test('JSON: adds to a new file, keeps other servers, backs up, and is idempotent
   const dir = tmp();
   const target = { kind: 'json', key: 'mcpServers', file: path.join(dir, 'Claude', 'claude_desktop_config.json') };
   assert.equal(applyJson(target, entry).status, 'added');
-  assert.deepEqual(JSON.parse(fs.readFileSync(target.file, 'utf8')).mcpServers.shopherd, entry);
+  assert.deepEqual(JSON.parse(fs.readFileSync(target.file, 'utf8')).mcpServers['shopherd-shopify-mcp'], entry);
 
   const doc = JSON.parse(fs.readFileSync(target.file, 'utf8'));
   doc.mcpServers.other = { command: 'other' };
@@ -45,7 +45,7 @@ test('JSON: adds to a new file, keeps other servers, backs up, and is idempotent
   fs.writeFileSync(target.file, JSON.stringify(doc));
   const again = applyJson(target, entry);
   assert.equal(again.status, 'unchanged');
-  const changed = applyJson(target, { ...entry, args: ['-y', 'shopherd@0.3.0'] });
+  const changed = applyJson(target, { ...entry, args: ['-y', 'shopherd-shopify-mcp@0.3.0'] });
   assert.equal(changed.status, 'updated');
   assert.ok(fs.existsSync(changed.backup));
   const after = JSON.parse(fs.readFileSync(target.file, 'utf8'));
@@ -61,8 +61,8 @@ test('JSON: replaces entries left by the old names and adds type for VS Code', (
   assert.equal(r.status, 'added');
   assert.match(r.detail, /replaced the old "shopify" entry/);
   const servers = JSON.parse(fs.readFileSync(file, 'utf8')).servers;
-  assert.deepEqual(Object.keys(servers).sort(), ['keep', 'shopherd']);
-  assert.equal(servers.shopherd.type, 'stdio');
+  assert.deepEqual(Object.keys(servers).sort(), ['keep', 'shopherd-shopify-mcp']);
+  assert.equal(servers['shopherd-shopify-mcp'].type, 'stdio');
 });
 
 test('JSON: an unreadable file is left exactly as it was', () => {
@@ -75,7 +75,7 @@ test('JSON: an unreadable file is left exactly as it was', () => {
 
 test('JSON: remove takes only our entry out', () => {
   const file = path.join(tmp(), 'mcp.json');
-  fs.writeFileSync(file, JSON.stringify({ mcpServers: { shopherd: entry, other: { command: 'o' } } }));
+  fs.writeFileSync(file, JSON.stringify({ mcpServers: { 'shopherd-shopify-mcp': entry, other: { command: 'o' } } }));
   assert.equal(applyJson({ kind: 'json', key: 'mcpServers', file }, entry, { remove: true }).status, 'removed');
   assert.deepEqual(Object.keys(JSON.parse(fs.readFileSync(file, 'utf8')).mcpServers), ['other']);
 });
@@ -85,12 +85,12 @@ test('TOML: appends our block, replaces it on change, and removes only it', () =
   fs.writeFileSync(file, 'model = "gpt"\n\n[mcp_servers.other]\ncommand = "o"\n');
   assert.equal(applyToml({ file }, entry).status, 'added');
   let text = fs.readFileSync(file, 'utf8');
-  assert.match(text, /\[mcp_servers\.shopherd\]\ncommand = "\/opt\/node\/bin\/npx"\nargs = \["-y", "shopherd@latest"\]/);
-  assert.match(text, /\[mcp_servers\.shopherd\.env\]\nPATH = "\/opt\/node\/bin:\/usr\/bin:\/bin"/);
+  assert.match(text, /\[mcp_servers\.shopherd-shopify-mcp\]\ncommand = "\/opt\/node\/bin\/npx"\nargs = \["-y", "shopherd-shopify-mcp@latest"\]/);
+  assert.match(text, /\[mcp_servers\.shopherd-shopify-mcp\.env\]\nPATH = "\/opt\/node\/bin:\/usr\/bin:\/bin"/);
   assert.equal(applyToml({ file }, entry).status, 'unchanged');
-  assert.equal(applyToml({ file }, { ...entry, args: ['-y', 'shopherd@0.3.0'] }).status, 'updated');
+  assert.equal(applyToml({ file }, { ...entry, args: ['-y', 'shopherd-shopify-mcp@0.3.0'] }).status, 'updated');
   text = fs.readFileSync(file, 'utf8');
-  assert.equal(text.match(/\[mcp_servers\.shopherd\]/g).length, 1);
+  assert.equal(text.match(/\[mcp_servers\.shopherd-shopify-mcp\]/g).length, 1);
   assert.equal(applyToml({ file }, entry, { remove: true }).status, 'removed');
   text = fs.readFileSync(file, 'utf8');
   assert.doesNotMatch(text, /shopherd/);
@@ -101,7 +101,7 @@ test('Claude Code: adds with claude mcp add once, with the PATH env', () => {
   const calls = [];
   const spawn = (cmd, args) => { calls.push(args); return { status: args[1] === 'get' ? 1 : 0, stdout: '', stderr: '' }; };
   assert.equal(applyClaudeCode(entry, { spawn }).status, 'added');
-  assert.deepEqual(calls[1], ['mcp', 'add', '--scope', 'user', 'shopherd', '--env', 'PATH=/opt/node/bin:/usr/bin:/bin', '--', '/opt/node/bin/npx', '-y', 'shopherd@latest']);
+  assert.deepEqual(calls[1], ['mcp', 'add', '--scope', 'user', 'shopherd-shopify-mcp', '--env', 'PATH=/opt/node/bin:/usr/bin:/bin', '--', '/opt/node/bin/npx', '-y', 'shopherd-shopify-mcp@latest']);
   assert.equal(applyClaudeCode(entry, { spawn: () => ({ status: 0 }) }).status, 'unchanged');
 });
 

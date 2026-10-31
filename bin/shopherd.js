@@ -7,8 +7,8 @@ import { CLI_PACKAGE } from '../src/shopify-cli.js';
 import { MultiStoreServer } from '../src/server.js';
 import { VERSION, createRuntime, log, parseArgs } from '../src/runtime.js';
 
-const HELP = `shopherd ${VERSION}
-Shopherd: several Shopify stores in one AI assistant, always on the newest Shopify CLI and Dev MCP.
+const HELP = `Shopherd Shopify MCP ${VERSION} (npx -y shopherd-shopify-mcp@latest <command>, or shopherd <command> once installed)
+Several Shopify stores in one AI assistant, always on the newest Shopify CLI and Dev MCP.
 
 Usage:
   shopherd setup                            Add this server to your AI apps and connect stores (start here)

@@ -54,7 +54,7 @@ export class MultiStoreServer {
     this.pendingAuth = new Map();
     this.devToolNames = new Map(); // exposed name -> Dev MCP name
     this.server = new Server(
-      { name: 'shopherd', title: 'Shopherd: several Shopify stores in one assistant', version },
+      { name: 'shopherd-shopify-mcp', title: 'Shopherd Shopify MCP: several Shopify stores in one assistant', version },
       { capabilities: { tools: { listChanged: true }, prompts: {} }, instructions: buildInstructions(config.stores()) },
     );
     this.server.setRequestHandler(ListToolsRequestSchema, () => this.listTools());

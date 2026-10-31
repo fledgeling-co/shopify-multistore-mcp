@@ -46,7 +46,7 @@ export async function createRuntime({ stores = [], readOnly = [] } = {}) {
     log,
   });
   const cli = new ShopifyCli({ toolchain, log, concurrency: Number(setting('CONCURRENCY')) || 4 });
-  const devMcp = new DevMcp({ toolchain, log, clientInfo: { name: 'shopherd', version: VERSION }, toolsFile: path.join(cacheDir(), 'dev-mcp-tools.json') });
+  const devMcp = new DevMcp({ toolchain, log, clientInfo: { name: 'shopherd-shopify-mcp', version: VERSION }, toolsFile: path.join(cacheDir(), 'dev-mcp-tools.json') });
   return { config, toolchain, cli, devMcp };
 }
 

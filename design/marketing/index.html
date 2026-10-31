@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>StoreRow: every client store in one AI chat</title>
+<title>Shopherd Shopify MCP: every client store in one AI chat</title>
 <meta name="description" content="A free, open-source MCP server that connects one AI assistant to several Shopify stores at once. Every answer names the store it came from." />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-<meta property="og:title" content="StoreRow: every client store in one AI chat" />
+<meta property="og:title" content="Shopherd Shopify MCP: every client store in one AI chat" />
 <meta property="og:description" content="Free and open source. Each store signs in through Shopify's own approval page, and every answer names its store." />
-<meta property="og:image" content="https://fledgeling-co.github.io/storerow/assets/banner-shopfront-row.jpg" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
-<meta property="og:url" content="https://fledgeling-co.github.io/storerow/" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
-<link rel="canonical" href="https://fledgeling-co.github.io/storerow/" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
+<meta property="og:image" content="https://fledgeling-co.github.io/shopherd-shopify-mcp/assets/banner-shopfront-row.jpg" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
+<meta property="og:url" content="https://fledgeling-co.github.io/shopherd-shopify-mcp/" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
+<link rel="canonical" href="https://fledgeling-co.github.io/shopherd-shopify-mcp/" /><!-- lint-ok: external-resource - metadata for link previews and search, never fetched by the page -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" />
@@ -163,6 +163,39 @@
   @media (max-width: 520px) { .frag { padding: var(--space-4); } .frag table { min-width: 0; } }
   @media (max-width: 860px) { .outcomes .row { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); } }
 
+  /* Measured: the head-to-head table */
+  .measured .intro { max-width: 66ch; color: var(--ink-2); }
+  .compare { margin-top: var(--space-6); }
+  .compare table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; }
+  .compare caption { text-align: left; font: 400 13px/1.5 var(--mono); color: var(--ink-2); padding-bottom: var(--space-3); }
+  .compare th, .compare td { text-align: left; padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .compare thead th { font: 500 12px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+  .compare { font-family: var(--display); }
+  .compare tbody th { font: 500 15px/1.45 var(--display); text-transform: none; letter-spacing: 0; color: var(--ink); width: 40%; }
+  .compare td { font: 400 15px/1.45 var(--display); font-variant-numeric: tabular-nums; color: var(--ink-2); width: 30%; }
+  .compare td.lead { color: var(--ink); font-weight: 650; }
+  .measured .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-7); margin-top: var(--space-6); }
+  .measured h3 { font-size: 1.1rem; }
+  .measured ul { margin: 0; padding-left: 1.1em; color: var(--ink-2); display: grid; gap: var(--space-2); }
+  @media (max-width: 860px) { .measured .cols { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); } }
+  @media (max-width: 600px) {
+    .compare table { min-width: 0; }
+    .compare thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .compare tr { display: block; padding: var(--space-3) 0; border-bottom: 1px solid var(--line); }
+    .compare tbody th, .compare td { display: flex; justify-content: space-between; gap: var(--space-4); border: 0; padding: 2px 0; }
+    .compare tbody th { padding-bottom: var(--space-2); }
+    .compare td::before { content: attr(data-label); color: var(--ink-2); font: 400 13px/1.5 var(--mono); flex: 0 0 auto; }
+    .compare td { text-align: right; }
+  }
+  @media (max-width: 400px) { .frag { font-size: 12.5px; } .frag th, .frag td { padding-right: var(--space-2); overflow-wrap: anywhere; } }
+
+  /* Setup: one command, with the hand-written configs folded away */
+  .cmd { position: relative; margin-top: var(--space-3); max-width: 760px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+  .cmd pre { margin: 0; padding: var(--space-5); padding-right: 96px; font: 500 15px/1.6 var(--mono); color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .manual { margin-top: var(--space-4); max-width: 760px; }
+  .manual summary { cursor: pointer; color: var(--jade-deep); font-size: 15px; min-height: 44px; display: inline-flex; align-items: center; }
+  @media (max-width: 420px) { .cmd pre { padding-right: var(--space-5); } .cmd .copy { position: static; margin: 0 var(--space-5) var(--space-4); } }
+
   /* Safety */
   .safety .wrap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-8); align-items: start; }
   .points { display: grid; gap: var(--space-5); margin-top: var(--space-6); }
@@ -229,13 +262,14 @@
 <body>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="StoreRow, back to top"><img src="assets/icon-96.png" alt="" width="32" height="32" /><span class="wordmark">StoreRow</span></a>
+    <a class="brand" href="#top" aria-label="Shopherd, back to top"><img src="assets/icon-96.png" alt="" width="32" height="32" /><span class="wordmark">Shopherd</span></a>
     <nav aria-label="Main">
       <a href="#how">How it works</a>
+      <a href="#proof">Proof</a>
       <a href="#safety">Safety</a>
       <a href="#setup">Set up</a>
       <a href="#questions">Questions</a>
-      <a href="https://github.com/fledgeling-co/storerow">GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+      <a href="https://github.com/fledgeling-co/shopherd-shopify-mcp">GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
       <a class="btn btn--small" href="#setup">Connect your stores</a>
     </nav>
   </div>
@@ -245,15 +279,15 @@
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
       <div>
-        <p class="eyebrow">Free and open source · MIT licence</p>
+        <p class="eyebrow">Shopherd Shopify MCP · MIT licence</p>
         <h1 id="hero-title">Every client store in one AI chat.</h1>
-        <p class="sub">Ask once and each store answers on its own line, labelled with its name. Each store signs in through Shopify's own approval page, so no app keys end up in your files.</p>
+        <p class="sub">Ask once in Shopherd (said "shepherd") and every connected store answers, starting with its name. Each store signs in on Shopify's approval page, with no app to create and no API key to copy.</p>
         <div class="actions">
           <a class="btn" href="#setup">Connect your stores</a>
-          <a href="https://github.com/fledgeling-co/storerow">Read the code on GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+          <a href="https://github.com/fledgeling-co/shopherd-shopify-mcp">View source on GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
         </div>
-        <p class="fine">Works with Claude Desktop, Claude Code, Cursor, VS Code and Codex. Not affiliated with Shopify.</p>
-        <p class="proof">Runs Shopify's own CLI and Dev MCP. Every new release is checked before it's used.</p>
+        <p class="fine">Works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf and Codex. Not affiliated with Shopify.</p>
+        <p class="proof">Answered 30 of 30 multi-store eval questions; runs Shopify's own CLI and Dev MCP.</p>
       </div>
 
       <figure class="demo" id="demo" data-state="ideal" aria-label="Example: one question answered by three stores">
@@ -288,8 +322,8 @@
     <div class="wrap">
       <div>
         <h2 id="problem-title">Shopify's AI connector holds one store at a time.</h2>
-        <p class="muted">That's fine with one store. Look after several for clients and you approve access again every time you move. Two stores never share a conversation.</p>
-        <p class="note"><strong>Note:</strong> Shopify's admin still switches between stores without fuss. It's the AI connector that holds one.</p>
+        <p class="muted">Look after several client stores and you approve access again every time you switch.</p>
+        <p class="note">Shopify's admin switches between stores without fuss; it's only the AI connector that holds one store.</p>
       </div>
       <blockquote>
         "The Shopify connector supports one store at a time, even when the stores are in the same organization. Switching stores starts a new authorization."
@@ -303,25 +337,27 @@
       <h2 id="outcomes-title" class="visually-hidden">What changes</h2>
       <div class="row">
         <div>
-          <h3>Ask every client store at once.</h3>
-          <p>One read-only question runs on every connected store. The answers come back side by side. Under the hood it's the same <strong>Admin GraphQL</strong> query on each store in turn, on the API version Shopify marks stable.</p>
+          <h3 data-copy="outcomes.1.title">Nine ready-made reports across every store.</h3>
+          <p data-copy="outcomes.1.body">Run <strong>store_report</strong> once and four stores at a time answer together: sales in each store's currency (leaving out test and cancelled orders), unfulfilled orders by age, low stock with stock elsewhere to move, SKU lookups, duplicate SKUs and catalogue gaps.</p>
         </div>
-        <div class="frag" role="figure" aria-label="Example output: yesterday's sales for three stores in a table">
+        <div class="frag" role="figure" aria-label="Low-stock report across three stores">
+          <span class="dim">→ store_report { report: "low_stock" }</span>
           <table>
-            <thead><tr><th scope="col">store</th><th scope="col" class="num">orders</th><th scope="col" class="num">sales</th></tr></thead>
+            <thead><tr><th scope="col">store</th><th scope="col">sku</th><th scope="col" class="num">on hand</th><th scope="col">in stock elsewhere</th></tr></thead>
             <tbody>
-              <tr><td>harbour</td><td class="num">61</td><td class="num">A$4,812</td></tr>
-              <tr><td>tidewater</td><td class="num">18</td><td class="num">NZ$1,206</td></tr>
-              <tr><td>northpaper</td><td class="num">22</td><td class="num">£2,390</td></tr>
+              <tr><td>harbour</td><td>HB-GRINDER</td><td class="num">0</td><td></td></tr>
+              <tr><td>tidewater</td><td>HB-BEANS-1KG</td><td class="num">0</td><td>harbour 18</td></tr>
+              <tr><td>tidewater</td><td>TW-FINS</td><td class="num">1</td><td></td></tr>
+              <tr><td>northpaper</td><td>NP-INK</td><td class="num">3</td><td></td></tr>
             </tbody>
           </table>
-          <p class="dim" style="margin:12px 0 0">sample data</p>
+          <p class="dim" style="margin:12px 0 0" data-copy="outcomes.1.caption">Low-stock report: tidewater is out of coffee beans; harbour has 18.</p>
         </div>
       </div>
       <div class="row">
         <div>
           <h3>Every answer names its store.</h3>
-          <p>Each result starts with a label like <code class="mono">store: harbour (harbour-coffee.myshopify.com)</code>. Your assistant has to name a store on every call. It picks from the stores you've connected, so it can't quietly guess.</p>
+          <p>Each result starts with a store prefix like <code class="mono">store: harbour (harbour-coffee.myshopify.com)</code>, so figures don't drift onto the wrong client. For anything outside the reports, your assistant checks its read-only <strong>Admin GraphQL</strong> query via Shopify's Dev MCP and asks every store.</p>
         </div>
         <div class="frag" role="figure" aria-label="Example output when no store is named">
 <span class="dim">→ get_shop {}</span><br />
@@ -331,11 +367,66 @@ Pass "store" to say which store to use. Connected stores: harbour (harbour-coffe
       <div class="row">
         <div>
           <h3>Changes go to one store, on purpose.</h3>
-          <p>Questions can't change anything. Changes go through one change tool, one store at a time. Mark a store <strong>read-only</strong> and it refuses them outright; handy where a client hasn't signed off on AI edits.</p>
+          <p>Edits use one change tool on one named store at a time, and never retry so nothing applies twice. Mark any store <strong>read-only</strong> to refuse edits; mutations creating tokens, charging the store or changing app access are blocked outright.</p>
         </div>
         <div class="frag" role="figure" aria-label="Example output when a change is sent to a read-only store">
 <span class="dim">→ graphql_mutation { store: "northpaper", … }</span><br />
-<span class="refuse">Store "northpaper" is read-only, so mutations are refused.</span> Reconnect it with read_only false to allow changes.
+<span class="refuse">Store "northpaper" is read-only, so mutations are refused.</span> Reconnect it with read_only false to allow changes.<br /><br />
+<span class="dim">→ graphql_mutation { store: "harbour", appSubscriptionCreate … }</span><br />
+<span class="refuse">appSubscriptionCreate is blocked: it creates credentials, charges the store or changes app access.</span>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <h3 data-copy="outcomes.4.title">Seven starting prompts built into chat.</h3>
+          <p data-copy="outcomes.4.body">Account managers don't need to write GraphQL. Apps like Claude Desktop show seven ready-made prompts: morning check, sales, unfulfilled orders, low stock, compare a product, catalogue check, and connect a store. Pick one and every connected store answers.</p>
+        </div>
+        <div class="frag" role="figure" aria-label="The prompts Shopherd offers">
+          <span class="dim">prompts</span><br />
+          morning-check · sales · unfulfilled-orders<br />low-stock · compare-product · catalogue-check<br />connect-store
+          <p class="dim" style="margin:12px 0 0" data-copy="outcomes.4.caption">Seven built-in prompts cover daily checks without writing a query.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="measured" id="proof" aria-labelledby="proof-title">
+    <div class="wrap">
+      <h2 id="proof-title" data-copy="proof.headline">Tested head to head against the closest alternative.</h2>
+      <p class="intro" data-copy="proof.intro">We ran Shopherd 0.3.0 and Shopify Multi-Store MCP (alex-brecher/shopify-multi-store, 2.0.3) against a schema-checked mock Admin API with three stores. Claude Sonnet 5.5 answered 10 multi-store questions three times each, including Shopherd's 0.47 s CLI wait: 30/30 (7.4 s median) vs 27/30 (8.8 s).</p>
+      <div class="compare frag">
+        <table>
+          <caption data-copy="proof.caption">31 October 2026: 10 questions x 3 runs on Claude Sonnet 5.5; speed medians across 7 runs.</caption>
+          <!-- COMPARE:START -->
+          <thead><tr><th scope="col">Measure</th><th scope="col">Shopherd 0.3.0</th><th scope="col">Shopify Multi-Store MCP 2.0.3</th></tr></thead>
+          <tbody>
+          <tr><th scope="row">Questions answered correctly</th><td data-label="Shopherd" class="lead">30 of 30 (100%)</td><td data-label="Multi-Store MCP">27 of 30 (90%)</td></tr>
+          <tr><th scope="row">Tool calls per question (median)</th><td data-label="Shopherd" class="lead">1</td><td data-label="Multi-Store MCP">2</td></tr>
+          <tr><th scope="row">Time per question, end to end (median)</th><td data-label="Shopherd" class="lead">7.4 s</td><td data-label="Multi-Store MCP">8.8 s</td></tr>
+          <tr><th scope="row">Model cost per question (median)</th><td data-label="Shopherd" class="lead">2.3¢</td><td data-label="Multi-Store MCP">3.7¢</td></tr>
+          <tr><th scope="row">Tools in the list sent with every message</th><td data-label="Shopherd">14 (~10k tokens)</td><td data-label="Multi-Store MCP">29 (~12k tokens)</td></tr>
+          <tr><th scope="row">One store&#x27;s details, one call</th><td data-label="Shopherd">526 ms</td><td data-label="Multi-Store MCP" class="lead">5 ms</td></tr>
+          <tr><th scope="row">Unfulfilled orders across 3 stores</th><td data-label="Shopherd">541 ms</td><td data-label="Multi-Store MCP" class="lead">7 ms</td></tr>
+          <tr><th scope="row">Unfulfilled orders across 8 stores</th><td data-label="Shopherd">1.1 s</td><td data-label="Multi-Store MCP" class="lead">12 ms</td></tr>
+          <tr><th scope="row">Installed size</th><td data-label="Shopherd">28 MB, plus 397 MB of Shopify&#x27;s CLI and Dev MCP on first start</td><td data-label="Multi-Store MCP" class="lead">32 MB</td></tr>
+          </tbody>
+          <!-- COMPARE:END -->
+        </table>
+      </div>
+      <div class="cols">
+        <div>
+          <h3 data-copy="proof.ahead.title">Where Shopify Multi-Store MCP is ahead</h3>
+          <ul data-copy="proof.ahead">
+            <li>Direct HTTPS calls take 5 to 12 ms, against Shopherd's 526 ms to 1.1 s.</li>
+            <li>Runs hosted on Cloudflare Workers or Docker for teams, working in ChatGPT and claude.ai.</li>
+            <li>Installs in 32 MB total; Shopherd takes 28 MB plus 397 MB of Shopify tools.</li>
+            <li>Ships 29 tools, 17 reports, guided writes and access to all 514 Admin mutations.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 data-copy="proof.limits.title">What this does not show</h3>
+          <p class="muted" data-copy="proof.limits">Both servers ran against three local mock stores instead of real ones, with one model (Claude Sonnet 5.5) on 10 questions written by our team. You can read and re-run everything in the repo's <code class="mono">evals/</code> folder.</p>
+          <p><a href="https://github.com/fledgeling-co/shopherd-shopify-mcp/tree/main/evals" data-copy="proof.link">Read the evals on GitHub</a></p><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
         </div>
       </div>
     </div>
@@ -346,10 +437,10 @@ Pass "store" to say which store to use. Connected stores: harbour (harbour-coffe
       <div>
         <h2 id="safety-title">What it touches, and what it doesn't.</h2>
         <div class="points">
-          <p><strong>No keys in your files.</strong> Each store signs in through Shopify's own approval page, using Shopify's CLI. StoreRow never reads, copies or stores a token; the session stays with the CLI.</p>
-          <p><strong>Shopify's newest tools, checked first.</strong> Each time it starts, it looks up the newest Shopify CLI and Dev MCP on npm and installs them privately. It only switches over once three checks pass: npm's integrity check, a registry signature check and a quick start-up test. If a release fails, the last good version keeps working.</p>
-          <p><strong>One Shopify command at a time.</strong> The CLI keeps every store's session in one file. Commands run in sequence, so two refreshes never race each other.</p>
-          <p><strong>Open source.</strong> MIT licence. Every line is on <a href="https://github.com/fledgeling-co/storerow">GitHub</a>.</p><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+          <p><strong>No keys in your files.</strong> Each store signs in on Shopify's approval page through Shopify's CLI; Shopherd never reads or copies a token. Store data an answer needs still goes to your AI provider in the chat, like any AI connector.</p>
+          <p><strong>Shopify's newest tools, checked first.</strong> Shopherd runs the newest Shopify CLI and Dev MCP only after three checks pass: npm integrity, registry signatures and a start-up test. If a new release fails, the last working version keeps running.</p>
+          <p><strong>Each store gets its own folder.</strong> Shopify's CLI stores each sign-in in its own folder on your computer, so Shopherd asks four stores side by side without sessions clashing. Removing a store deletes its folder.</p>
+          <p><strong>Open source under MIT.</strong> Every line of code is in <a href="https://github.com/fledgeling-co/shopherd-shopify-mcp">fledgeling-co/shopherd-shopify-mcp</a> on GitHub.<!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource --> If you used <code class="mono">shopify-multi-mcp</code> (0.1) or <code class="mono">StoreRow</code> (0.2), your existing settings keep working.</p>
         </div>
       </div>
       <figure class="frag" aria-labelledby="checks-cap">
@@ -367,13 +458,19 @@ Pass "store" to say which store to use. Connected stores: harbour (harbour-coffe
 
   <section id="setup" aria-labelledby="setup-title">
     <div class="wrap">
-      <h2 id="setup-title">Set it up in three steps.</h2>
-      <p class="muted" style="max-width:66ch">You'll need a Mac, Windows or Linux computer with <strong>Node.js 22.12 or newer</strong>, an AI app that runs MCP servers (Claude Desktop, Claude Code, Cursor, VS Code or Codex), and a Shopify account that can approve app access on each store.</p>
+      <h2 id="setup-title">Set it up with one command.</h2>
+      <p class="muted" style="max-width:66ch">You'll need <strong>Node.js 22.12 or newer</strong>, an AI app on your computer (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), and permission to approve access on each Shopify store.</p>
       <ol class="steps">
         <li>
           <div>
-            <h3>Add one line to your AI app.</h3>
-            <p>Paste the line for your app, then restart it.</p>
+            <h3 data-copy="setup.step1.title">Run the setup command</h3>
+            <p data-copy="setup.step1.body">Paste this into Terminal (Mac) or Command Prompt (Windows). It checks Node.js, finds your AI apps, backs up each settings file before adding Shopherd, and never touches a file it can't read.</p>
+            <div class="cmd">
+              <pre><code>npx -y shopherd-shopify-mcp@latest setup</code></pre>
+              <button class="copy" type="button" data-state="idle">Copy</button>
+            </div>
+            <details class="manual">
+              <summary data-copy="setup.manual">Prefer pasting config blocks manually?</summary>
             <div class="tabs" data-tabs>
               <div class="tablist" role="tablist" aria-label="AI app">
                 <button role="tab" id="t-code" aria-controls="p-code" aria-selected="true" tabindex="0">Claude Code</button>
@@ -383,16 +480,16 @@ Pass "store" to say which store to use. Connected stores: harbour (harbour-coffe
               </div>
               <div class="panel" role="tabpanel" id="p-code" aria-labelledby="t-code">
                 <p class="where">Run this once in a terminal.</p>
-                <pre><code>claude mcp add shopify -- npx -y storerow@latest</code></pre>
+                <pre><code>claude mcp add shopherd-shopify-mcp -- npx -y shopherd-shopify-mcp@latest</code></pre>
                 <button class="copy" type="button" data-state="idle">Copy</button>
               </div>
               <div class="panel" role="tabpanel" id="p-json" aria-labelledby="t-json" hidden>
                 <p class="where">Add this to the app's MCP settings file.</p>
                 <pre><code>{
   "mcpServers": {
-    "shopify": {
+    "shopherd-shopify-mcp": {
       "command": "npx",
-      "args": ["-y", "storerow@latest"]
+      "args": ["-y", "shopherd-shopify-mcp@latest"]
     }
   }
 }</code></pre>
@@ -402,10 +499,10 @@ Pass "store" to say which store to use. Connected stores: harbour (harbour-coffe
                 <p class="where">Run <strong>MCP: Open User Configuration</strong> and add this.</p>
                 <pre><code>{
   "servers": {
-    "shopify": {
+    "shopherd-shopify-mcp": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "storerow@latest"]
+      "args": ["-y", "shopherd-shopify-mcp@latest"]
     }
   }
 }</code></pre>
@@ -413,49 +510,51 @@ Pass "store" to say which store to use. Connected stores: harbour (harbour-coffe
               </div>
               <div class="panel" role="tabpanel" id="p-codex" aria-labelledby="t-codex" hidden>
                 <p class="where">Add this to <code class="mono">~/.codex/config.toml</code>.</p>
-                <pre><code>[mcp_servers.shopify]
+                <pre><code>[mcp_servers.shopherd-shopify-mcp]
 command = "npx"
-args = ["-y", "storerow@latest"]</code></pre>
+args = ["-y", "shopherd-shopify-mcp@latest"]</code></pre>
                 <button class="copy" type="button" data-state="idle">Copy</button>
               </div>
             </div>
+            </details>
           </div>
         </li>
         <li>
           <div>
-            <h3>Connect each store.</h3>
-            <p>Ask your assistant: "Connect acme-au.myshopify.com as au". A browser window opens on Shopify's approval page for that store; approve it, then repeat for the next store.</p>
+            <h3>Approve each client store</h3>
+            <p>Enter each store's <code class="mono">myshopify.com</code> address and approve it on Shopify's browser page. You can also connect stores later from chat: "Connect acme.myshopify.com as acme".</p>
           </div>
         </li>
         <li>
           <div>
-            <h3>Ask.</h3>
-            <p>Try "How many orders are unfulfilled in each store?"</p>
+            <h3>Ask your stores</h3>
+            <p>Restart your AI app, pick a prompt like morning check, or ask: "How many orders are unfulfilled in each store?"</p>
           </div>
         </li>
       </ol>
-      <p class="note recover"><strong>If something goes wrong:</strong> when a store's sign-in expires, your assistant says which store and asks you to approve it again. The first start downloads Shopify's tools. That took about 30 seconds on our test machine, so give it a moment.</p>
+      <p class="note recover">Initial start-up downloads about 400 MB of Shopify's CLI and Dev MCP (about 30 seconds on our test machine). Setup backs up settings files before editing, and failed CLI updates fall back to the last working version.</p>
     </div>
   </section>
 
   <section id="questions" aria-labelledby="faq-title">
     <div class="wrap faq">
       <h2 id="faq-title">Questions</h2>
-      <details><summary>Is this an official Shopify product?</summary><p>No. It's an independent open-source project from fledgeling. It uses Shopify's own CLI and Dev MCP to do the work, and every store still signs in on Shopify's own approval page.</p></details>
-      <details><summary>What does it cost?</summary><p>Nothing; it's MIT-licensed. Your AI app's own subscription is separate.</p></details>
-      <details><summary>What do I need?</summary><p>A computer with Node.js 22.12 or newer and an AI app that can run MCP servers locally. You'll also need a browser on that computer for the approval step, and permission to approve app access on each store.</p></details>
-      <details><summary>Can it change my store?</summary><p>Only through one change tool, one store at a time, with the store named. Your assistant decides when to call it, so ask it to check with you first. Mark a store read-only if you don't want edits there at all.</p></details>
-      <details><summary>Does it work in claude.ai in the browser?</summary><p>Not today. It runs on your computer, so it works with desktop and terminal apps that can start a local server. Shopify's hosted connector only accepts AI apps Shopify recognises, which is why this one runs locally.</p></details>
-      <details><summary>How is this different from Matrixify and other multi-store tools?</summary><p>Several tools already connect AI to more than one store: Matrixify, ShopMCP and an open-source project called shopify-multi-store, among others. Some do more, like bulk imports or a hosted setup for a team. This one is free, holds no keys of its own because it signs in through Shopify's CLI, and always runs Shopify's newest tools.</p></details>
+      <details><summary>Is this an official Shopify product?</summary><p>No. Shopherd Shopify MCP is an independent open-source tool from fledgeling, and isn't affiliated with or endorsed by Shopify. It runs Shopify's own CLI and Dev MCP underneath, and each store signs in on Shopify's own approval page.</p></details>
+      <details><summary>What does it cost?</summary><p>Nothing; it's free under the MIT licence. Your AI app's own subscription or usage bill is separate.</p></details>
+      <details><summary>What do I need?</summary><p>A computer running Node.js 22.12 or newer, a supported AI app (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf or Codex), a browser to approve each store, and roughly 425 MB of disk space once Shopify's CLI and Dev MCP download.</p></details>
+      <details><summary>Can it change my store?</summary><p>Only through one change tool, on one named store at a time, and changes never retry so nothing runs twice. Mark any store read-only in your config to refuse all edits. Changes that would create access tokens, charge the store or alter app access are blocked outright.</p></details>
+      <details><summary>Does it work in claude.ai in the browser?</summary><p>No. Shopherd runs on your own computer through Shopify's CLI, so it works with desktop and terminal AI apps, not browser tabs like claude.ai or ChatGPT.</p></details>
+      <details><summary>How does this compare with Shopify Multi-Store MCP?</summary><p>Both are under the MIT licence. Choose that server for hosted team access (Cloudflare Workers or Docker) in claude.ai and ChatGPT, 5 to 12 ms calls, 17 reports or 514 mutations. Choose Shopherd to skip creating apps or storing <code class="mono">shpat_</code> tokens, lock read-only stores, and get 30/30 in our eval.</p></details>
+      <details><summary>What if I'm upgrading from StoreRow or shopify-multi-mcp?</summary><p>Your old settings keep working as they are. Shopherd 0.3.0 is the new name for StoreRow (0.2) and shopify-multi-mcp (0.1), and now asks four stores side by side instead of one at a time (cutting 8-store checks from 4.2 s in 0.2 to 1.1 s).</p></details>
     </div>
   </section>
 
   <section class="final" aria-labelledby="final-title">
     <div class="wrap">
-      <div class="status"><span class="tag">v0.2.0</span><p>Early release. It's tested end to end against Shopify's CLI and Dev MCP, but we haven't yet signed in to a real store with it ourselves. Report anything that breaks on <a href="https://github.com/fledgeling-co/storerow/issues">GitHub</a>.</p></div><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+      <div class="status"><span class="tag">v0.3.0</span><p>Early release. Tested end to end against Shopify's tools and a schema-checked mock Admin API, though nobody has signed in to a real store with it yet. Report issues at <a href="https://github.com/fledgeling-co/shopherd-shopify-mcp/issues">GitHub</a>.</p></div><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
       <div class="art"><img src="assets/banner-shopfront-row.webp" alt="" width="1600" height="667" loading="lazy" decoding="async" /></div>
-      <h2 id="final-title">Bring your client stores into one chat.</h2>
-      <p class="muted">Free, open source, and three steps to set up.</p>
+      <h2 id="final-title">Bring every client store into one chat.</h2>
+      <p class="muted">Free, open source, and set up with one command.</p>
       <a class="btn" href="#setup">Connect your stores</a>
     </div>
   </section>
@@ -463,11 +562,11 @@ args = ["-y", "storerow@latest"]</code></pre>
 
 <footer class="foot">
   <div class="wrap">
-    <span class="mono">StoreRow</span>
+    <span class="mono">Shopherd Shopify MCP</span>
     <nav aria-label="Footer">
-      <a href="https://github.com/fledgeling-co/storerow/blob/main/LICENSE">MIT licence</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
-      <a href="https://github.com/fledgeling-co/storerow">GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
-      <a href="https://github.com/fledgeling-co/storerow/blob/main/docs/REVIEW.md">The review behind it</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+      <a href="https://github.com/fledgeling-co/shopherd-shopify-mcp/blob/main/LICENSE">MIT licence</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+      <a href="https://github.com/fledgeling-co/shopherd-shopify-mcp">GitHub</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
+      <a href="https://github.com/fledgeling-co/shopherd-shopify-mcp/blob/main/docs/REVIEW.md">The review behind it</a><!-- lint-ok: external-resource - outbound hyperlink, not a loaded resource -->
     </nav>
     <p class="legal">Not affiliated with or endorsed by Shopify. Shopify is a trademark of Shopify Inc.</p>
   </div>

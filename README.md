@@ -1,6 +1,6 @@
 <p align="center"><img src="design/icon/export/icon-512.png" alt="" width="128" height="128" /></p>
 
-<h1 align="center">Shopherd</h1>
+<h1 align="center">Shopherd Shopify MCP</h1>
 
 <p align="center"><strong>Every client store in one AI chat. Each answer says which store it came from.</strong></p>
 
@@ -8,7 +8,7 @@
 
 ![A row of five small shopfronts under one shared rail](design/marketing/assets/banner-shopfront-row.jpg)
 
-**Shopherd for Shopify** (say it `SHOP-herd`, like shepherd) lets one AI assistant work across several Shopify stores at the same time. Ask a question once and every connected store answers, with each reply starting with the store it came from, such as `store: harbour (harbour-coffee.myshopify.com)`, so a figure never lands on the wrong client. You connect stores through Shopify's own approval page in your browser, without creating custom Shopify apps or handing API keys around.
+**Shopherd Shopify MCP** (Shopherd for short; say it `SHOP-herd`, like shepherd) lets one AI assistant work across several Shopify stores at the same time. Ask a question once and every connected store answers, with each reply starting with the store it came from, such as `store: harbour (harbour-coffee.myshopify.com)`, so a figure never lands on the wrong client. You connect stores through Shopify's own approval page in your browser, without creating custom Shopify apps or handing API keys around.
 
 We built it for Shopify agencies, freelancers and account managers who look after several client stores, many of whom aren't developers. It also suits store owners running 2-6 shops of their own.
 
@@ -114,7 +114,7 @@ Full method, per-question scores and raw logs live in [evals/README.md](evals/RE
 Open Terminal (Mac) or Command Prompt (Windows) and run one command:
 
 ```bash
-npx -y shopherd@latest setup
+npx -y shopherd-shopify-mcp@latest setup
 ```
 
 `setup` checks that Node.js is 22.12 or newer, finds the supported AI apps installed on your computer, and adds Shopherd to each one. It backs up every settings file before editing it, and never touches a file it can't read.
@@ -138,9 +138,9 @@ If you'd rather edit config files yourself instead of running `setup`, add the m
 ```json
 {
   "mcpServers": {
-    "shopherd": {
+    "shopherd-shopify-mcp": {
       "command": "npx",
-      "args": ["-y", "shopherd@latest"]
+      "args": ["-y", "shopherd-shopify-mcp@latest"]
     }
   }
 }
@@ -151,10 +151,10 @@ If you'd rather edit config files yourself instead of running `setup`, add the m
 ```json
 {
   "servers": {
-    "shopherd": {
+    "shopherd-shopify-mcp": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "shopherd@latest"]
+      "args": ["-y", "shopherd-shopify-mcp@latest"]
     }
   }
 }
@@ -163,15 +163,15 @@ If you'd rather edit config files yourself instead of running `setup`, add the m
 **Claude Code**
 
 ```bash
-claude mcp add shopherd -- npx -y shopherd@latest
+claude mcp add shopherd-shopify-mcp -- npx -y shopherd-shopify-mcp@latest
 ```
 
 **Codex** (`~/.codex/config.toml`)
 
 ```toml
-[mcp_servers.shopherd]
+[mcp_servers.shopherd-shopify-mcp]
 command = "npx"
-args = ["-y", "shopherd@latest"]
+args = ["-y", "shopherd-shopify-mcp@latest"]
 ```
 
 ## Everyday use
@@ -179,14 +179,14 @@ args = ["-y", "shopherd@latest"]
 - **Add another store** whenever you take on a client by saying `"Connect acme.myshopify.com as acme"` in chat, or by running `setup` again.
 - **Sign in again** if a store's session expires; your assistant will name the store that needs re-approval.
 - **Ask one store or all of them** by naming a store (`"at harbour"`) or asking across the lot (`"in each store"`).
-- **Remove a store** by running `npx -y shopherd@latest remove <name>` in your terminal, which deletes that store's sign-in folder from your computer.
-- **Check everything is working** by running `npx -y shopherd@latest doctor` to verify Shopify's tools and store sign-ins.
+- **Remove a store** by running `npx -y shopherd-shopify-mcp@latest remove <name>` in your terminal, which deletes that store's sign-in folder from your computer.
+- **Check everything is working** by running `npx -y shopherd-shopify-mcp@latest doctor` to verify Shopify's tools and store sign-ins.
 
 ## If something goes wrong
 
 | What you see | What to do |
 |---|---|
-| Your assistant doesn't know about Shopherd or your stores | Fully quit and reopen your AI app after setup. If you edited config by hand, check for missing commas or brackets, or run `npx -y shopherd@latest doctor`. |
+| Your assistant doesn't know about Shopherd or your stores | Fully quit and reopen your AI app after setup. If you edited config by hand, check for missing commas or brackets, or run `npx -y shopherd-shopify-mcp@latest doctor`. |
 | "Shopify CLI is still installing" | Normal on initial start while Shopify's CLI and Dev MCP finish downloading (about 30 seconds on our test machine). Wait a minute and ask again. |
 | "Store … is not signed in, or its session expired" | Ask your assistant to connect that store again and approve it in your browser. |
 | No browser window opens when connecting | Check whether your assistant printed an approval link and open it in a browser on the same computer. |
@@ -195,7 +195,7 @@ args = ["-y", "shopherd@latest"]
 | "… is read-only, so mutations are refused" | That store is set to read-only so edits are blocked. Reconnect it without `read-only` if you want changes allowed. |
 | `node: command not found`, or a version error | Install Node.js 22.12 or newer from [nodejs.org](https://nodejs.org), then restart your AI app. |
 
-If you hit anything else, please [open an issue](https://github.com/fledgeling-co/shopherd/issues) with what you asked and the message that came back (strip out any client or customer details beforehand).
+If you hit anything else, please [open an issue](https://github.com/fledgeling-co/shopherd-shopify-mcp/issues) with what you asked and the message that came back (strip out any client or customer details beforehand).
 
 ## Questions
 
@@ -222,7 +222,7 @@ No. Shopherd was called `shopify-multi-mcp` in 0.1 and `StoreRow` in 0.2, and yo
 
 ## Status
 
-Shopherd is an early release at version 0.3.0 (website: [fledgeling-co.github.io/shopherd](https://fledgeling-co.github.io/shopherd/)). We've tested it end to end against Shopify's own tools and against a local mock Admin API built on Shopify's published schema, though nobody has signed in to a real store with it yet; connecting a live store is part of early testing. Earlier versions were named `shopify-multi-mcp` (0.1) and `StoreRow` (0.2); old settings still work and old links redirect here. Please report any rough edges on [GitHub Issues](https://github.com/fledgeling-co/shopherd/issues).
+Shopherd is an early release at version 0.3.0 (website: [fledgeling-co.github.io/shopherd-shopify-mcp](https://fledgeling-co.github.io/shopherd-shopify-mcp/)). We've tested it end to end against Shopify's own tools and against a local mock Admin API built on Shopify's published schema, though nobody has signed in to a real store with it yet; connecting a live store is part of early testing. Earlier versions were named `shopify-multi-mcp` (0.1) and `StoreRow` (0.2); old settings still work and old links redirect here. Please report any rough edges on [GitHub Issues](https://github.com/fledgeling-co/shopherd-shopify-mcp/issues).
 
 ## For developers
 

@@ -7,9 +7,10 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-export const SERVER_KEY = 'shopherd';
-export const PACKAGE_SPEC = 'shopherd@latest';
-const LEGACY = /shopify-multi-mcp|fledgeling-co\/storerow|(^|[\s/"'])storerow(@|$|[\s"'])/;
+export const SERVER_KEY = 'shopherd-shopify-mcp';
+export const PACKAGE_SPEC = 'shopherd-shopify-mcp@latest';
+// Entries written for the project's earlier names: shopify-multi-mcp, StoreRow, and plain shopherd.
+const LEGACY = /shopify-multi-mcp|fledgeling-co\/storerow|(^|[\s/"'])(storerow|shopherd)(@|$|[\s"'])/;
 
 // The command written into each app. Desktop apps started from the Dock or Start menu often do not
 // see the PATH a terminal sees, so the entry names the npx next to the Node running setup and puts

@@ -1,30 +1,33 @@
 {
-  "name": "shopherd",
+  "name": "shopherd-shopify-mcp",
   "version": "0.3.0",
-  "description": "Shopherd: several Shopify stores in one AI assistant. Ask once, every store answers, each answer names its store. Signs in through Shopify's own CLI; no keys stored.",
+  "description": "Shopherd Shopify MCP: several Shopify stores in one AI assistant. Ask once, every store answers, each answer names its store. Signs in through Shopify's own CLI; no keys stored.",
   "keywords": [
+    "agency",
+    "claude",
+    "codex",
+    "cursor",
     "mcp",
     "mcp-server",
     "model-context-protocol",
+    "multi-store",
+    "shopherd",
     "shopify",
     "shopify-cli",
-    "multi-store",
-    "claude",
-    "cursor",
-    "codex",
-    "agency"
+    "shopify-mcp"
   ],
-  "homepage": "https://fledgeling-co.github.io/shopherd/",
+  "homepage": "https://fledgeling-co.github.io/shopherd-shopify-mcp/",
   "bugs": {
-    "url": "https://github.com/fledgeling-co/shopherd/issues"
+    "url": "https://github.com/fledgeling-co/shopherd-shopify-mcp/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fledgeling-co/shopherd.git"
+    "url": "git+https://github.com/fledgeling-co/shopherd-shopify-mcp.git"
   },
   "license": "MIT",
   "type": "module",
   "bin": {
+    "shopherd-shopify-mcp": "bin/shopherd.js",
     "shopherd": "bin/shopherd.js"
   },
   "files": [

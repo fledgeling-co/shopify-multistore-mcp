@@ -14,7 +14,7 @@ These compare Shopherd with Shopify Multi-Store MCP ([alex-brecher/shopify-multi
 
 ## Run them
 
-You need Node 22.12+, Docker, the `claude` CLI, and Shopify's Admin schema files, which `npx shopherd doctor` downloads.
+You need Node 22.12+, Docker, the `claude` CLI, and Shopify's Admin schema files, which `npx shopherd-shopify-mcp doctor` downloads.
 
 ```bash
 cd evals && npm install && cd ..

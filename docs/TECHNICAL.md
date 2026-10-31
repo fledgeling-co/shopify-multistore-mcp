@@ -1,4 +1,4 @@
-# Shopherd — technical guide
+# Shopherd Shopify MCP — technical guide
 
 One MCP server for many Shopify stores. Each store keeps its own Shopify sign-in, every store tool takes a `store` argument naming the store it acts on, questions about several stores run on all of them at once, and the Shopify code doing the work is always the newest verified release of Shopify's own CLI and Dev MCP.
 
@@ -9,24 +9,24 @@ It exists because Shopify's hosted MCP (the "Shopify" connector in Claude, `http
 You need Node.js 22.12 or newer (Shopify CLI 5 requires it), a browser on the machine that runs the server, and a Shopify account that can approve app access on each store.
 
 ```bash
-npx -y shopherd@latest setup
+npx -y shopherd-shopify-mcp@latest setup
 ```
 
-`setup` checks the Node version, finds the AI apps installed on this computer (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Codex), adds a `shopherd` server to each, then offers to connect stores one by one. For each app it:
+`setup` checks the Node version, finds the AI apps installed on this computer (Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Codex), adds a `shopherd-shopify-mcp` server to each, then offers to connect stores one by one. For each app it:
 
 - backs up the config file before changing it (`<file>.backup-<time>`) and leaves a file it cannot parse untouched;
 - writes the full path to the `npx` beside the Node that ran setup, and puts that Node first on `PATH`, because desktop apps started from the Dock or Start menu often do not see the terminal's `PATH`;
 - replaces an entry left by the project's earlier names (shopify-multi-mcp, StoreRow) instead of adding a second server;
-- uses `claude mcp add --scope user` for Claude Code, and appends a `[mcp_servers.shopherd]` table to Codex's `config.toml`.
+- uses `claude mcp add --scope user` for Claude Code, and appends a `[mcp_servers.shopherd-shopify-mcp]` table to Codex's `config.toml`.
 
 Flags: `--client claude-desktop,cursor,vscode,windsurf,codex,claude-code` limits it to those apps, `--yes` skips the questions, `--remove` takes the entry out again.
 
-To add it by hand instead, the command is `npx -y shopherd@latest`. Claude Desktop, Cursor and Windsurf take an `mcpServers` block, VS Code a `servers` block with `"type": "stdio"`, Codex a `[mcp_servers.shopherd]` table:
+To add it by hand instead, the command is `npx -y shopherd-shopify-mcp@latest`. Claude Desktop, Cursor and Windsurf take an `mcpServers` block, VS Code a `servers` block with `"type": "stdio"`, Codex a `[mcp_servers.shopherd-shopify-mcp]` table:
 
 ```json
 {
   "mcpServers": {
-    "shopherd": { "command": "npx", "args": ["-y", "shopherd@latest"] }
+    "shopherd-shopify-mcp": { "command": "npx", "args": ["-y", "shopherd-shopify-mcp@latest"] }
   }
 }
 ```
@@ -34,7 +34,7 @@ To add it by hand instead, the command is `npx -y shopherd@latest`. Claude Deskt
 **Connect a store** from the chat ("connect acme-au.myshopify.com as au", which calls `connect_store`), from `setup`, or in a terminal:
 
 ```bash
-npx -y shopherd@latest connect au acme-au.myshopify.com --label "AU retail"
+npx -y shopherd-shopify-mcp@latest connect au acme-au.myshopify.com --label "AU retail"
 ```
 
 A browser window opens on Shopify's approval page for that store. Add `--read-only` to request read scopes only and refuse every change to that store.
@@ -42,7 +42,7 @@ A browser window opens on Shopify's approval page for that store. Add `--read-on
 **Check everything** (installs the newest Shopify CLI and Dev MCP, checks both, validates every built-in and report query against the newest Admin schema, and reports which stores are signed in):
 
 ```bash
-npx -y shopherd@latest doctor
+npx -y shopherd-shopify-mcp@latest doctor
 ```
 
 The first run downloads Shopify CLI and Dev MCP, about 400 MB, into `~/.cache/shopherd`; it took 31 seconds on the machine this was built on. Several servers starting at once share one download.
@@ -108,9 +108,9 @@ Nothing about Shopify's tools is frozen into this package. Dev MCP's tool names,
 | `SHOPHERD_HOME`, `SHOPHERD_CACHE` | Use these folders for settings and downloads. |
 | `OPT_OUT_INSTRUMENTATION=true` | Shopify's own telemetry opt-out for Dev MCP, passed through unchanged. |
 
-`npx -y shopherd@latest` asks npm for the newest release each time your app starts it. To hold it at a release, use `shopherd@0.3.0`.
+`npx -y shopherd-shopify-mcp@latest` asks npm for the newest release each time your app starts it. To hold it at a release, use `shopherd-shopify-mcp@0.3.0`.
 
-The project was called shopify-multi-mcp until 0.2.0 and StoreRow in 0.2.0. The `SHOPIFY_MULTI_MCP_*` and `STOREROW_*` variables still work, and existing `~/.config` and `~/.cache` folders under those names are used when the `shopherd` ones do not exist.
+The project was called shopify-multi-mcp until 0.2.0 and StoreRow in 0.2.0; from 0.3.0 it is Shopherd Shopify MCP (npm `shopherd-shopify-mcp`, with `shopherd` as a short command once installed). The `SHOPIFY_MULTI_MCP_*` and `STOREROW_*` variables still work, and existing `~/.config` and `~/.cache` folders under those names are used when the `shopherd` ones do not exist.
 
 ## Configuration
 
@@ -143,7 +143,7 @@ The default scopes are read and write for products, inventory, orders, draft ord
 
 ## Status
 
-Version 0.3.0, the first under the Shopherd name. Tested on macOS with Node 22.23.1 against Shopify CLI 5.0.0 and Dev MCP 1.18.0: the unit and protocol tests (`npm test`), `doctor` (install, signature check, smoke tests, every built-in and report query valid against the newest Admin schema), and the evals in [evals/](../evals/README.md), which run the server end to end against a mock Admin API built on Shopify's published schema. The browser approval in `connect_store` and calls against a real store have not been run yet, because that needs a store account; the first person to connect one is testing that path.
+Version 0.3.0, the first under the Shopherd Shopify MCP name. Tested on macOS with Node 22.23.1 against Shopify CLI 5.0.0 and Dev MCP 1.18.0: the unit and protocol tests (`npm test`), `doctor` (install, signature check, smoke tests, every built-in and report query valid against the newest Admin schema), and the evals in [evals/](../evals/README.md), which run the server end to end against a mock Admin API built on Shopify's published schema. The browser approval in `connect_store` and calls against a real store have not been run yet, because that needs a store account; the first person to connect one is testing that path.
 
 ## Development
 
